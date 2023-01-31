@@ -54,14 +54,16 @@ class ProductsStream extends StatelessWidget {
         List<ProductCard> productsCards = [];
 
         for (var productData in products!) {
-          productsCards
-              .add(ProductCard(product: productData.data(), onTap: () {}));
+          productsCards.add(
+            ProductCard(
+              product: productData.data(),
+              onTap: () {},
+            ),
+          );
         }
 
-        return Expanded(
-          child: ListView(
-            children: productsCards,
-          ),
+        return ListView(
+          children: productsCards,
         );
       },
     );
