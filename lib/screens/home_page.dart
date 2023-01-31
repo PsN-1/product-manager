@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:product_manager/models/product.dart';
+import 'package:product_manager/screens/product_detail.dart';
 import 'package:product_manager/widgets/product_card.dart';
 
 final _firestore = FirebaseFirestore.instance;
@@ -25,6 +26,11 @@ class _HomePageState extends State<HomePage> {
       body: const SafeArea(
         child: ProductsStream(),
       ),
+            floatingActionButton: FloatingActionButton(
+        onPressed: () {},
+        tooltip: 'Increment',
+        child: const Icon(Icons.add),
+      )
     );
   }
 }
@@ -57,7 +63,13 @@ class ProductsStream extends StatelessWidget {
           productsCards.add(
             ProductCard(
               product: productData.data(),
-              onTap: () {},
+              onTap: () {
+                Navigator.push(context, MaterialPageRoute(builder: (context) {
+                  return ProductDetail(
+                    product: productData.data(),
+                  );
+                }));
+              },
             ),
           );
         }
