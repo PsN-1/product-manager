@@ -6,7 +6,7 @@ class Product {
   final String? box;
   final String? code;
   final String? image;
-  final String? quantity;
+  String? quantity;
 
   Product({
     this.product,
