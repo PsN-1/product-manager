@@ -42,4 +42,16 @@ class Product {
       if (quantity != null) "Quantidade": quantity,
     };
   }
+
+  void addQuantity() {
+    if (quantity != null) {
+      quantity = (int.parse(quantity!) + 1).toString();
+    }
+  }
+
+  void decreaseQuantity() {
+    if (quantity != null) {
+      quantity = (int.parse(quantity!) - 1).toString();
+    }
+  }
 }

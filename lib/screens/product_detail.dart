@@ -1,6 +1,4 @@
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:product_manager/models/product.dart';
 import 'package:product_manager/widgets/async_image.dart';
 
@@ -9,9 +7,9 @@ const labelStyle =
     TextStyle(fontWeight: FontWeight.w600, fontSize: 16, color: Colors.black54);
 
 class ProductDetail extends StatefulWidget {
-  Product product;
+  final Product product;
 
-  ProductDetail({super.key, required this.product});
+  const ProductDetail({super.key, required this.product});
 
   @override
   State<ProductDetail> createState() => _ProductDetailState();
@@ -19,34 +17,31 @@ class ProductDetail extends StatefulWidget {
 
 class _ProductDetailState extends State<ProductDetail> {
   var descriptionTextController = TextEditingController();
+  late String oldQuantity;
 
   @override
-    void initState() {
-      super.initState();
+  void initState() {
+    super.initState();
 
     descriptionTextController.text = widget.product.description ?? "";
-    }
+    oldQuantity = widget.product.quantity ?? "";
+  }
 
-  void addQuantity() {
+  void _addQuantity() {
     setState(() {
-      if (widget.product.quantity != null) {
-        widget.product.quantity =
-            (int.parse(widget.product.quantity!) + 1).toString();
-      }
+      widget.product.addQuantity();
     });
   }
 
-  void decreaseQuantity() {
+  void _decreaseQuantity() {
     setState(() {
-      if (widget.product.quantity != null) {
-        if (int.parse(widget.product.quantity!) > 0) {
-          widget.product.quantity =
-              (int.parse(widget.product.quantity!) - 1).toString();
-        }
-      }
+      widget.product.decreaseQuantity();
     });
   }
 
+  bool get isNewQuantity {
+    return oldQuantity != widget.product.quantity;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -65,25 +60,47 @@ class _ProductDetailState extends State<ProductDetail> {
 
             const Text("Descrição", style: labelStyle),
             // Text(widget.product.description ?? "", style: textStyle),
-            TextField(controller: descriptionTextController, style: textStyle,),
+            TextField(
+              controller: descriptionTextController,
+              style: textStyle,
+            ),
 
             const SizedBox(height: 20),
             const Text("Caixa: ", style: labelStyle),
             Text(widget.product.box ?? "", style: textStyle),
             const SizedBox(height: 20),
-            const Text("Quantidade: ", style: labelStyle),
             Row(
-             mainAxisAlignment: MainAxisAlignment.start, 
+              children: [
+                const Text("Quantidade: ", style: labelStyle),
+                const Spacer(),
+                Visibility(
+                  visible: isNewQuantity,
+                  child: const Text("Valor anterior: ", style: labelStyle),
+                ),
+              ],
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 IconButton(
-                  alignment: Alignment.centerLeft,
-                  padding: const EdgeInsets.all(0),
-                  onPressed: decreaseQuantity, icon: const Icon(Icons.remove)),
+                    alignment: Alignment.centerLeft,
+                    padding: const EdgeInsets.all(0),
+                    onPressed: _decreaseQuantity,
+                    icon: const Icon(Icons.remove)),
                 Text(widget.product.quantity ?? "", style: textStyle),
                 IconButton(
-                  alignment: Alignment.centerRight,
-                  padding: const EdgeInsets.all(0),
-                  onPressed: addQuantity, icon: const Icon(Icons.add)),
+                    alignment: Alignment.centerRight,
+                    padding: const EdgeInsets.all(0),
+                    onPressed: _addQuantity,
+                    icon: const Icon(Icons.add)),
+                const Spacer(),
+                Visibility(
+                  visible: isNewQuantity,
+                  child: Text(
+                    oldQuantity,
+                    style: textStyle.copyWith(color: Colors.red),
+                  ),
+                ),
               ],
             ),
             const SizedBox(height: 40),
@@ -95,7 +112,7 @@ class _ProductDetailState extends State<ProductDetail> {
                       Navigator.pop(context);
                     },
                     child: const Text("Cancel")),
-                OutlinedButton(onPressed: () {}, child: const Text("Confirm")),
+                OutlinedButton(onPressed: () {}, child: const Text("Salvar")),
               ],
             )
           ],
