@@ -20,23 +20,36 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-          title: const Text(
-        "Controle de Estoque",
-      )),
+        actions: [IconButton(onPressed: () {}, icon: const Icon(Icons.search))],
+        title: const Text("Controle de Estoque"),
+      ),
       body: const SafeArea(
         child: ProductsStream(),
       ),
-            floatingActionButton: FloatingActionButton(
+      floatingActionButton: FloatingActionButton(
         onPressed: () {},
         tooltip: 'Increment',
         child: const Icon(Icons.add),
-      )
+      ),
     );
   }
 }
 
 class ProductsStream extends StatelessWidget {
   const ProductsStream({Key? key}) : super(key: key);
+
+  Future _updateProduct(String id, Product product) async {
+    await _firestore
+        .collection('Products')
+        .withConverter(
+          fromFirestore: Product.fromFirestore,
+          toFirestore: (Product product, _) => product.toFirestore(),
+        )
+        .doc(id)
+        .update(
+          product.toFirestore(),
+        );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -58,7 +71,6 @@ class ProductsStream extends StatelessWidget {
         }
         final products = snapshot.data?.docs;
         List<ProductCard> productsCards = [];
-
         for (var productData in products!) {
           productsCards.add(
             ProductCard(
@@ -67,6 +79,9 @@ class ProductsStream extends StatelessWidget {
                 Navigator.push(context, MaterialPageRoute(builder: (context) {
                   return ProductDetail(
                     product: productData.data(),
+                    onSave: (newProduct) async {
+                      await _updateProduct(productData.id, newProduct);
+                    },
                   );
                 }));
               },

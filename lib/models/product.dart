@@ -7,6 +7,7 @@ class Product {
   final String? code;
   final String? image;
   String? quantity;
+  List<String?>? history;
 
   Product({
     this.product,
@@ -15,6 +16,7 @@ class Product {
     this.code,
     this.image,
     this.quantity,
+    this.history,
   });
 
   factory Product.fromFirestore(
@@ -29,6 +31,8 @@ class Product {
       code: data?['Codigo'],
       image: data?['Foto'],
       quantity: data?['Quantidade'],
+      history:
+          data?['Historico'] is Iterable ? List.from(data?['Historico']) : null,
     );
   }
 
@@ -40,6 +44,7 @@ class Product {
       if (code != null) "Codigo": code,
       if (image != null) "Foto": image,
       if (quantity != null) "Quantidade": quantity,
+      if (history != null) "Historico": history,
     };
   }
 
@@ -53,5 +58,26 @@ class Product {
     if (quantity != null) {
       quantity = (int.parse(quantity!) - 1).toString();
     }
+  }
+
+  void saveToHistory(String oldValue, String newValue) {
+    final date = _getDate();
+
+    history ??= [];
+    final newEntry = "$date - Qtd: $oldValue  ->  $newValue";
+
+    history?.insert(0, newEntry);
+
+    if (history!.length > 3) {
+      history?.removeLast();
+    }
+  }
+
+  String _getDate() {
+    var day = DateTime.now().day;
+    var month = DateTime.now().month;
+    var year = DateTime.now().year - 2000;
+
+    return "$day/$month/$year";
   }
 }
