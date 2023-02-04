@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:product_manager/models/product.dart';
+import 'package:product_manager/screens/add_new_product.dart';
 import 'package:product_manager/screens/product_detail.dart';
 import 'package:product_manager/services/firebase.dart';
 import 'package:product_manager/widgets/product_card.dart';
@@ -26,7 +27,11 @@ class _HomePageState extends State<HomePage> {
         child: ProductsStream(),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () {
+          Navigator.push(context, MaterialPageRoute(builder: (context) {
+            return AddNewProduct();
+          }));
+        },
         tooltip: 'Increment',
         child: const Icon(Icons.add),
       ),
@@ -60,7 +65,8 @@ class ProductsStream extends StatelessWidget {
                   return ProductDetail(
                     product: productData.data(),
                     onSave: (newProduct) async {
-                      await FirebaseService.updateProduct(productData.id, newProduct);
+                      await FirebaseService.updateProduct(
+                          productData.id, newProduct);
                     },
                   );
                 }));

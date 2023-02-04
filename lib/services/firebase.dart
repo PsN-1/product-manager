@@ -55,4 +55,9 @@ class FirebaseService {
     String imageUrl = await imageRef.getDownloadURL();
     return imageUrl;
   }
+
+  static Future removeImage(String imageUrl) async {
+    final imageRef = FirebaseStorage.instance.refFromURL(imageUrl) ;
+    await imageRef.delete();
+  }
 }

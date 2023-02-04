@@ -75,6 +75,10 @@ class Product {
   }
 
   Future saveNewImage(String imagePath) async {
+    if (image != null) {
+      await FirebaseService.removeImage(imagePath);
+    }
+
     final newImageUrl = await FirebaseService.uploadImage(imagePath);
     image = newImageUrl;
   }
