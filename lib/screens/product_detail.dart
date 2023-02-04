@@ -47,11 +47,11 @@ class _ProductDetailState extends State<ProductDetail> {
     return oldQuantity != widget.product.quantity;
   }
 
-  void dismiss() {
+  void _dismiss() {
     Navigator.pop(context);
   }
 
-  void updateProduct() async {
+  void _updateProduct() async {
     _isLoading = true;
     setState(() {
       if (isNewQuantity) {
@@ -60,9 +60,11 @@ class _ProductDetailState extends State<ProductDetail> {
         oldQuantity = widget.product.quantity ?? "";
       }
     });
+    widget.product.description = descriptionTextController.text;
+
     await widget.onSave(widget.product);
     _isLoading = false;
-    dismiss();
+    _dismiss();
   }
 
   @override
@@ -138,9 +140,9 @@ class _ProductDetailState extends State<ProductDetail> {
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   OutlinedButton(
-                      onPressed: dismiss, child: const Text("Cancel")),
+                      onPressed: _dismiss, child: const Text("Cancel")),
                   OutlinedButton(
-                      onPressed: updateProduct, child: const Text("Salvar")),
+                      onPressed: _updateProduct, child: const Text("Salvar")),
                 ],
               )
             ],

@@ -39,6 +39,7 @@ dependencies:
   firebase_core: ^2.4.1
   firebase_storage: ^11.0.10
   modal_progress_hud_nsn: ^0.3.0
+  image_picker: ^0.8.6+1
 
 dev_dependencies:
   flutter_test:
