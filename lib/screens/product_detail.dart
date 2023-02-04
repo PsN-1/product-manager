@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:product_manager/models/product.dart';
 import 'package:product_manager/widgets/async_image.dart';
@@ -69,6 +70,9 @@ class _ProductDetailState extends State<ProductDetail> {
 
   @override
   Widget build(BuildContext context) {
+    final ImagePicker picker = ImagePicker();
+    
+
     return Scaffold(
       appBar: AppBar(title: Text(widget.product.product ?? "")),
       body: ModalProgressHUD(
@@ -78,6 +82,8 @@ class _ProductDetailState extends State<ProductDetail> {
           padding: const EdgeInsets.all(20),
           color: Colors.white,
           child: ListView(
+            
+            // padding: EdgeInsets.only(top: 40, bottom: 40),
             children: [
               AsyncImage(image: widget.product.image ?? ""),
               const SizedBox(height: 20),

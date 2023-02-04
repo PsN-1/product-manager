@@ -40,7 +40,7 @@ class ProductsStream extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<QuerySnapshot<Product>>(
-      stream: Firebase.getStreamSnapshotProducts(),
+      stream: FirebaseService.getStreamSnapshotProducts(),
       builder: (context, snapshot) {
         if (!snapshot.hasData) {
           return const Center(
@@ -60,7 +60,7 @@ class ProductsStream extends StatelessWidget {
                   return ProductDetail(
                     product: productData.data(),
                     onSave: (newProduct) async {
-                      await Firebase.updateProduct(productData.id, newProduct);
+                      await FirebaseService.updateProduct(productData.id, newProduct);
                     },
                   );
                 }));

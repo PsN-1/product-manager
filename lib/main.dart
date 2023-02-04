@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:product_manager/models/product.dart';
 import 'package:product_manager/screens/home_page.dart';
-import 'package:product_manager/widgets/async_image.dart';
+import 'package:product_manager/services/firebase.dart';
 import 'firebase_options.dart';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -46,7 +46,8 @@ Future updateProducts() async {
           continue;
         }
 
-        var imageUrl = await AsyncImage.getImageUrl(product.data().image ?? "");
+        var imageUrl =
+            await FirebaseService.getImageUrl(product.data().image ?? "");
 
         if (imageUrl.isNotEmpty) {
           if (product.data().image != imageUrl) {

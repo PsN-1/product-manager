@@ -1,34 +1,27 @@
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-
-final _storageRef = FirebaseStorage.instance.ref();
 
 class AsyncImage extends StatelessWidget {
   final String image;
   const AsyncImage({super.key, required this.image});
 
-  Future<String> getImage() async {
-    final pathReference = _storageRef.child('$image.jpg');
-    final imageUrl = await pathReference.getDownloadURL();
-    return imageUrl;
-  }
-
-  static Future<String> getImageUrl(String image) async {
-    final pathReference = _storageRef.child('$image.jpg');
-    try {
-      final imageUrl = await pathReference.getDownloadURL();
-      return imageUrl;
-    } catch (e) {
-      return "";
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
+    Widget imageWidget;
+
     if (!image.startsWith("https")) {
-      return const SizedBox();
+      imageWidget = LayoutBuilder(builder: (context, constraint) {
+        return Icon(
+          Icons.add_photo_alternate,
+          size: constraint.biggest.width * 0.7,
+        );
+      });
+    } else {
+      imageWidget = Image.network(
+        image,
+        fit: BoxFit.fitWidth,
+      );
     }
-    return Image(image: NetworkImage(image));
+    return imageWidget;
 
     // return FutureBuilder(
     //   future: getImage(),
