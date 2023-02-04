@@ -23,13 +23,11 @@ class ProductCard extends StatelessWidget {
             padding: const EdgeInsets.all(10.0),
             child: Row(
               children: [
-                SizedBox(
-                  height: 100,
-                  width: 100,
-                  child: (product.image != null)
-                      ? AsyncImage(image: product.image!)
-                      : const SizedBox(),
-                ),
+                if (product.image != null && product.image!.isNotEmpty)
+                  SizedBox(
+                      height: 100,
+                      width: 100,
+                      child: AsyncImage(image: product.image!)),
                 const SizedBox(width: 10),
                 Expanded(
                   child: Column(
@@ -62,7 +60,7 @@ class ProductCard extends StatelessWidget {
                             style: const TextStyle(fontSize: 20),
                           ),
                           Text(
-                            'Qtd: ${product.quantity}',
+                            'Qtd: ${product.quantity} ',
                             style: const TextStyle(fontSize: 20),
                           )
                         ],

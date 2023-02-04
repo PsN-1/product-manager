@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:product_manager/models/product.dart';
-import 'package:product_manager/widgets/async_image.dart';
+import 'package:product_manager/widgets/pickable_async_image.dart';
 
 const textStyle = TextStyle(fontSize: 22, color: Colors.black);
 const historyStyle = TextStyle(fontSize: 18, color: Colors.black);
@@ -22,7 +21,8 @@ class ProductDetail extends StatefulWidget {
 class _ProductDetailState extends State<ProductDetail> {
   var descriptionTextController = TextEditingController();
   late String oldQuantity;
-  var _isLoading = false;
+  bool _isLoading = false;
+  String? newImagePath; 
 
   @override
   void initState() {
@@ -54,6 +54,7 @@ class _ProductDetailState extends State<ProductDetail> {
 
   void _updateProduct() async {
     _isLoading = true;
+
     setState(() {
       if (isNewQuantity) {
         widget.product
@@ -62,17 +63,22 @@ class _ProductDetailState extends State<ProductDetail> {
       }
     });
     widget.product.description = descriptionTextController.text;
+    
+    if (newImagePath != null) {
+      await widget.product.saveNewImage(newImagePath!);
+    }
 
     await widget.onSave(widget.product);
     _isLoading = false;
     _dismiss();
   }
 
+  void didChangeImage(String imagePath) {
+    newImagePath = imagePath;
+  }
+
   @override
   Widget build(BuildContext context) {
-    final ImagePicker picker = ImagePicker();
-    
-
     return Scaffold(
       appBar: AppBar(title: Text(widget.product.product ?? "")),
       body: ModalProgressHUD(
@@ -82,10 +88,9 @@ class _ProductDetailState extends State<ProductDetail> {
           padding: const EdgeInsets.all(20),
           color: Colors.white,
           child: ListView(
-            
             // padding: EdgeInsets.only(top: 40, bottom: 40),
             children: [
-              AsyncImage(image: widget.product.image ?? ""),
+              PickableAsyncImage(image: widget.product.image ?? "", onChangeImage: didChangeImage,),
               const SizedBox(height: 20),
               const Text("Produto", style: labelStyle),
               Text(widget.product.product ?? "", style: textStyle),

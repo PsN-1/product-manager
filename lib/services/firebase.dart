@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:product_manager/models/product.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -42,6 +44,15 @@ class FirebaseService {
   Future<String> getImage(String image) async {
     final pathReference = _storageRef.child('$image.jpg');
     final imageUrl = await pathReference.getDownloadURL();
+    return imageUrl;
+  }
+
+  static Future<String> uploadImage(String imagePath) async {
+    final imageRef = _storageRef.child(imagePath);
+    File imageFile = File(imagePath);
+
+    await imageRef.putFile(imageFile);
+    String imageUrl = await imageRef.getDownloadURL();
     return imageUrl;
   }
 }

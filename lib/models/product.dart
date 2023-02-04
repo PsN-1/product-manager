@@ -1,11 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:product_manager/services/firebase.dart';
 
 class Product {
   final String? product;
   String? description;
   final String? box;
   final String? code;
-  final String? image;
+  String? image;
   String? quantity;
   List<String?>? history;
 
@@ -71,6 +72,11 @@ class Product {
     if (history!.length > 3) {
       history?.removeLast();
     }
+  }
+
+  Future saveNewImage(String imagePath) async {
+    final newImageUrl = await FirebaseService.uploadImage(imagePath);
+    image = newImageUrl;
   }
 
   String _getDate() {
