@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:product_manager/screens/list_of_products.dart';
 import 'package:product_manager/screens/product_detail.dart';
 import 'package:product_manager/widgets/pickable_async_image.dart';
 
@@ -16,12 +17,21 @@ class AddNewProduct extends StatelessWidget {
     imagePath = path;
   }
 
-
   @override
   Widget build(BuildContext context) {
 
-    void _dismiss() {
+    void dismiss() {
       Navigator.pop(context);
+    }
+
+    void goToProductSelectionScreen() {
+      Navigator.push(context, MaterialPageRoute(builder: (context) {
+        return ListOfProducts(
+          onSelected: (selectedProduct) {
+            _productController.text = selectedProduct;
+          },
+        );
+      }));
     }
 
     return Scaffold(
@@ -43,15 +53,7 @@ class AddNewProduct extends StatelessWidget {
               controller: _productController,
               style: textStyle,
               readOnly: true,
-              onTap: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) {
-                  return ListOfProducts(
-                    onSelected: (selectedProduct) {
-                      _productController.text = selectedProduct;
-                    },
-                  );
-                }));
-              },
+              onTap: goToProductSelectionScreen,
             ),
             const SizedBox(height: 20),
             const Text(
@@ -87,7 +89,8 @@ class AddNewProduct extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                OutlinedButton(onPressed: _dismiss, child: const Text("Cancel")),
+                OutlinedButton(
+                    onPressed: dismiss, child: const Text("Cancel")),
                 OutlinedButton(onPressed: () {}, child: const Text("Salvar")),
               ],
             )
@@ -98,52 +101,3 @@ class AddNewProduct extends StatelessWidget {
   }
 }
 
-class ListOfProducts extends StatefulWidget {
-  final void Function(String) onSelected;
-
-  const ListOfProducts({super.key, required this.onSelected});
-
-  @override
-  State<ListOfProducts> createState() => _ListOfProductsState();
-}
-
-class _ListOfProductsState extends State<ListOfProducts> {
-  List<Widget> products = [];
-
-  @override
-  void initState() {
-    super.initState();
-
-    loadProducts();
-  }
-
-  void loadProducts() async {
-    products = await _loadAsset();
-    setState(() {});
-  }
-
-  Future<List<Widget>> _loadAsset() async {
-    final products = await rootBundle.loadString('assets/products.txt');
-    return products
-        .split('\n')
-        .map((String text) => TextButton(
-              onPressed: () {
-                widget.onSelected(text);
-                Navigator.pop(context);
-              },
-              child: Text(text),
-            ))
-        .toList();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-          title: const Text('Products'),
-        ),
-        body: ListView(
-          children: products,
-        ));
-  }
-}
