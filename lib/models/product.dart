@@ -76,11 +76,16 @@ class Product {
 
   Future saveNewImage(String imagePath) async {
     if (image != null) {
-      await FirebaseService.removeImage(imagePath);
+      await FirebaseService.removeImage(image!);
     }
 
-    final newImageUrl = await FirebaseService.uploadImage(imagePath);
+    final newImageUrl =
+        await FirebaseService.uploadImage(imagePath, _createImageName());
     image = newImageUrl;
+  }
+
+  String _createImageName() {
+    return "$product-$description-${DateTime.now()}";
   }
 
   String _getDate() {

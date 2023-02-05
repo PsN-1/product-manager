@@ -47,8 +47,8 @@ class FirebaseService {
     return imageUrl;
   }
 
-  static Future<String> uploadImage(String imagePath) async {
-    final imageRef = _storageRef.child(imagePath);
+  static Future<String> uploadImage(String imagePath, String imageName) async {
+    final imageRef = _storageRef.child(imageName);
     File imageFile = File(imagePath);
 
     await imageRef.putFile(imageFile);
@@ -57,7 +57,12 @@ class FirebaseService {
   }
 
   static Future removeImage(String imageUrl) async {
-    final imageRef = FirebaseStorage.instance.refFromURL(imageUrl) ;
-    await imageRef.delete();
+    try {
+      final imageRef = FirebaseStorage.instance.refFromURL(imageUrl);
+      await imageRef.delete();
+    } catch (e) {
+      print("Error while removing the image");
+      print(e);
+    }
   }
 }
