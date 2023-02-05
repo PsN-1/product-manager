@@ -1,12 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
+import 'package:product_manager/constants.dart';
 import 'package:product_manager/models/product.dart';
 import 'package:product_manager/widgets/pickable_async_image.dart';
-
-const textStyle = TextStyle(fontSize: 22, color: Colors.black);
-const historyStyle = TextStyle(fontSize: 18, color: Colors.black);
-const labelStyle =
-    TextStyle(fontWeight: FontWeight.w600, fontSize: 16, color: Colors.black54);
 
 class ProductDetail extends StatefulWidget {
   final Product product;
@@ -22,7 +18,7 @@ class _ProductDetailState extends State<ProductDetail> {
   var descriptionTextController = TextEditingController();
   late String oldQuantity;
   bool _isLoading = false;
-  String? newImagePath; 
+  String? newImagePath;
 
   @override
   void initState() {
@@ -63,7 +59,7 @@ class _ProductDetailState extends State<ProductDetail> {
       }
     });
     widget.product.description = descriptionTextController.text;
-    
+
     if (newImagePath != null) {
       await widget.product.saveNewImage(newImagePath!);
     }
@@ -90,30 +86,33 @@ class _ProductDetailState extends State<ProductDetail> {
           child: ListView(
             // padding: EdgeInsets.only(top: 40, bottom: 40),
             children: [
-              PickableAsyncImage(image: widget.product.image ?? "", onChangeImage: didChangeImage,),
+              PickableAsyncImage(
+                image: widget.product.image ?? "",
+                onChangeImage: didChangeImage,
+              ),
               const SizedBox(height: 20),
-              const Text("Produto", style: labelStyle),
-              Text(widget.product.product ?? "", style: textStyle),
+              const Text("Produto", style: kLabelStyle),
+              Text(widget.product.product ?? "", style: kTextStyle),
               const SizedBox(height: 20),
 
-              const Text("Descrição", style: labelStyle),
+              const Text("Descrição", style: kLabelStyle),
               // Text(widget.product.description ?? "", style: textStyle),
               TextField(
                 controller: descriptionTextController,
-                style: textStyle,
+                style: kTextStyle,
               ),
 
               const SizedBox(height: 20),
-              const Text("Caixa: ", style: labelStyle),
-              Text(widget.product.box ?? "", style: textStyle),
+              const Text("Caixa: ", style: kLabelStyle),
+              Text(widget.product.box ?? "", style: kTextStyle),
               const SizedBox(height: 20),
               Row(
                 children: [
-                  const Text("Quantidade: ", style: labelStyle),
+                  const Text("Quantidade: ", style: kLabelStyle),
                   const Spacer(),
                   Visibility(
                     visible: isNewQuantity,
-                    child: const Text("Valor anterior: ", style: labelStyle),
+                    child: const Text("Valor anterior: ", style: kLabelStyle),
                   ),
                 ],
               ),
@@ -125,7 +124,7 @@ class _ProductDetailState extends State<ProductDetail> {
                       padding: const EdgeInsets.all(0),
                       onPressed: _decreaseQuantity,
                       icon: const Icon(Icons.remove)),
-                  Text(widget.product.quantity ?? "", style: textStyle),
+                  Text(widget.product.quantity ?? "", style: kTextStyle),
                   IconButton(
                       alignment: Alignment.centerRight,
                       padding: const EdgeInsets.all(0),
@@ -136,15 +135,15 @@ class _ProductDetailState extends State<ProductDetail> {
                     visible: isNewQuantity,
                     child: Text(
                       oldQuantity,
-                      style: textStyle.copyWith(color: Colors.red),
+                      style: kTextStyle.copyWith(color: Colors.red),
                     ),
                   ),
                 ],
               ),
               const SizedBox(height: 20),
-              const Text('Últimas atualizações: ', style: labelStyle),
+              const Text('Últimas atualizações: ', style: kLabelStyle),
               for (var str in widget.product.history ?? [])
-                Text(str, style: historyStyle),
+                Text(str, style: kHistoryStyle),
 
               const SizedBox(height: 40),
               Row(

@@ -6,29 +6,34 @@ import 'package:firebase_storage/firebase_storage.dart';
 
 final _storageRef = FirebaseStorage.instance.ref();
 final _firestore = FirebaseFirestore.instance;
+const _productsCollection = 'Products';
 
 class FirebaseService {
+  static var dbRef = _firestore.collection(_productsCollection).withConverter(
+        fromFirestore: Product.fromFirestore,
+        toFirestore: (Product product, _) => product.toFirestore(),
+      );
+
   static Stream<QuerySnapshot<Product>> getStreamSnapshotProducts() {
-    return _firestore
-        .collection('Products')
-        .withConverter(
-          fromFirestore: Product.fromFirestore,
-          toFirestore: (Product product, _) => product.toFirestore(),
-        )
+    return dbRef.orderBy("Produto", descending: false).snapshots();
+  }
+
+  static Stream<QuerySnapshot<Product>> getFilteredStreamSnapshot(
+      String product) {
+    const productField = 'Produto';
+
+    return dbRef
+        .where(productField, isGreaterThanOrEqualTo: product)
+        .where(productField, isLessThanOrEqualTo: "$product\uf7ff")
         .snapshots();
   }
 
+  static Future createProduct(Product product) async {
+    await dbRef.add(product);
+  }
+
   static Future updateProduct(String id, Product product) async {
-    await _firestore
-        .collection('Products')
-        .withConverter(
-          fromFirestore: Product.fromFirestore,
-          toFirestore: (Product product, _) => product.toFirestore(),
-        )
-        .doc(id)
-        .update(
-          product.toFirestore(),
-        );
+    await dbRef.doc(id).update(product.toFirestore());
   }
 
   static Future<String> getImageUrl(String image) async {

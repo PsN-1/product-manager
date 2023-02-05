@@ -84,6 +84,10 @@ class Product {
     image = newImageUrl;
   }
 
+  static Future createNewInstance(Product product) async {
+    await FirebaseService.createProduct(product);
+  }
+
   String _createImageName() {
     return "$product-$description-${DateTime.now()}";
   }
