@@ -61,6 +61,9 @@ class Product {
 
   void decreaseQuantity() {
     if (quantity != null) {
+      if (quantity == "0") {
+        return;
+      }
       quantity = (int.parse(quantity!) - 1).toString();
     }
   }
