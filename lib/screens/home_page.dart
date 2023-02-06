@@ -13,7 +13,10 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Controle de Estoque")),
+      appBar: AppBar(
+        title: const Text("Controle de Estoque"),
+        actions: [IconButton(onPressed: () {}, icon: Icon(Icons.person))],
+      ),
       body: const SafeArea(
         child: ProductsStream(),
       ),
@@ -29,5 +32,3 @@ class _HomePageState extends State<HomePage> {
     );
   }
 }
-
-
