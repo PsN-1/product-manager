@@ -1,11 +1,13 @@
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:product_manager/models/product.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 
 final _storageRef = FirebaseStorage.instance.ref();
 final _firestore = FirebaseFirestore.instance;
+final _auth = FirebaseAuth.instance;
 const _productsCollection = 'Products';
 
 class FirebaseService {
@@ -15,7 +17,9 @@ class FirebaseService {
       );
 
   static Stream<QuerySnapshot<Product>> getStreamSnapshotProducts() {
-    return dbRef.orderBy("Produto", descending: false).snapshots();
+    return dbRef
+      .where("ownerId", isEqualTo: getUserUID())
+      .snapshots();
   }
 
   static Stream<QuerySnapshot<Product>> getFilteredStreamSnapshot(
@@ -27,6 +31,7 @@ class FirebaseService {
     }
 
     return dbRef
+        // .where("ownerId", isEqualTo: getUserUID())
         .where(productField, isGreaterThanOrEqualTo: product)
         .where(productField, isLessThanOrEqualTo: "$product\uf7ff")
         .snapshots();
@@ -77,5 +82,32 @@ class FirebaseService {
       print("Error while removing the image");
       print(e);
     }
+  }
+
+  static Future<bool> signIn(String email, String password) async {
+    await _auth.signInWithEmailAndPassword(email: email, password: password);
+
+    return _auth.currentUser != null;
+  }
+
+  static Future checkUser() async {
+    _auth.authStateChanges().listen((User? user) {
+      if (user == null) {
+        print('User is signed out!');
+      } else {
+        print('User is signed in!');
+      }
+    });
+  }
+
+  static String getUserUID() {
+    return (_auth.currentUser != null) ? _auth.currentUser!.uid : "";
+  }
+
+  static var user = _auth.currentUser;
+  static var auth = _auth;
+
+  static Future getCurrentUser() async {
+    final user = _auth.currentUser;
   }
 }

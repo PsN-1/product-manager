@@ -44,6 +44,7 @@ class _ProductsStreamState extends State<ProductsStream> {
           onSearchPressed: updateSearch,
         ));
         for (var productData in products!) {
+          // if (productData.data().ownerId == FirebaseService.getUserUID()) {}
           productsCards.add(
             ProductCard(
               product: productData.data(),

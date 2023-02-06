@@ -6,6 +6,7 @@ class Product {
   String? description;
   final String? box;
   final String? code;
+  final String? ownerId;
   String? price;
   String? image;
   String? quantity;
@@ -16,6 +17,7 @@ class Product {
     this.description,
     this.box,
     this.code,
+    this.ownerId,
     this.price,
     this.image,
     this.quantity,
@@ -32,6 +34,7 @@ class Product {
       description: data?['Descricao'],
       box: data?['Caixa'],
       code: data?['Codigo'],
+      ownerId: data?['ownerId'],
       image: data?['Foto'],
       price: data?['Preco'],
       quantity: data?['Quantidade'],
@@ -46,6 +49,7 @@ class Product {
       if (description != null) "Descricao": description,
       if (box != null) "Caixa": box,
       if (code != null) "Codigo": code,
+      if (ownerId != null) "ownerId": ownerId,
       if (image != null) "Foto": image,
       if (price != null) "Preco": price,
       if (quantity != null) "Quantidade": quantity,

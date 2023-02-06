@@ -23,11 +23,11 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: LoginPage(),
+      initialRoute: (FirebaseService.user != null) ? HomePage.id : LoginPage.id,
+      routes: {
+      LoginPage.id: (context) => const LoginPage(),
+      HomePage.id: (context) => const HomePage(),
+    },
     );
   }
 }

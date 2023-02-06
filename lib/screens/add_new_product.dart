@@ -4,6 +4,7 @@ import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:product_manager/constants.dart';
 import 'package:product_manager/models/product.dart';
 import 'package:product_manager/screens/list_of_products.dart';
+import 'package:product_manager/services/firebase.dart';
 import 'package:product_manager/widgets/pickable_async_image.dart';
 
 class AddNewProduct extends StatefulWidget {
@@ -51,12 +52,12 @@ class _AddNewProductState extends State<AddNewProduct> {
     void createNewProduct() async {
       _isLoading = true;
       Product product = Product(
-        product: _productController.text,
-        description: _descriptionController.text,
-        box: _boxController.text,
-        quantity: _quantityController.text,
-        price: _priceController.text,
-      );
+          product: _productController.text,
+          description: _descriptionController.text,
+          box: _boxController.text,
+          quantity: _quantityController.text,
+          price: _priceController.text,
+          ownerId: FirebaseService.getUserUID());
 
       if (imagePath != null) {
         await product.saveNewImage(imagePath!);
