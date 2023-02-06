@@ -5,6 +5,11 @@ const kHistoryStyle = TextStyle(fontSize: 18, color: Colors.black);
 const kLabelStyle =
     TextStyle(fontWeight: FontWeight.w600, fontSize: 16, color: Colors.black54);
 
+const kDeleteButtonStyle = ButtonStyle(
+  backgroundColor: MaterialStatePropertyAll(Colors.red),
+  foregroundColor: MaterialStatePropertyAll(Colors.white),
+);
+
 const kTextFieldInputDecoration = InputDecoration(
   fillColor: Colors.white,
   hintText: 'Palavra-Chave...',

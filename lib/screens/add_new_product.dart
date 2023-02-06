@@ -71,6 +71,7 @@ class _AddNewProductState extends State<AddNewProduct> {
       appBar: AppBar(title: const Text("Adicionar Novo Produto")),
       body: ModalProgressHUD(
         inAsyncCall: _isLoading,
+        color: Colors.black,
         child: Container(
           padding: const EdgeInsets.all(20),
           child: ListView(

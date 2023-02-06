@@ -20,8 +20,7 @@ class FirebaseService {
 
   static Stream<QuerySnapshot<Product>> getFilteredStreamSnapshot(
       String product, String field) {
-
-    final productField = (field == "Descrição") ? "Descricao" : field; 
+    final productField = (field == "Descrição") ? "Descricao" : field;
 
     if (productField == "Caixa") {
       return dbRef.where(productField, isEqualTo: product).snapshots();
@@ -35,6 +34,10 @@ class FirebaseService {
 
   static Future createProduct(Product product) async {
     await dbRef.add(product);
+  }
+
+  static Future deleteProduct(String id) async {
+    await dbRef.doc(id).delete();
   }
 
   static Future updateProduct(String id, Product product) async {

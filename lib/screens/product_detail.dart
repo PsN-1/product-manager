@@ -2,13 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:product_manager/constants.dart';
 import 'package:product_manager/models/product.dart';
+import 'package:product_manager/utils/alert_dialog.dart';
 import 'package:product_manager/widgets/pickable_async_image.dart';
 
 class ProductDetail extends StatefulWidget {
   final Product product;
   final Future Function(Product) onSave;
+  final Future Function() onDelete;
 
-  const ProductDetail({super.key, required this.product, required this.onSave});
+  const ProductDetail(
+      {super.key,
+      required this.product,
+      required this.onSave,
+      required this.onDelete});
 
   @override
   State<ProductDetail> createState() => _ProductDetailState();
@@ -73,6 +79,13 @@ class _ProductDetailState extends State<ProductDetail> {
     _dismiss();
   }
 
+  void _deleteProduct() async {
+    _isLoading = true;
+    await widget.onDelete();
+    _isLoading = false;
+    _dismiss();
+  }
+
   void didChangeImage(String imagePath) {
     newImagePath = imagePath;
   }
@@ -110,8 +123,14 @@ class _ProductDetailState extends State<ProductDetail> {
               const Text("Caixa ", style: kLabelStyle),
               Text(widget.product.box ?? "", style: kTextStyle),
               const SizedBox(height: 20),
-              const Text("Preço", style: kLabelStyle,),
-              TextField(controller: priceController, style: kTextStyle,),
+              const Text(
+                "Preço",
+                style: kLabelStyle,
+              ),
+              TextField(
+                controller: priceController,
+                style: kTextStyle,
+              ),
               const SizedBox(height: 20),
               Row(
                 children: [
@@ -158,10 +177,21 @@ class _ProductDetailState extends State<ProductDetail> {
                 children: [
                   OutlinedButton(
                       onPressed: _dismiss, child: const Text("Cancel")),
+                  if (widget.product.quantity == "0")
+                    OutlinedButton(
+                      onPressed: () {
+                        CustomAlert.show(context,
+                            title: "Atenção!!!",
+                            message: "Deseja mesmo apagar o produto?",
+                            okPressed: _deleteProduct);
+                      },
+                      style: kDeleteButtonStyle,
+                      child: const Text("Apagar"),
+                    ),
                   OutlinedButton(
                       onPressed: _updateProduct, child: const Text("Salvar")),
                 ],
-              )
+              ),
             ],
           ),
         ),
@@ -169,3 +199,4 @@ class _ProductDetailState extends State<ProductDetail> {
     );
   }
 }
+

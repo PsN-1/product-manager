@@ -88,6 +88,10 @@ class Product {
     image = newImageUrl;
   }
 
+  static Future delete(String id) async {
+    await FirebaseService.deleteProduct(id);
+  }
+
   static Future createNewInstance(Product product) async {
     await FirebaseService.createProduct(product);
   }
