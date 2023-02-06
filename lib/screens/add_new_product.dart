@@ -24,6 +24,8 @@ class _AddNewProductState extends State<AddNewProduct> {
 
   final _quantityController = TextEditingController();
 
+  final _priceController = TextEditingController();
+
   String? imagePath;
 
   void _didSelectedImage(String path) {
@@ -53,6 +55,7 @@ class _AddNewProductState extends State<AddNewProduct> {
         description: _descriptionController.text,
         box: _boxController.text,
         quantity: _quantityController.text,
+        price: _priceController.text,
       );
 
       if (imagePath != null) {
@@ -117,12 +120,23 @@ class _AddNewProductState extends State<AddNewProduct> {
                 keyboardType: TextInputType.number,
                 inputFormatters: [FilteringTextInputFormatter.digitsOnly],
               ),
+              const SizedBox(height: 20),
+              Text(
+                'Preço',
+                style: kLabelStyle,
+              ),
+              TextField(
+                controller: _priceController,
+                style: kTextStyle,
+              ),
               const SizedBox(height: 40),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  OutlinedButton(onPressed: dismiss, child: const Text("Cancel")),
-                  OutlinedButton(onPressed: createNewProduct, child: const Text("Salvar")),
+                  OutlinedButton(
+                      onPressed: dismiss, child: const Text("Cancel")),
+                  OutlinedButton(
+                      onPressed: createNewProduct, child: const Text("Salvar")),
                 ],
               )
             ],

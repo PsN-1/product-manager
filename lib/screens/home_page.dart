@@ -15,24 +15,12 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  List<Widget> products = [];
-
-  String searchText = "";
-
-  void onSearchChange(String text) {
-    setState(() {
-      searchText = text;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: SearchBarWidget(
-        onChanged: onSearchChange,
-      ),
-      body: SafeArea(
-        child: ProductsStream(searchText: searchText),
+      appBar: AppBar(title: const Text("Controle de Estoque")),
+      body: const SafeArea(
+        child: ProductsStream(),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
@@ -48,19 +36,28 @@ class _HomePageState extends State<HomePage> {
 }
 
 class ProductsStream extends StatefulWidget {
-  String searchText;
-  ProductsStream({super.key, required this.searchText});
+  const ProductsStream({super.key});
 
   @override
   State<ProductsStream> createState() => _ProductsStreamState();
 }
 
 class _ProductsStreamState extends State<ProductsStream> {
+  String searchText = "";
+  String searchField = "";
+
+  void updateSearch(String newSearchText, String newSearchField) {
+    setState(() {
+      searchText = newSearchText;
+      searchField = newSearchField;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<QuerySnapshot<Product>>(
-      stream: (widget.searchText.isNotEmpty)
-          ? FirebaseService.getFilteredStreamSnapshot(widget.searchText)
+      stream: (searchText.isNotEmpty)
+          ? FirebaseService.getFilteredStreamSnapshot(searchText, searchField)
           : FirebaseService.getStreamSnapshotProducts(),
       builder: (context, snapshot) {
         if (!snapshot.hasData) {
@@ -71,7 +68,10 @@ class _ProductsStreamState extends State<ProductsStream> {
           );
         }
         final products = snapshot.data?.docs;
-        List<ProductCard> productsCards = [];
+        List<Widget> productsCards = [];
+        productsCards.add(SearchCard(
+          onSearchPressed: updateSearch,
+        ));
         for (var productData in products!) {
           productsCards.add(
             ProductCard(
@@ -99,53 +99,70 @@ class _ProductsStreamState extends State<ProductsStream> {
   }
 }
 
-class SearchBarWidget extends StatefulWidget implements PreferredSizeWidget {
-  const SearchBarWidget({super.key, required this.onChanged});
+class SearchCard extends StatefulWidget {
+  const SearchCard({super.key, required this.onSearchPressed});
 
-  final void Function(String) onChanged;
-  @override
-  _SearchBarWidgetState createState() => _SearchBarWidgetState();
+  final void Function(String, String) onSearchPressed;
 
   @override
-  Size get preferredSize => const Size.fromHeight(100);
+  _SearchCardState createState() => _SearchCardState();
 }
 
-class _SearchBarWidgetState extends State<SearchBarWidget> {
-  Icon _customIcon = const Icon(Icons.search);
-  Widget customSearchBar = const Text("Controle de Estoque");
-
-  final _searchController = TextEditingController();
-
-  void showSearchBar() {
-    setState(() {
-      if (_customIcon.icon == Icons.search) {
-        _customIcon = const Icon(Icons.cancel);
-        customSearchBar = ListTile(
-          title: TextField(
-            onEditingComplete: () {
-              widget.onChanged(_searchController.text);
-            },
-            controller: _searchController,
-            decoration: kTextFieldInputDecoration,
-            style: const TextStyle(
-              color: Colors.black,
-            ),
-          ),
-        );
-      } else {
-        _customIcon = const Icon(Icons.search);
-        customSearchBar = const Text("Controle de Estoque");
-        _searchController.text = "";
-        widget.onChanged("");
-      }
-    });
-  }
+class _SearchCardState extends State<SearchCard> {
+  final searchController = TextEditingController();
+  String selectedValue = SearchFields.values.first.value;
 
   @override
   Widget build(BuildContext context) {
-    return AppBar(
-      title: customSearchBar,
-      actions: [IconButton(onPressed: showSearchBar, icon: _customIcon)],
+    return Container(
+      decoration: BoxDecoration(
+        border: Border.all(color: Colors.grey),
+        borderRadius: const BorderRadius.all(Radius.circular(10.0)),
+      ),
+      margin: const EdgeInsets.all(15.0),
+      padding: const EdgeInsets.all(3.0),
+      child: Container(
+        padding: const EdgeInsets.only(left: 20, right: 20, bottom: 5, top: 20),
+        child: Column(children: [
+          TextField(
+            controller: searchController,
+            decoration: kTextFieldInputDecoration,
+          ),
+          // IconButton(onPressed: () {}, icon: const Icon(Icons.search)),
+          const SizedBox(height: 20),
+          DropdownButton(
+            isExpanded: true,
+            value: selectedValue,
+            onChanged: (newValue) {
+              setState(() {
+                selectedValue = newValue ?? "";
+              });
+            },
+            items: SearchFields.values
+                .map((field) => DropdownMenuItem(
+                    value: field.value, child: Text(field.value)))
+                .toList(),
+          ),
+          const SizedBox(
+            height: 10,
+          ),
+          OutlinedButton.icon(
+            label: Text('Procurar'),
+            icon: Icon(Icons.search),
+              onPressed: () {
+                widget.onSearchPressed(searchController.text, selectedValue);
+              },)
+        ]),
+      ),
     );
   }
+}
+
+enum SearchFields {
+  product('Produto'),
+  description('Descrição'),
+  box('Caixa');
+
+  const SearchFields(this.value);
+  final String value;
 }

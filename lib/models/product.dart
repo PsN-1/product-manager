@@ -6,6 +6,7 @@ class Product {
   String? description;
   final String? box;
   final String? code;
+  String? price;
   String? image;
   String? quantity;
   List<String?>? history;
@@ -15,6 +16,7 @@ class Product {
     this.description,
     this.box,
     this.code,
+    this.price,
     this.image,
     this.quantity,
     this.history,
@@ -31,6 +33,7 @@ class Product {
       box: data?['Caixa'],
       code: data?['Codigo'],
       image: data?['Foto'],
+      price: data?['Preco'],
       quantity: data?['Quantidade'],
       history:
           data?['Historico'] is Iterable ? List.from(data?['Historico']) : null,
@@ -44,6 +47,7 @@ class Product {
       if (box != null) "Caixa": box,
       if (code != null) "Codigo": code,
       if (image != null) "Foto": image,
+      if (price != null) "Preco": price,
       if (quantity != null) "Quantidade": quantity,
       if (history != null) "Historico": history,
     };

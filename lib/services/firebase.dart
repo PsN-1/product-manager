@@ -19,8 +19,13 @@ class FirebaseService {
   }
 
   static Stream<QuerySnapshot<Product>> getFilteredStreamSnapshot(
-      String product) {
-    const productField = 'Produto';
+      String product, String field) {
+
+    final productField = (field == "Descrição") ? "Descricao" : field; 
+
+    if (productField == "Caixa") {
+      return dbRef.where(productField, isEqualTo: product).snapshots();
+    }
 
     return dbRef
         .where(productField, isGreaterThanOrEqualTo: product)

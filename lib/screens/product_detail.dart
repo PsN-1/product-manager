@@ -16,6 +16,8 @@ class ProductDetail extends StatefulWidget {
 
 class _ProductDetailState extends State<ProductDetail> {
   var descriptionTextController = TextEditingController();
+  var priceController = TextEditingController();
+
   late String oldQuantity;
   bool _isLoading = false;
   String? newImagePath;
@@ -25,6 +27,7 @@ class _ProductDetailState extends State<ProductDetail> {
     super.initState();
 
     descriptionTextController.text = widget.product.description ?? "";
+    priceController.text = widget.product.price ?? "";
     oldQuantity = widget.product.quantity ?? "";
   }
 
@@ -59,6 +62,7 @@ class _ProductDetailState extends State<ProductDetail> {
       }
     });
     widget.product.description = descriptionTextController.text;
+    widget.product.price = priceController.text;
 
     if (newImagePath != null) {
       await widget.product.saveNewImage(newImagePath!);
@@ -103,8 +107,11 @@ class _ProductDetailState extends State<ProductDetail> {
               ),
 
               const SizedBox(height: 20),
-              const Text("Caixa: ", style: kLabelStyle),
+              const Text("Caixa ", style: kLabelStyle),
               Text(widget.product.box ?? "", style: kTextStyle),
+              const SizedBox(height: 20),
+              const Text("Preço", style: kLabelStyle,),
+              TextField(controller: priceController, style: kTextStyle,),
               const SizedBox(height: 20),
               Row(
                 children: [
