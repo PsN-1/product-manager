@@ -26,7 +26,9 @@ class FirebaseService {
           );
 
   static Stream<QuerySnapshot<RawProduct>> getStreamSnapshotProductsList() {
-    return listOfProductsRef.snapshots();
+    return listOfProductsRef
+        .where("ownerId", isEqualTo: getUserUID())
+        .snapshots();
   }
 
   static Stream<QuerySnapshot<Product>> getStreamSnapshotProducts() {
@@ -85,9 +87,14 @@ class FirebaseService {
   }
 
   static Future<bool> signIn(String email, String password) async {
+    try {
+          
     await _auth.signInWithEmailAndPassword(email: email, password: password);
-
     return _auth.currentUser != null;
+        } catch (e) {
+         return false; 
+        }
+
   }
 
   static Future signUp(String email, String password) async {
