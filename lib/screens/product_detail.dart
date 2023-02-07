@@ -33,8 +33,7 @@ class _ProductDetailState extends State<ProductDetail> {
     super.initState();
 
     descriptionTextController.text = widget.product.description ?? "";
-    priceController.text =
-        widget.product.ownerId ?? ""; // widget.product.price ?? "";
+    priceController.text = widget.product.price ?? "";
     oldQuantity = widget.product.quantity ?? "";
   }
 

@@ -27,10 +27,16 @@ class _ProductsStreamState extends State<ProductsStream> {
   bool _isFilteredProduct(Product product) {
     if (searchText.isNotEmpty) {
       if (searchField == "Produto") {
-        return product.product?.contains(searchText) ?? false;
+        return product.product
+                ?.toLowerCase()
+                .contains(searchText.toLowerCase()) ??
+            false;
       }
       if (searchField == "Descrição") {
-        return product.description?.contains(searchText) ?? false;
+        return product.description
+                ?.toLowerCase()
+                .contains(searchText.toLowerCase()) ??
+            false;
       }
       if (searchField == "Caixa") {
         return product.box == searchText;

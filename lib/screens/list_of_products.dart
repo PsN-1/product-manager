@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:product_manager/constants.dart';
@@ -13,6 +14,7 @@ class ListOfProducts extends StatefulWidget {
 
 class _ListOfProductsState extends State<ListOfProducts> {
   List<String> products = [];
+  String _searchText = "";
 
   @override
   void initState() {
@@ -26,39 +28,59 @@ class _ListOfProductsState extends State<ListOfProducts> {
     setState(() {});
   }
 
+  void _handleSearch(String text) {
+    setState(() {
+      _searchText = text;
+        });
+  }
+
   Future<List<String>> _loadAsset() async {
     final products = await rootBundle.loadString('assets/products.txt');
 
     return products.split('\n').toList();
   }
 
+  bool _isFilteredProduct(String product) {
+    if (_searchText.isNotEmpty) {
+      return product.toLowerCase().contains(_searchText.toLowerCase());
+    }
+
+    return true;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: const Text('Products'),
-        ),
-        body: ListView.builder(
-          itemCount: products.length + 1,
-          itemBuilder: (context, index) {
-            if (index == 0) {
-              return ProductSearchCard();
-            }
+      appBar: AppBar(
+        title: const Text('Products'),
+      ),
+      body: ListView.builder(
+        itemCount: products.length + 1,
+        itemBuilder: (context, index) {
+          if (index == 0) {
+            return ProductSearchCard(onSearchTapped: _handleSearch);
+          }
+
+          if (_isFilteredProduct(products[index - 1])) {
             return TextButton(
                 onPressed: () {
                   widget.onSelected(products[index - 1]);
                   Navigator.pop(context);
                 },
                 child: Text(products[index - 1]));
-          },
-        ));
+          }
+          return const SizedBox.shrink();
+        },
+      ),
+    );
   }
 }
 
 class ProductSearchCard extends StatelessWidget {
   final _searchController = TextEditingController();
+  final void Function(String) onSearchTapped;
 
-  ProductSearchCard({super.key});
+  ProductSearchCard({super.key, required this.onSearchTapped});
 
   @override
   Widget build(BuildContext context) {
@@ -78,12 +100,14 @@ class ProductSearchCard extends StatelessWidget {
                 style: kLabelStyle,
               ),
               TextField(
-              controller: _searchController,
+                controller: _searchController,
                 decoration: kTextFieldInputDecoration,
               ),
               const SizedBox(height: 10),
               OutlinedButton.icon(
-                  onPressed: () {},
+                  onPressed: () {
+                    onSearchTapped(_searchController.text);
+                  },
                   icon: const Icon(Icons.search),
                   label: const Text("Procurar"))
             ],
