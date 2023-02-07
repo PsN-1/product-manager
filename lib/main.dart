@@ -3,6 +3,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:product_manager/models/product.dart';
 import 'package:product_manager/screens/home_page.dart';
 import 'package:product_manager/screens/login.dart';
+import 'package:product_manager/screens/signup.dart';
 import 'package:product_manager/services/firebase.dart';
 import 'firebase_options.dart';
 
@@ -14,6 +15,7 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
   // await updateProducts();
+  // await updateOnwer();
   runApp(const MyApp());
 }
 
@@ -28,10 +30,26 @@ class MyApp extends StatelessWidget {
           : LoginPage.id,
       routes: {
         LoginPage.id: (context) => const LoginPage(),
+        SignupPage.id: (context) => SignupPage(),
         HomePage.id: (context) => const HomePage(),
       },
     );
   }
+}
+
+Future updateOnwer() async {
+  var dbRef = FirebaseService.dbRef;
+
+  var products = await dbRef.get();
+  for (var product in products.docs) {
+  if (product.data().ownerId == null ) {
+  //   final newProduct = product.data();
+  //   newProduct.ownerId = "oGTtnKtEG5eyoqTX1YVZo39pM7f2";
+  //   await FirebaseService.updateProduct(product.id, newProduct);
+  //   print("${product.id} updated");
+  }
+}
+  // print('FinishUpdate');
 }
 
 Future updateProducts() async {

@@ -73,6 +73,11 @@ class FirebaseService {
     return _auth.currentUser != null;
   }
 
+  static Future signUp(String email, String password) async {
+    await _auth.createUserWithEmailAndPassword(
+        email: email, password: password);
+  }
+
   static Future checkUser() async {
     _auth.authStateChanges().listen((User? user) {
       if (user == null) {

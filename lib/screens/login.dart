@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
+import 'package:product_manager/constants.dart';
 import 'package:product_manager/screens/home_page.dart';
+import 'package:product_manager/screens/signup.dart';
 import 'package:product_manager/services/firebase.dart';
 
 class LoginPage extends StatefulWidget {
@@ -17,7 +19,16 @@ class _LoginPageState extends State<LoginPage> {
   bool _isLoading = false;
   bool isLoggedIn = false;
 
-  void _handleSignup() async {}
+  @override
+    void initState() {
+      super.initState();
+
+    _goToHomePage();
+    }
+
+  void _handleSignup() async {
+    Navigator.pushNamed(context, SignupPage.id);
+  }
 
   void _handleLogin() async {
     _isLoading = true;
@@ -57,7 +68,9 @@ class _LoginPageState extends State<LoginPage> {
                   fontSize: 26,
                 ),
               ),
-              const SizedBox(height: 100),
+              const SizedBox(height: 30),
+            Text("Login", style: kLabelStyle.copyWith(fontSize: 22),),
+              const SizedBox(height: 50),
               const Text("E-mail"),
               TextField(
                 controller: _emailTextController,
