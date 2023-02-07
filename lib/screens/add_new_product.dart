@@ -49,8 +49,14 @@ class _AddNewProductState extends State<AddNewProduct> {
       }));
     }
 
+    void setLoading(bool loading) {
+      setState(() {
+        _isLoading = loading;
+      });
+    }
+
     void createNewProduct() async {
-      _isLoading = true;
+      setLoading(true);
       Product product = Product(
           product: _productController.text,
           description: _descriptionController.text,
@@ -64,7 +70,7 @@ class _AddNewProductState extends State<AddNewProduct> {
       }
 
       await Product.createNewInstance(product);
-      _isLoading = false;
+      setLoading(false);
       dismiss();
     }
 

@@ -58,7 +58,7 @@ class _ProductDetailState extends State<ProductDetail> {
   }
 
   void _updateProduct() async {
-    _isLoading = true;
+    setLoading(true);
 
     setState(() {
       if (isNewQuantity) {
@@ -75,19 +75,25 @@ class _ProductDetailState extends State<ProductDetail> {
     }
 
     await widget.onSave(widget.product);
-    _isLoading = false;
+    setLoading(false);
     _dismiss();
   }
 
   void _deleteProduct() async {
-    _isLoading = true;
+    setLoading(true);
     await widget.onDelete();
-    _isLoading = false;
+    setLoading(false);
     _dismiss();
   }
 
   void didChangeImage(String imagePath) {
     newImagePath = imagePath;
+  }
+
+  void setLoading(bool loading) {
+    setState(() {
+      _isLoading = loading;
+    });
   }
 
   @override

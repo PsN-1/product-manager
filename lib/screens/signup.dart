@@ -3,13 +3,20 @@ import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:product_manager/constants.dart';
 import 'package:product_manager/services/firebase.dart';
 
-class SignupPage extends StatelessWidget {
+class SignupPage extends StatefulWidget {
   static String id = "signup";
 
   SignupPage({super.key});
 
+  @override
+  State<SignupPage> createState() => _SignupPageState();
+}
+
+class _SignupPageState extends State<SignupPage> {
   final _emailController = TextEditingController();
+
   final _passwordController = TextEditingController();
+
   bool _isLoading = false;
 
   @override
@@ -18,10 +25,17 @@ class SignupPage extends StatelessWidget {
       Navigator.pop(context);
     }
 
+    void setLoading(bool loading) {
+      setState(() {
+        _isLoading = loading;
+      });
+    }
+
     void handleSignup() async {
-      _isLoading = true;
-    await  FirebaseService.signUp(_emailController.text, _passwordController.text );
-      _isLoading = false;
+      setLoading(true);
+      await FirebaseService.signUp(
+          _emailController.text, _passwordController.text);
+      setLoading(false);
       dismiss();
     }
 
@@ -67,7 +81,8 @@ class SignupPage extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  OutlinedButton(onPressed: dismiss, child: const Text("Voltar")),
+                  OutlinedButton(
+                      onPressed: dismiss, child: const Text("Voltar")),
                   OutlinedButton(
                       onPressed: handleSignup, child: const Text('Cadastrar')),
                 ],

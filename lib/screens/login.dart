@@ -20,25 +20,30 @@ class _LoginPageState extends State<LoginPage> {
   bool isLoggedIn = false;
 
   @override
-    void initState() {
-      super.initState();
+  void initState() {
+    super.initState();
 
     _goToHomePage();
-    }
+  }
 
   void _handleSignup() async {
     Navigator.pushNamed(context, SignupPage.id);
   }
 
+  void _setLoading(bool loading) {
+    setState(() {
+      _isLoading = loading;
+    });
+  }
+
   void _handleLogin() async {
-    _isLoading = true;
+    _setLoading(true);
     isLoggedIn = await FirebaseService.signIn(
       _emailTextController.text.trim(),
       _passwordTextController.text.trim(),
     );
 
-    _isLoading = false;
-
+    _setLoading(false);
     _goToHomePage();
   }
 
@@ -69,7 +74,10 @@ class _LoginPageState extends State<LoginPage> {
                 ),
               ),
               const SizedBox(height: 30),
-            Text("Login", style: kLabelStyle.copyWith(fontSize: 22),),
+              Text(
+                "Login",
+                style: kLabelStyle.copyWith(fontSize: 22),
+              ),
               const SizedBox(height: 50),
               const Text("E-mail"),
               TextField(
