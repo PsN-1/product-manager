@@ -17,24 +17,7 @@ class FirebaseService {
       );
 
   static Stream<QuerySnapshot<Product>> getStreamSnapshotProducts() {
-    return dbRef
-      .where("ownerId", isEqualTo: getUserUID())
-      .snapshots();
-  }
-
-  static Stream<QuerySnapshot<Product>> getFilteredStreamSnapshot(
-      String product, String field) {
-    final productField = (field == "Descrição") ? "Descricao" : field;
-
-    if (productField == "Caixa") {
-      return dbRef.where(productField, isEqualTo: product).snapshots();
-    }
-
-    return dbRef
-        // .where("ownerId", isEqualTo: getUserUID())
-        .where(productField, isGreaterThanOrEqualTo: product)
-        .where(productField, isLessThanOrEqualTo: "$product\uf7ff")
-        .snapshots();
+    return dbRef.where("ownerId", isEqualTo: getUserUID()).snapshots();
   }
 
   static Future createProduct(Product product) async {
@@ -104,10 +87,11 @@ class FirebaseService {
     return (_auth.currentUser != null) ? _auth.currentUser!.uid : "";
   }
 
-  static var user = _auth.currentUser;
-  static var auth = _auth;
+  static Future signOut() async {
+    await _auth.signOut();
+  }
 
-  static Future getCurrentUser() async {
-    final user = _auth.currentUser;
+  static User? getCurrentUser() {
+    return _auth.currentUser;
   }
 }

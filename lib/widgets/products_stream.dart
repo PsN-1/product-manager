@@ -17,19 +17,34 @@ class _ProductsStreamState extends State<ProductsStream> {
   String searchText = "";
   String searchField = "";
 
-  void updateSearch(String newSearchText, String newSearchField) {
+  void _updateSearch(String newSearchText, String newSearchField) {
     setState(() {
       searchText = newSearchText;
       searchField = newSearchField;
     });
   }
 
+  bool _isFilteredProduct(Product product) {
+    if (searchText.isNotEmpty) {
+      if (searchField == "Produto") {
+        return product.product?.contains(searchText) ?? false;
+      }
+      if (searchField == "Descrição") {
+        return product.description?.contains(searchText) ?? false;
+      }
+      if (searchField == "Caixa") {
+        return product.box == searchText;
+      }
+      return false;
+    }
+
+    return true;
+  }
+
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<QuerySnapshot<Product>>(
-      stream: (searchText.isNotEmpty)
-          ? FirebaseService.getFilteredStreamSnapshot(searchText, searchField)
-          : FirebaseService.getStreamSnapshotProducts(),
+      stream: FirebaseService.getStreamSnapshotProducts(),
       builder: (context, snapshot) {
         if (!snapshot.hasData) {
           return const Center(
@@ -41,29 +56,30 @@ class _ProductsStreamState extends State<ProductsStream> {
         final products = snapshot.data?.docs;
         List<Widget> productsCards = [];
         productsCards.add(SearchCard(
-          onSearchPressed: updateSearch,
+          onSearchPressed: _updateSearch,
         ));
         for (var productData in products!) {
-          // if (productData.data().ownerId == FirebaseService.getUserUID()) {}
-          productsCards.add(
-            ProductCard(
-              product: productData.data(),
-              onTap: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) {
-                  return ProductDetail(
-                    product: productData.data(),
-                    onDelete: () async {
-                      await FirebaseService.deleteProduct(productData.id);
-                    },
-                    onSave: (newProduct) async {
-                      await FirebaseService.updateProduct(
-                          productData.id, newProduct);
-                    },
-                  );
-                }));
-              },
-            ),
-          );
+          if (_isFilteredProduct(productData.data())) {
+            productsCards.add(
+              ProductCard(
+                product: productData.data(),
+                onTap: () {
+                  Navigator.push(context, MaterialPageRoute(builder: (context) {
+                    return ProductDetail(
+                      product: productData.data(),
+                      onDelete: () async {
+                        await FirebaseService.deleteProduct(productData.id);
+                      },
+                      onSave: (newProduct) async {
+                        await FirebaseService.updateProduct(
+                            productData.id, newProduct);
+                      },
+                    );
+                  }));
+                },
+              ),
+            );
+          }
         }
 
         return ListView(

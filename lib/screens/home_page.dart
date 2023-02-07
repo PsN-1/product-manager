@@ -20,9 +20,9 @@ class _HomePageState extends State<HomePage> {
         title: const Text("Controle de Estoque"),
         actions: [
           IconButton(
-              onPressed: () {
+              onPressed: () async {
+                await FirebaseService.signOut();
                 setState(() {
-                  FirebaseService.auth.signOut();
                   Navigator.popAndPushNamed(context, LoginPage.id);
                 });
               },

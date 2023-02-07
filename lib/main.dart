@@ -23,11 +23,13 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      initialRoute: (FirebaseService.user != null) ? HomePage.id : LoginPage.id,
+      initialRoute: (FirebaseService.getCurrentUser() != null)
+          ? HomePage.id
+          : LoginPage.id,
       routes: {
-      LoginPage.id: (context) => const LoginPage(),
-      HomePage.id: (context) => const HomePage(),
-    },
+        LoginPage.id: (context) => const LoginPage(),
+        HomePage.id: (context) => const HomePage(),
+      },
     );
   }
 }
