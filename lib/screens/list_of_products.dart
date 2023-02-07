@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:product_manager/constants.dart';
 
 class ListOfProducts extends StatefulWidget {
   final void Function(String) onSelected;
@@ -11,7 +12,7 @@ class ListOfProducts extends StatefulWidget {
 }
 
 class _ListOfProductsState extends State<ListOfProducts> {
-  List<Widget> products = [];
+  List<String> products = [];
 
   @override
   void initState() {
@@ -25,18 +26,10 @@ class _ListOfProductsState extends State<ListOfProducts> {
     setState(() {});
   }
 
-  Future<List<Widget>> _loadAsset() async {
+  Future<List<String>> _loadAsset() async {
     final products = await rootBundle.loadString('assets/products.txt');
-    return products
-        .split('\n')
-        .map((String text) => TextButton(
-              onPressed: () {
-                widget.onSelected(text);
-                Navigator.pop(context);
-              },
-              child: Text(text),
-            ))
-        .toList();
+
+    return products.split('\n').toList();
   }
 
   @override
@@ -45,8 +38,56 @@ class _ListOfProductsState extends State<ListOfProducts> {
         appBar: AppBar(
           title: const Text('Products'),
         ),
-        body: ListView(
-          children: products,
+        body: ListView.builder(
+          itemCount: products.length + 1,
+          itemBuilder: (context, index) {
+            if (index == 0) {
+              return ProductSearchCard();
+            }
+            return TextButton(
+                onPressed: () {
+                  widget.onSelected(products[index - 1]);
+                  Navigator.pop(context);
+                },
+                child: Text(products[index - 1]));
+          },
         ));
+  }
+}
+
+class ProductSearchCard extends StatelessWidget {
+  final _searchController = TextEditingController();
+
+  ProductSearchCard({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+          border: Border.all(color: Colors.grey),
+          borderRadius: const BorderRadius.all(Radius.circular(10))),
+      padding: const EdgeInsets.all(3),
+      margin: const EdgeInsets.all(15),
+      child: Container(
+          padding:
+              const EdgeInsets.only(left: 20, right: 20, bottom: 5, top: 5),
+          child: Column(
+            children: [
+              const Text(
+                'Busca',
+                style: kLabelStyle,
+              ),
+              TextField(
+              controller: _searchController,
+                decoration: kTextFieldInputDecoration,
+              ),
+              const SizedBox(height: 10),
+              OutlinedButton.icon(
+                  onPressed: () {},
+                  icon: const Icon(Icons.search),
+                  label: const Text("Procurar"))
+            ],
+          )),
+    );
   }
 }
