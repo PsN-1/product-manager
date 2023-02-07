@@ -1,7 +1,10 @@
-import 'package:flutter/foundation.dart';
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:product_manager/constants.dart';
+import 'package:product_manager/widgets/product_search_card.dart';
 
 class ListOfProducts extends StatefulWidget {
   final void Function(String) onSelected;
@@ -15,6 +18,9 @@ class ListOfProducts extends StatefulWidget {
 class _ListOfProductsState extends State<ListOfProducts> {
   List<String> products = [];
   String _searchText = "";
+
+  final savedProducts = SavedProducts();
+  final _addNewProductController = TextEditingController();
 
   @override
   void initState() {
@@ -31,13 +37,13 @@ class _ListOfProductsState extends State<ListOfProducts> {
   void _handleSearch(String text) {
     setState(() {
       _searchText = text;
-        });
+    });
   }
 
   Future<List<String>> _loadAsset() async {
-    final products = await rootBundle.loadString('assets/products.txt');
+    final loadedProducts = await savedProducts.readProducts();
 
-    return products.split('\n').toList();
+    return loadedProducts.split('\n').toList();
   }
 
   bool _isFilteredProduct(String product) {
@@ -48,9 +54,66 @@ class _ListOfProductsState extends State<ListOfProducts> {
     return true;
   }
 
+  Future _saveNewProduct() async {
+
+    await savedProducts.writeToProducts(_addNewProductController.text);
+
+    loadProducts();
+    dismiss();
+  }
+
+  void dismiss() {
+    Navigator.pop(context);
+  }
+
   @override
   Widget build(BuildContext context) {
+    void _addNewProduct() async {
+      _addNewProductController.text = "";
+      showModalBottomSheet(
+          context: context,
+          isScrollControlled: true,
+          builder: (BuildContext context) {
+            return Padding(
+              padding: EdgeInsets.only(
+                  right: 40,
+                  left: 40,
+                  bottom: MediaQuery.of(context).viewInsets.bottom),
+              child: SizedBox(
+                height: 200,
+                child: Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      const Text(
+                        "Adicionar novo Produto: ",
+                        style: kLabelStyle,
+                      ),
+                      TextField(controller: _addNewProductController, ),
+                      const SizedBox(height: 20),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          OutlinedButton(
+                              onPressed: dismiss, child: const Text("Cancelar")),
+                          OutlinedButton(
+                              onPressed: _saveNewProduct, child: const Text("Adicionar")),
+                        ],
+                      )
+                    ],
+                  ),
+                ),
+              ),
+            );
+          });
+    }
+
     return Scaffold(
+      floatingActionButton: FloatingActionButton(
+        onPressed: _addNewProduct,
+        child: const Icon(Icons.add),
+      ),
       appBar: AppBar(
         title: const Text('Products'),
       ),
@@ -76,42 +139,37 @@ class _ListOfProductsState extends State<ListOfProducts> {
   }
 }
 
-class ProductSearchCard extends StatelessWidget {
-  final _searchController = TextEditingController();
-  final void Function(String) onSearchTapped;
+class SavedProducts {
+  Future<String> get _localPath async {
+    final directory = await getApplicationDocumentsDirectory();
 
-  ProductSearchCard({super.key, required this.onSearchTapped});
+    return directory.path;
+  }
 
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-          border: Border.all(color: Colors.grey),
-          borderRadius: const BorderRadius.all(Radius.circular(10))),
-      padding: const EdgeInsets.all(3),
-      margin: const EdgeInsets.all(15),
-      child: Container(
-          padding:
-              const EdgeInsets.only(left: 20, right: 20, bottom: 5, top: 5),
-          child: Column(
-            children: [
-              const Text(
-                'Busca',
-                style: kLabelStyle,
-              ),
-              TextField(
-                controller: _searchController,
-                decoration: kTextFieldInputDecoration,
-              ),
-              const SizedBox(height: 10),
-              OutlinedButton.icon(
-                  onPressed: () {
-                    onSearchTapped(_searchController.text);
-                  },
-                  icon: const Icon(Icons.search),
-                  label: const Text("Procurar"))
-            ],
-          )),
-    );
+  Future<File> get _localFile async {
+    final path = await _localPath;
+    return File('$path/saved_products.txt');
+  }
+
+  Future<File> writeToProducts(String product) async {
+    final file = await _localFile;
+
+    return file.writeAsString(product, mode: FileMode.append);
+  }
+
+  Future<String> readProducts() async {
+    try {
+      final file = await _localFile;
+
+      final contents = await file.readAsString();
+
+      return contents;
+    } catch (e) {
+      return _loadDefaultProducts();
+    }
+  }
+
+  Future<String> _loadDefaultProducts() async {
+    return await rootBundle.loadString('assets/products.txt');
   }
 }
