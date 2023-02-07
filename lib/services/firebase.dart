@@ -4,32 +4,49 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:product_manager/models/product.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:product_manager/models/raw_product.dart';
 
 final _storageRef = FirebaseStorage.instance.ref();
 final _firestore = FirebaseFirestore.instance;
 final _auth = FirebaseAuth.instance;
 const _productsCollection = 'Products';
+const _productsListCollection = 'ProductsList';
 
 class FirebaseService {
-  static var dbRef = _firestore.collection(_productsCollection).withConverter(
-        fromFirestore: Product.fromFirestore,
-        toFirestore: (Product product, _) => product.toFirestore(),
-      );
+  static var productsRef =
+      _firestore.collection(_productsCollection).withConverter(
+            fromFirestore: Product.fromFirestore,
+            toFirestore: (Product product, _) => product.toFirestore(),
+          );
+
+  static var listOfProductsRef =
+      _firestore.collection(_productsListCollection).withConverter(
+            fromFirestore: RawProduct.fromFirestore,
+            toFirestore: (RawProduct rawProduct, _) => rawProduct.toFirestore(),
+          );
+
+  static Stream<QuerySnapshot<RawProduct>> getStreamSnapshotProductsList() {
+    return listOfProductsRef.snapshots();
+  }
 
   static Stream<QuerySnapshot<Product>> getStreamSnapshotProducts() {
-    return dbRef.where("ownerId", isEqualTo: getUserUID()).snapshots();
+    return productsRef.where("ownerId", isEqualTo: getUserUID()).snapshots();
+  }
+
+  static Future createRawProduct(RawProduct product) async {
+    await listOfProductsRef.add(product);
   }
 
   static Future createProduct(Product product) async {
-    await dbRef.add(product);
+    await productsRef.add(product);
   }
 
   static Future deleteProduct(String id) async {
-    await dbRef.doc(id).delete();
+    await productsRef.doc(id).delete();
   }
 
   static Future updateProduct(String id, Product product) async {
-    await dbRef.doc(id).update(product.toFirestore());
+    await productsRef.doc(id).update(product.toFirestore());
   }
 
   static Future<String> getImageUrl(String image) async {

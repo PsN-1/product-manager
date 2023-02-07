@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/services.dart';
 import 'package:product_manager/models/product.dart';
+import 'package:product_manager/models/raw_product.dart';
 import 'package:product_manager/screens/home_page.dart';
 import 'package:product_manager/screens/login.dart';
 import 'package:product_manager/screens/signup.dart';
@@ -16,6 +18,7 @@ void main() async {
   );
   // await updateProducts();
   // await updateOnwer();
+  // await updateProductsList();
   runApp(const MyApp());
 }
 
@@ -37,18 +40,35 @@ class MyApp extends StatelessWidget {
   }
 }
 
+Future updateProductsList() async {
+  var dbref = FirebaseService.listOfProductsRef;
+  final productsData = await _loadDefaultProducts();
+  final products = productsData.split("\n").toList();
+
+  for (var product in products) {
+    const ownerId = "oGTtnKtEG5eyoqTX1YVZo39pM7f2";
+    await dbref.add(RawProduct(name: product, ownerId: ownerId));
+  print("$product uploaded");
+  }
+  print("finish update");
+}
+
+Future<String> _loadDefaultProducts() async {
+  return await rootBundle.loadString('assets/products.txt');
+}
+
 Future updateOnwer() async {
-  var dbRef = FirebaseService.dbRef;
+  var dbRef = FirebaseService.productsRef;
 
   var products = await dbRef.get();
   for (var product in products.docs) {
-  if (product.data().ownerId == null ) {
-  //   final newProduct = product.data();
-  //   newProduct.ownerId = "oGTtnKtEG5eyoqTX1YVZo39pM7f2";
-  //   await FirebaseService.updateProduct(product.id, newProduct);
-  //   print("${product.id} updated");
+    if (product.data().ownerId == null) {
+      //   final newProduct = product.data();
+      //   newProduct.ownerId = "oGTtnKtEG5eyoqTX1YVZo39pM7f2";
+      //   await FirebaseService.updateProduct(product.id, newProduct);
+      //   print("${product.id} updated");
+    }
   }
-}
   // print('FinishUpdate');
 }
 

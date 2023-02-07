@@ -1,9 +1,8 @@
-import 'dart:io';
-
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:product_manager/constants.dart';
+import 'package:product_manager/models/raw_product.dart';
+import 'package:product_manager/services/firebase.dart';
 import 'package:product_manager/widgets/product_search_card.dart';
 
 class ListOfProducts extends StatefulWidget {
@@ -19,31 +18,12 @@ class _ListOfProductsState extends State<ListOfProducts> {
   List<String> products = [];
   String _searchText = "";
 
-  final savedProducts = SavedProducts();
   final _addNewProductController = TextEditingController();
-
-  @override
-  void initState() {
-    super.initState();
-
-    loadProducts();
-  }
-
-  void loadProducts() async {
-    products = await _loadAsset();
-    setState(() {});
-  }
 
   void _handleSearch(String text) {
     setState(() {
       _searchText = text;
     });
-  }
-
-  Future<List<String>> _loadAsset() async {
-    final loadedProducts = await savedProducts.readProducts();
-
-    return loadedProducts.split('\n').toList();
   }
 
   bool _isFilteredProduct(String product) {
@@ -54,11 +34,12 @@ class _ListOfProductsState extends State<ListOfProducts> {
     return true;
   }
 
-  Future _saveNewProduct() async {
-
-    await savedProducts.writeToProducts(_addNewProductController.text);
-
-    loadProducts();
+  void _saveNewProduct() async {
+    final newRawProduct = RawProduct(
+      name: _addNewProductController.text,
+      ownerId: FirebaseService.getUserUID(),
+    );
+    await RawProduct.createNewInstance(newRawProduct);
     dismiss();
   }
 
@@ -68,108 +49,88 @@ class _ListOfProductsState extends State<ListOfProducts> {
 
   @override
   Widget build(BuildContext context) {
-    void _addNewProduct() async {
+    void addNewProduct() async {
       _addNewProductController.text = "";
       showModalBottomSheet(
-          context: context,
-          isScrollControlled: true,
-          builder: (BuildContext context) {
-            return Padding(
-              padding: EdgeInsets.only(
-                  right: 40,
-                  left: 40,
-                  bottom: MediaQuery.of(context).viewInsets.bottom),
-              child: SizedBox(
-                height: 200,
-                child: Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      const Text(
-                        "Adicionar novo Produto: ",
-                        style: kLabelStyle,
-                      ),
-                      TextField(controller: _addNewProductController, ),
-                      const SizedBox(height: 20),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          OutlinedButton(
-                              onPressed: dismiss, child: const Text("Cancelar")),
-                          OutlinedButton(
-                              onPressed: _saveNewProduct, child: const Text("Adicionar")),
-                        ],
-                      )
-                    ],
-                  ),
+        context: context,
+        isScrollControlled: true,
+        builder: (BuildContext context) {
+          return Padding(
+            padding: EdgeInsets.only(
+                right: 40,
+                left: 40,
+                bottom: MediaQuery.of(context).viewInsets.bottom),
+            child: SizedBox(
+              height: 200,
+              child: Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    const Text(
+                      "Adicionar novo Produto: ",
+                      style: kLabelStyle,
+                    ),
+                    TextField(
+                      controller: _addNewProductController,
+                    ),
+                    const SizedBox(height: 20),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        OutlinedButton(
+                            onPressed: dismiss, child: const Text("Cancelar")),
+                        OutlinedButton(
+                            onPressed: _saveNewProduct,
+                            child: const Text("Adicionar")),
+                      ],
+                    )
+                  ],
                 ),
               ),
-            );
-          });
+            ),
+          );
+        },
+      );
     }
 
     return Scaffold(
       floatingActionButton: FloatingActionButton(
-        onPressed: _addNewProduct,
+        onPressed: addNewProduct,
         child: const Icon(Icons.add),
       ),
       appBar: AppBar(
         title: const Text('Products'),
       ),
-      body: ListView.builder(
-        itemCount: products.length + 1,
-        itemBuilder: (context, index) {
-          if (index == 0) {
-            return ProductSearchCard(onSearchTapped: _handleSearch);
+      body: StreamBuilder<QuerySnapshot<RawProduct>>(
+        stream: FirebaseService.getStreamSnapshotProductsList(),
+        builder: (context, snapshot) {
+          if (!snapshot.hasData) {
+            return const Center(
+              child: CircularProgressIndicator(
+                backgroundColor: Colors.lightBlueAccent,
+              ),
+            );
           }
+          final products = snapshot.data?.docs;
+          List<Widget> productsCards = [];
+          productsCards.add(ProductSearchCard(onSearchTapped: _handleSearch));
 
-          if (_isFilteredProduct(products[index - 1])) {
-            return TextButton(
-                onPressed: () {
-                  widget.onSelected(products[index - 1]);
-                  Navigator.pop(context);
-                },
-                child: Text(products[index - 1]));
+          for (var rawProduct in products!) {
+            if (_isFilteredProduct(rawProduct.data().name ?? "")) {
+              productsCards.add(TextButton(
+                  onPressed: () {
+                    widget.onSelected(rawProduct.data().name ?? "");
+                    Navigator.pop(context);
+                  },
+                  child: Text(rawProduct.data().name ?? "")));
+            }
           }
-          return const SizedBox.shrink();
+          return ListView(
+            children: productsCards,
+          );
         },
       ),
     );
-  }
-}
-
-class SavedProducts {
-  Future<String> get _localPath async {
-    final directory = await getApplicationDocumentsDirectory();
-
-    return directory.path;
-  }
-
-  Future<File> get _localFile async {
-    final path = await _localPath;
-    return File('$path/saved_products.txt');
-  }
-
-  Future<File> writeToProducts(String product) async {
-    final file = await _localFile;
-
-    return file.writeAsString(product, mode: FileMode.append);
-  }
-
-  Future<String> readProducts() async {
-    try {
-      final file = await _localFile;
-
-      final contents = await file.readAsString();
-
-      return contents;
-    } catch (e) {
-      return _loadDefaultProducts();
-    }
-  }
-
-  Future<String> _loadDefaultProducts() async {
-    return await rootBundle.loadString('assets/products.txt');
   }
 }
