@@ -87,6 +87,7 @@ class _ProductsStreamState extends State<ProductsStream> {
             );
           }
         }
+        productsCards.add(const SizedBox(height: 20));
 
         return ListView(
           children: productsCards,
