@@ -36,12 +36,18 @@ class _LoginPageState extends State<LoginPage> {
     });
   }
 
-  void _handleLogin() async {
+  void _handleLogin(BuildContext context) async {
     _setLoading(true);
     isLoggedIn = await FirebaseService.signIn(
       _emailTextController.text.trim(),
       _passwordTextController.text.trim(),
     );
+
+    if (!isLoggedIn) {
+      showErrorMessage(context, "Login falhou, verifique suas credenciais", () {
+        _emailTextController.text = "";
+      });
+    }
 
     _setLoading(false);
     _goToHomePage();
@@ -53,6 +59,22 @@ class _LoginPageState extends State<LoginPage> {
         Navigator.popAndPushNamed(context, HomePage.id);
       });
     }
+  }
+
+  void showErrorMessage(BuildContext context, String text, void Function() onPressed) {
+    final snackBar = SnackBar(
+      behavior: SnackBarBehavior.fixed,
+      content: Text(text),
+      duration: const Duration(seconds: 3),
+      action: SnackBarAction(
+        label: 'Ok',
+        onPressed: onPressed,
+      ),
+    );
+
+    // Find the ScaffoldMessenger in the widget tree
+    // and use it to show a SnackBar.
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
 
   @override
@@ -96,7 +118,8 @@ class _LoginPageState extends State<LoginPage> {
                   OutlinedButton(
                       onPressed: _handleSignup, child: const Text("Cadastrar")),
                   OutlinedButton(
-                      onPressed: _handleLogin, child: const Text('Login')),
+                      onPressed: () => _handleLogin(context),
+                      child: const Text('Login')),
                 ],
               ),
             ],
