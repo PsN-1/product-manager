@@ -3,6 +3,7 @@ import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:product_manager/constants.dart';
 import 'package:product_manager/models/product.dart';
 import 'package:product_manager/utils/alert_dialog.dart';
+import 'package:product_manager/utils/snack_bar.dart';
 import 'package:product_manager/widgets/pickable_async_image.dart';
 
 class ProductDetail extends StatefulWidget {
@@ -75,8 +76,14 @@ class _ProductDetailState extends State<ProductDetail> {
     }
 
     await widget.onSave(widget.product);
+
     setLoading(false);
+    showSuccessMessage();
     _dismiss();
+  }
+
+   void showSuccessMessage() {
+    CustomSnackBar.showSuccessMessage(context, "Produto atualizado com sucesso", () { });
   }
 
   void _deleteProduct() async {
@@ -186,7 +193,7 @@ class _ProductDetailState extends State<ProductDetail> {
                   if (widget.product.quantity == "0")
                     OutlinedButton(
                       onPressed: () {
-                        CustomAlert.show(context,
+                        CustomAlert.showOkCancelAlert(context,
                             title: "Atenção!!!",
                             message: "Deseja mesmo apagar o produto?",
                             okPressed: _deleteProduct);

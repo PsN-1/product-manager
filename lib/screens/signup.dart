@@ -2,11 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:product_manager/constants.dart';
 import 'package:product_manager/services/firebase.dart';
+import 'package:product_manager/utils/alert_dialog.dart';
 
 class SignupPage extends StatefulWidget {
   static String id = "signup";
 
-  SignupPage({super.key});
+  const SignupPage({super.key});
 
   @override
   State<SignupPage> createState() => _SignupPageState();
@@ -31,12 +32,21 @@ class _SignupPageState extends State<SignupPage> {
       });
     }
 
+    void handleResult(bool wasCreated) {
+      CustomAlert.showOkAlert(context,
+          title: (wasCreated)
+              ? "Conta criada com sucesso."
+              : "Erro ao criar nova conta.",
+          onOkPressed: dismiss);
+    }
+
     void handleSignup() async {
       setLoading(true);
-      await FirebaseService.signUp(
+      final accountCreated = await FirebaseService.signUp(
           _emailController.text, _passwordController.text);
       setLoading(false);
-      dismiss();
+
+      handleResult(accountCreated);
     }
 
     return Scaffold(

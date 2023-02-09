@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:product_manager/constants.dart';
 import 'package:product_manager/models/raw_product.dart';
 import 'package:product_manager/services/firebase.dart';
+import 'package:product_manager/utils/snack_bar.dart';
 import 'package:product_manager/widgets/product_search_card.dart';
 
 class ListOfProducts extends StatefulWidget {
@@ -40,7 +41,13 @@ class _ListOfProductsState extends State<ListOfProducts> {
       ownerId: FirebaseService.getUserUID(),
     );
     await RawProduct.createNewInstance(newRawProduct);
+    showSuccessMessage();
     dismiss();
+  }
+
+  void showSuccessMessage() {
+    CustomSnackBar.showSuccessMessage(
+        context, "Novo produto cadastrado com suceso", () {});
   }
 
   void dismiss() {

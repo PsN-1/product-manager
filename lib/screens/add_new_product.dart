@@ -5,6 +5,7 @@ import 'package:product_manager/constants.dart';
 import 'package:product_manager/models/product.dart';
 import 'package:product_manager/screens/list_of_products.dart';
 import 'package:product_manager/services/firebase.dart';
+import 'package:product_manager/utils/snack_bar.dart';
 import 'package:product_manager/widgets/pickable_async_image.dart';
 
 class AddNewProduct extends StatefulWidget {
@@ -55,6 +56,11 @@ class _AddNewProductState extends State<AddNewProduct> {
       });
     }
 
+    void showSuccessMessage() {
+      CustomSnackBar.showSuccessMessage(
+          context, "Produto criado com sucesso", () {});
+    }
+
     void createNewProduct() async {
       setLoading(true);
       Product product = Product(
@@ -71,6 +77,7 @@ class _AddNewProductState extends State<AddNewProduct> {
 
       await Product.createNewInstance(product);
       setLoading(false);
+      showSuccessMessage();
       dismiss();
     }
 

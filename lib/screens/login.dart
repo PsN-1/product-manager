@@ -4,6 +4,7 @@ import 'package:product_manager/constants.dart';
 import 'package:product_manager/screens/home_page.dart';
 import 'package:product_manager/screens/signup.dart';
 import 'package:product_manager/services/firebase.dart';
+import 'package:product_manager/utils/alert_dialog.dart';
 
 class LoginPage extends StatefulWidget {
   static String id = 'login';
@@ -44,13 +45,18 @@ class _LoginPageState extends State<LoginPage> {
     );
 
     if (!isLoggedIn) {
-      showErrorMessage(context, "Login falhou, verifique suas credenciais", () {
-        _emailTextController.text = "";
-      });
+      showErrorMessage();
     }
 
     _setLoading(false);
     _goToHomePage();
+  }
+
+  void showErrorMessage() {
+    CustomAlert.showOkAlert(context,
+        title: "Algo deu errado",
+        message: "Por gentileza verificar suas credenciais.",
+        onOkPressed: () {});
   }
 
   void _goToHomePage() {
@@ -59,22 +65,6 @@ class _LoginPageState extends State<LoginPage> {
         Navigator.popAndPushNamed(context, HomePage.id);
       });
     }
-  }
-
-  void showErrorMessage(BuildContext context, String text, void Function() onPressed) {
-    final snackBar = SnackBar(
-      behavior: SnackBarBehavior.fixed,
-      content: Text(text),
-      duration: const Duration(seconds: 3),
-      action: SnackBarAction(
-        label: 'Ok',
-        onPressed: onPressed,
-      ),
-    );
-
-    // Find the ScaffoldMessenger in the widget tree
-    // and use it to show a SnackBar.
-    ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
 
   @override
