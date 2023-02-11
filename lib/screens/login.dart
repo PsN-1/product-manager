@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:product_manager/constants.dart';
 import 'package:product_manager/screens/home_page.dart';
 import 'package:product_manager/screens/signup.dart';
 import 'package:product_manager/services/firebase.dart';
 import 'package:product_manager/utils/alert_dialog.dart';
+import 'package:product_manager/widgets/box_button.dart';
+import 'package:product_manager/widgets/box_textfield.dart';
+import 'package:product_manager/widgets/custom_loading.dart';
 
 class LoginPage extends StatefulWidget {
   static String id = 'login';
@@ -53,10 +55,12 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   void showErrorMessage() {
-    CustomAlert.showOkAlert(context,
-        title: "Algo deu errado",
-        message: "Por gentileza verificar suas credenciais.",
-        onOkPressed: () {});
+    CustomAlert.showOkAlert(
+      context,
+      title: "Algo deu errado",
+      message: "Por gentileza verificar suas credenciais.",
+      onOkPressed: () {},
+    );
   }
 
   void _goToHomePage() {
@@ -70,11 +74,11 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: ModalProgressHUD(
-        color: Colors.black,
-        inAsyncCall: _isLoading,
-        child: Container(
-          padding: const EdgeInsets.only(right: 50, left: 50),
+      backgroundColor: kBackgroundColor,
+      body: CustomModalHUD(
+        isLoading: _isLoading,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 36),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -88,28 +92,34 @@ class _LoginPageState extends State<LoginPage> {
               const SizedBox(height: 30),
               Text(
                 "Login",
+                textAlign: TextAlign.left,
                 style: kLabelStyle.copyWith(fontSize: 22),
               ),
               const SizedBox(height: 50),
-              const Text("E-mail"),
-              TextField(
+              BoxTextField(
                 controller: _emailTextController,
+                hintText: "E-mail",
               ),
               const SizedBox(height: 20),
-              const Text("Senha"),
-              TextField(
+              BoxTextField(
                 controller: _passwordTextController,
-                obscureText: true,
+                hintText: "Senha",
+                obscure: true,
               ),
-              const SizedBox(height: 20),
+              const SizedBox(height: 30),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  OutlinedButton(
-                      onPressed: _handleSignup, child: const Text("Cadastrar")),
-                  OutlinedButton(
-                      onPressed: () => _handleLogin(context),
-                      child: const Text('Login')),
+                  BoxButton(
+                    text: "Cadastrar",
+                    isPrimary: false,
+                    onTap: _handleSignup,
+                  ),
+                  BoxButton(
+                    text: 'Login',
+                    isPrimary: true,
+                    onTap: () => _handleLogin(context),
+                  )
                 ],
               ),
             ],
@@ -119,3 +129,4 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 }
+
