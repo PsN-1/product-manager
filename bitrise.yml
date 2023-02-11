@@ -27,9 +27,11 @@ workflows:
     - cache-push@2: {}
     - deploy-to-itunesconnect-application-loader@1:
         inputs:
-        - connection: api_key
         - api_key_path: "$BITRISEIO_Appstore_URL"
         - api_issuer: 90441a17-1670-4255-8b5f-c4513442f92a
+        - ipa_path: ''
+        - pkg_path: "$BITRISE_PKG_PATH$BITRISE_XCARCHIVE_PATH"
+        - connection: api_key
         - platform: ios
     - google-play-deploy@3:
         is_always_run: true
@@ -78,6 +80,43 @@ workflows:
     - cache-push@2: {}
     - deploy-to-bitrise-io@2: {}
     - flutter-build@0: {}
+  Teste:
+    description: |
+      Builds and deploys app using [Deploy to bitrise.io Step](https://devcenter.bitrise.io/en/getting-started/getting-started-with-flutter-apps.html#deploying-a-flutter-app).
+
+      If you build for iOS, make sure to set up code signing secrets on Bitrise for a successful build.
+
+      Next steps:
+      - Check out [Getting started with Flutter apps](https://devcenter.bitrise.io/en/getting-started/getting-started-with-flutter-apps.html) for signing and deployment options.
+      - Check out the [Code signing guide](https://devcenter.bitrise.io/en/code-signing.html) for iOS and Android
+    steps:
+    - activate-ssh-key@4: {}
+    - git-clone@7: {}
+    - certificate-and-profile-installer@1: {}
+    - cache-pull@2: {}
+    - recreate-user-schemes@1: {}
+    - xcode-archive@4:
+        inputs:
+        - automatic_code_signing: api-key
+        - distribution_method: app-store
+    - cache-push@2: {}
+    - deploy-to-itunesconnect-application-loader@1:
+        inputs:
+        - api_key_path: "$BITRISEIO_Appstore_URL"
+        - api_issuer: 90441a17-1670-4255-8b5f-c4513442f92a
+        - ipa_path: ''
+        - pkg_path: "$BITRISE_PKG_PATH$BITRISE_XCARCHIVE_PATH"
+        - platform: ios
+    - android-build@1:
+        inputs:
+        - build_type: aab
+        is_always_run: true
+    - google-play-deploy@3:
+        is_always_run: true
+        inputs:
+        - package_name: com.pssn.me.sa.SimpleProductManager
+        - track: Internal
+        - service_account_json_key_path: "$BITRISEIO_androidjsonkey_URL"
 meta:
   bitrise.io:
     stack: osx-xcode-14.2.x-ventura

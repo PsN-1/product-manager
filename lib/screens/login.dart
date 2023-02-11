@@ -53,10 +53,12 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   void showErrorMessage() {
-    CustomAlert.showOkAlert(context,
-        title: "Algo deu errado",
-        message: "Por gentileza verificar suas credenciais.",
-        onOkPressed: () {});
+    CustomAlert.showOkAlert(
+      context,
+      title: "Algo deu errado",
+      message: "Por gentileza verificar suas credenciais.",
+      onOkPressed: () {},
+    );
   }
 
   void _goToHomePage() {
