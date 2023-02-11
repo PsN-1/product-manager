@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:product_manager/constants.dart';
 import 'package:product_manager/screens/add_new_product.dart';
 import 'package:product_manager/screens/login.dart';
 import 'package:product_manager/services/firebase.dart';
@@ -17,6 +18,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: kPrimaryColor,
         title: const Text("Controle de Estoque"),
         actions: [
           PopupMenuButton(
@@ -46,6 +48,7 @@ class _HomePageState extends State<HomePage> {
           }));
         },
         tooltip: 'Increment',
+        backgroundColor: kPrimaryColor,
         child: const Icon(Icons.add),
       ),
     );

@@ -62,6 +62,9 @@ class _SearchCardState extends State<SearchCard> {
             height: 10,
           ),
           OutlinedButton.icon(
+            style: ButtonStyle(
+              foregroundColor: MaterialStatePropertyAll(kPrimaryColor),
+            ),
             label: const Text('Procurar'),
             icon: const Icon(Icons.search),
             onPressed: () {
