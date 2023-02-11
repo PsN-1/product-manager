@@ -19,14 +19,21 @@ class _HomePageState extends State<HomePage> {
       appBar: AppBar(
         title: const Text("Controle de Estoque"),
         actions: [
-          IconButton(
-              onPressed: () async {
-                await FirebaseService.signOut();
-                setState(() {
-                  Navigator.popAndPushNamed(context, LoginPage.id);
-                });
-              },
-              icon: const Icon(Icons.person)),
+          PopupMenuButton(
+            icon: const Icon(Icons.person),
+            itemBuilder: (BuildContext context) => [
+              const PopupMenuItem(child: Text("Configurações")),
+              PopupMenuItem(
+                child: const Text("Sair"),
+                onTap: () async {
+                  await FirebaseService.signOut();
+                  setState(() {
+                    Navigator.popAndPushNamed(context, LoginPage.id);
+                  });
+                },
+              ),
+            ],
+          )
         ],
       ),
       body: const SafeArea(
