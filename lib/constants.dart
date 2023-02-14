@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 
 const kBackgroundColor = Color.fromRGBO(242, 242, 247, 1);
-const kPrimaryColor = Color.fromRGBO(255, 45, 85, 1);
+// const kPrimaryColor = Color.fromRGBO(255, 45, 85, 1);
+const kPrimaryColor = Colors.blue;
 const kTextStyle = TextStyle(fontSize: 22, color: Colors.black);
 const kHistoryStyle = TextStyle(fontSize: 18, color: Colors.black);
 const kLabelStyle =

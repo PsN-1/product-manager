@@ -15,7 +15,7 @@ class CustomSnackBar {
       Color backgroundColor, void Function() onPressed) {
     final snackBar = SnackBar(
       backgroundColor: backgroundColor,
-      behavior: SnackBarBehavior.floating,
+      behavior: SnackBarBehavior.fixed,
       content: Text(
         text,
         style: TextStyle(color: textColor),
