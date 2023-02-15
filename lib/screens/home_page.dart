@@ -14,6 +14,8 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  var user = FirebaseService.getCurrentUser();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -50,6 +52,28 @@ class _HomePageState extends State<HomePage> {
         tooltip: 'Increment',
         backgroundColor: kPrimaryColor,
         child: const Icon(Icons.add),
+      ),
+      drawer: Drawer(
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: [
+            const DrawerHeader(
+              decoration: BoxDecoration(color: Colors.blue),
+              child: Center(child: Text("Configurações")),
+            ),
+            ListTile(
+              title: Column(
+                children: [
+                  const SizedBox(height: 20),
+                  Text('E-mail: ${user?.email ?? ""}'),
+                  const SizedBox(height: 20),
+                  Text("E-mail verificado: ${user?.emailVerified}")
+                ],
+              ),
+            ),
+            ListTile(title: Text("Sair"),)
+          ],
+        ),
       ),
     );
   }
