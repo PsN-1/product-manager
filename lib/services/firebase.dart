@@ -12,6 +12,12 @@ final _auth = FirebaseAuth.instance;
 const _productsCollection = 'Products';
 const _productsListCollection = 'ProductsList';
 
+typedef QuerySnapshotRawProduct = QuerySnapshot<RawProduct>;
+typedef QuerySnapshotProduct = QuerySnapshot<Product>;
+typedef DocumentSnapshotMapStringDynamic
+    = DocumentSnapshot<Map<String, dynamic>>;
+typedef ObjectSnapshotOptions = SnapshotOptions;
+
 class FirebaseService {
   static var productsRef =
       _firestore.collection(_productsCollection).withConverter(

@@ -119,7 +119,7 @@ class _LoginPageState extends State<LoginPage> {
                     text: 'Login',
                     isPrimary: true,
                     onTap: () => _handleLogin(context),
-                  )
+                  ),
                 ],
               ),
             ],
@@ -129,4 +129,3 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 }
-

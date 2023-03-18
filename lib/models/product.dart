@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:product_manager/services/firebase.dart';
 
 class Product {
@@ -25,8 +24,8 @@ class Product {
   });
 
   factory Product.fromFirestore(
-    DocumentSnapshot<Map<String, dynamic>> snapshot,
-    SnapshotOptions? options,
+    DocumentSnapshotMapStringDynamic snapshot,
+    ObjectSnapshotOptions? options,
   ) {
     final data = snapshot.data();
     return Product(

@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:product_manager/constants.dart';
 import 'package:product_manager/models/raw_product.dart';
@@ -109,7 +108,7 @@ class _ListOfProductsState extends State<ListOfProducts> {
       appBar: AppBar(
         title: const Text('Products'),
       ),
-      body: StreamBuilder<QuerySnapshot<RawProduct>>(
+      body: StreamBuilder<QuerySnapshotRawProduct>(
         stream: FirebaseService.getStreamSnapshotProductsList(),
         builder: (context, snapshot) {
           if (!snapshot.hasData) {

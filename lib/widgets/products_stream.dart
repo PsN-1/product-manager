@@ -1,10 +1,9 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:product_manager/models/product.dart';
 import 'package:product_manager/screens/product_detail.dart';
 import 'package:product_manager/services/firebase.dart';
 import 'package:product_manager/widgets/product_card.dart';
-import 'package:product_manager/widgets/search_card.dart';
+import 'package:product_manager/widgets/product_search_card.dart';
 
 class ProductsStream extends StatefulWidget {
   const ProductsStream({super.key});
@@ -15,41 +14,32 @@ class ProductsStream extends StatefulWidget {
 
 class _ProductsStreamState extends State<ProductsStream> {
   String searchText = "";
-  String searchField = "";
 
-  void _updateSearch(String newSearchText, String newSearchField) {
+  void _updateSearch(String newSearchText) {
     setState(() {
       searchText = newSearchText;
-      searchField = newSearchField;
     });
   }
 
   bool _isFilteredProduct(Product product) {
-    if (searchText.isNotEmpty) {
-      if (searchField == "Produto") {
-        return product.product
-                ?.toLowerCase()
-                .contains(searchText.toLowerCase()) ??
-            false;
-      }
-      if (searchField == "Descrição") {
-        return product.description
-                ?.toLowerCase()
-                .contains(searchText.toLowerCase()) ??
-            false;
-      }
-      if (searchField == "Caixa") {
-        return product.box == searchText;
-      }
-      return false;
+    if (searchText.isEmpty) {
+      return true;
     }
 
-    return true;
+    bool hasProductText =
+        product.product?.toLowerCase().contains(searchText.toLowerCase()) ??
+            false;
+    bool hasDescriptionText =
+        product.description?.toLowerCase().contains(searchText.toLowerCase()) ??
+            false;
+    bool hasBoxNumber = product.box == searchText;
+
+    return hasProductText || hasDescriptionText || hasBoxNumber;
   }
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<QuerySnapshot<Product>>(
+    return StreamBuilder<QuerySnapshotProduct>(
       stream: FirebaseService.getStreamSnapshotProducts(),
       builder: (context, snapshot) {
         if (!snapshot.hasData) {
@@ -61,8 +51,8 @@ class _ProductsStreamState extends State<ProductsStream> {
         }
         final products = snapshot.data?.docs;
         List<Widget> productsCards = [];
-        productsCards.add(SearchCard(
-          onSearchPressed: _updateSearch,
+        productsCards.add(ProductSearchCard(
+          onSearchTapped: _updateSearch,
         ));
         for (var productData in products!) {
           if (_isFilteredProduct(productData.data())) {

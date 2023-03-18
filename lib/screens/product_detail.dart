@@ -82,8 +82,9 @@ class _ProductDetailState extends State<ProductDetail> {
     _dismiss();
   }
 
-   void showSuccessMessage() {
-    CustomSnackBar.showSuccessMessage(context, "Produto atualizado com sucesso", () { });
+  void showSuccessMessage() {
+    CustomSnackBar.showSuccessMessage(
+        context, "Produto atualizado com sucesso", () {});
   }
 
   void _deleteProduct() async {
@@ -105,6 +106,8 @@ class _ProductDetailState extends State<ProductDetail> {
 
   @override
   Widget build(BuildContext context) {
+    var testController =
+        TextEditingController(text: widget.product.image ?? "");
     return Scaffold(
       appBar: AppBar(title: Text(widget.product.product ?? "")),
       body: ModalProgressHUD(
@@ -119,6 +122,10 @@ class _ProductDetailState extends State<ProductDetail> {
               PickableAsyncImage(
                 image: widget.product.image ?? "",
                 onChangeImage: didChangeImage,
+              ),
+              const SizedBox(height: 20),
+              TextField(
+                controller: testController,
               ),
               const SizedBox(height: 20),
               const Text("Produto", style: kLabelStyle),
