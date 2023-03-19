@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:product_manager/constants.dart';
 import 'package:product_manager/models/product.dart';
 import 'package:product_manager/screens/list_of_products.dart';
 import 'package:product_manager/services/firebase.dart';
 import 'package:product_manager/utils/snack_bar.dart';
+import 'package:product_manager/widgets/custom_loading.dart';
 import 'package:product_manager/widgets/pickable_async_image.dart';
 
 class AddNewProduct extends StatefulWidget {
@@ -83,9 +83,8 @@ class _AddNewProductState extends State<AddNewProduct> {
 
     return Scaffold(
       appBar: AppBar(title: const Text("Adicionar Novo Produto")),
-      body: ModalProgressHUD(
-        inAsyncCall: _isLoading,
-        color: Colors.black,
+      body: CustomModalHUD(
+        isLoading: _isLoading,
         child: Container(
           padding: const EdgeInsets.all(20),
           child: ListView(

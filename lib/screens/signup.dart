@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:product_manager/constants.dart';
 import 'package:product_manager/services/firebase.dart';
 import 'package:product_manager/utils/alert_dialog.dart';
 import 'package:product_manager/widgets/box_button.dart';
 import 'package:product_manager/widgets/box_textfield.dart';
+import 'package:product_manager/widgets/custom_loading.dart';
 
 class SignupPage extends StatefulWidget {
   static String id = "signup";
@@ -67,8 +67,8 @@ class _SignupPageState extends State<SignupPage> {
 
     return Scaffold(
       backgroundColor: kBackgroundColor,
-      body: ModalProgressHUD(
-        inAsyncCall: _isLoading,
+      body: CustomModalHUD(
+        isLoading: _isLoading,
         child: Container(
           padding: const EdgeInsets.all(40),
           child: Column(

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:product_manager/constants.dart';
 import 'package:product_manager/models/product.dart';
 import 'package:product_manager/utils/alert_dialog.dart';
 import 'package:product_manager/utils/snack_bar.dart';
+import 'package:product_manager/widgets/custom_loading.dart';
 import 'package:product_manager/widgets/pickable_async_image.dart';
 
 class ProductDetail extends StatefulWidget {
@@ -106,13 +106,10 @@ class _ProductDetailState extends State<ProductDetail> {
 
   @override
   Widget build(BuildContext context) {
-    var testController =
-        TextEditingController(text: widget.product.image ?? "");
     return Scaffold(
       appBar: AppBar(title: Text(widget.product.product ?? "")),
-      body: ModalProgressHUD(
-        inAsyncCall: _isLoading,
-        color: Colors.black,
+      body: CustomModalHUD(
+        isLoading: _isLoading,
         child: Container(
           padding: const EdgeInsets.all(20),
           color: Colors.white,
@@ -124,9 +121,6 @@ class _ProductDetailState extends State<ProductDetail> {
                 onChangeImage: didChangeImage,
               ),
               const SizedBox(height: 20),
-              TextField(
-                controller: testController,
-              ),
               const SizedBox(height: 20),
               const Text("Produto", style: kLabelStyle),
               Text(widget.product.product ?? "", style: kTextStyle),

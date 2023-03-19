@@ -1,10 +1,11 @@
 import 'dart:io';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
 import 'package:product_manager/models/product.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:product_manager/models/raw_product.dart';
+import 'package:product_manager/widgets/pickable_async_image.dart';
 
 final _storageRef = FirebaseStorage.instance.ref();
 final _firestore = FirebaseFirestore.instance;
@@ -77,7 +78,12 @@ class FirebaseService {
     final imageRef = _storageRef.child(imageName);
     File imageFile = File(imagePath);
 
-    await imageRef.putFile(imageFile);
+    if (kIsWeb) {
+      await imageRef.putData(newImageForWeb);
+    } else {
+      await imageRef.putFile(imageFile);
+    }
+
     String imageUrl = await imageRef.getDownloadURL();
     return imageUrl;
   }

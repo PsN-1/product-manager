@@ -48,7 +48,7 @@ Future updateProductsList() async {
   for (var product in products) {
     const ownerId = "oGTtnKtEG5eyoqTX1YVZo39pM7f2";
     await dbref.add(RawProduct(name: product, ownerId: ownerId));
-  print("$product uploaded");
+    print("$product uploaded");
   }
   print("finish update");
 }

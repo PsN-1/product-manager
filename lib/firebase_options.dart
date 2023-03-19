@@ -67,7 +67,8 @@ class DefaultFirebaseOptions {
     messagingSenderId: '923250040637',
     projectId: 'productmanager-c654d',
     storageBucket: 'productmanager-c654d.appspot.com',
-    iosClientId: '923250040637-bm8rvdcbvi6sn8tlbsms1pjn9g7t19qr.apps.googleusercontent.com',
+    iosClientId:
+        '923250040637-bm8rvdcbvi6sn8tlbsms1pjn9g7t19qr.apps.googleusercontent.com',
     iosBundleId: 'com.example.productManager',
   );
 
@@ -77,7 +78,8 @@ class DefaultFirebaseOptions {
     messagingSenderId: '923250040637',
     projectId: 'productmanager-c654d',
     storageBucket: 'productmanager-c654d.appspot.com',
-    iosClientId: '923250040637-bm8rvdcbvi6sn8tlbsms1pjn9g7t19qr.apps.googleusercontent.com',
+    iosClientId:
+        '923250040637-bm8rvdcbvi6sn8tlbsms1pjn9g7t19qr.apps.googleusercontent.com',
     iosBundleId: 'com.example.productManager',
   );
 }

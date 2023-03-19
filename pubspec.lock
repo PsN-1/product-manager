@@ -29,6 +29,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.9.0"
+  blurry_modal_progress_hud:
+    dependency: "direct main"
+    description:
+      name: blurry_modal_progress_hud
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.1.0"
   boolean_selector:
     dependency: transitive
     description:
@@ -267,7 +274,7 @@ packages:
       name: image_picker_for_web
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.1.10"
+    version: "2.1.12"
   image_picker_ios:
     dependency: transitive
     description:
@@ -324,15 +331,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.8.0"
-  modal_progress_hud_nsn:
-    dependency: "direct main"
-    description:
-      path: "."
-      ref: master
-      resolved-ref: "3270f1f7a7e5b49f0456141ea2f431f0b2a0623c"
-      url: "https://github.com/kphanipavan/modal_progress_hud_nsn.git"
-    source: git
-    version: "0.3.0"
   msix:
     dependency: "direct main"
     description:
@@ -459,4 +457,4 @@ packages:
     version: "3.1.1"
 sdks:
   dart: ">=2.18.6 <3.0.0"
-  flutter: ">=2.10.0"
+  flutter: ">=3.0.0"

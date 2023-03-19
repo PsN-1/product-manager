@@ -1,5 +1,5 @@
+import 'package:blurry_modal_progress_hud/blurry_modal_progress_hud.dart';
 import 'package:flutter/material.dart';
-import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:product_manager/constants.dart';
 
 class CustomModalHUD extends StatelessWidget {
@@ -11,7 +11,7 @@ class CustomModalHUD extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ModalProgressHUD(
+    return BlurryModalProgressHUD(
       inAsyncCall: isLoading,
       progressIndicator: const CircularProgressIndicator(color: kPrimaryColor),
       child: child,

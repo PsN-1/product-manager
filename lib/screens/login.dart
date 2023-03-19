@@ -39,7 +39,7 @@ class _LoginPageState extends State<LoginPage> {
     });
   }
 
-  void _handleLogin(BuildContext context) async {
+  void _handleLogin() async {
     _setLoading(true);
     isLoggedIn = await FirebaseService.signIn(
       _emailTextController.text.trim(),
@@ -118,7 +118,7 @@ class _LoginPageState extends State<LoginPage> {
                   BoxButton(
                     text: 'Login',
                     isPrimary: true,
-                    onTap: () => _handleLogin(context),
+                    onTap: _handleLogin,
                   ),
                 ],
               ),

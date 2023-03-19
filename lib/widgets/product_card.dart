@@ -76,11 +76,11 @@ class ProductCard extends StatelessWidget {
     );
   }
 }
-  // final product = Product(
-  //   description: 'Lâmina de Ralar do Super Chef',
-  //   box: "67",
-  //   code: "1396",
-  //   image: "lamina_3_super_chef_JPG",
-  //   product: 'Lâmina Jullienne Super Chefe',
-  //   quantity: '2',
-  // );
+// final product = Product(
+//   description: 'Lâmina de Ralar do Super Chef',
+//   box: "67",
+//   code: "1396",
+//   image: "lamina_3_super_chef_JPG",
+//   product: 'Lâmina Jullienne Super Chefe',
+//   quantity: '2',
+// );
