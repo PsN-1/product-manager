@@ -10,65 +10,71 @@ class ProductCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final double windowWidth = MediaQuery.of(context).size.width;
+
     return GestureDetector(
       onTap: onTap,
       behavior: HitTestBehavior.opaque,
-      child: Container(
-        margin: const EdgeInsets.only(top: 15, left: 15, right: 15),
-        child: PhysicalModel(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(5),
-          elevation: 5,
-          child: Padding(
-            padding: const EdgeInsets.all(10.0),
-            child: Row(
-              children: [
-                if (product.image != null && product.image!.isNotEmpty)
-                  SizedBox(
-                      height: 100,
-                      width: 100,
-                      child: AsyncImage(image: product.image!)),
-                const SizedBox(width: 10),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      Text(
-                        product.product!,
-                        overflow: TextOverflow.ellipsis,
-                        style: const TextStyle(
-                          fontSize: 22,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                      const SizedBox(height: 10),
-                      Text(
-                        product.description ?? "",
-                        overflow: TextOverflow.ellipsis,
-                        style: const TextStyle(
-                          fontSize: 20,
-                          color: Colors.black87,
-                        ),
-                      ),
-                      const SizedBox(height: 20),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            'Caixa: ${product.box}',
-                            style: const TextStyle(fontSize: 20),
+      child: Align(
+        alignment: Alignment.center,
+        child: Container(
+          width: windowWidth > 500 ? 500 : windowWidth,
+          margin: const EdgeInsets.only(top: 15, left: 15, right: 15),
+          child: PhysicalModel(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(5),
+            elevation: 5,
+            child: Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: Row(
+                children: [
+                  if (product.image != null && product.image!.isNotEmpty)
+                    SizedBox(
+                        height: 100,
+                        width: 100,
+                        child: AsyncImage(image: product.image!)),
+                  const SizedBox(width: 10),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        Text(
+                          product.product!,
+                          overflow: TextOverflow.ellipsis,
+                          style: const TextStyle(
+                            fontSize: 22,
+                            fontWeight: FontWeight.w600,
                           ),
-                          Text(
-                            'Qtd: ${product.quantity} ',
-                            style: const TextStyle(fontSize: 20),
-                          )
-                        ],
-                      )
-                    ],
+                        ),
+                        const SizedBox(height: 10),
+                        Text(
+                          product.description ?? "",
+                          overflow: TextOverflow.ellipsis,
+                          style: const TextStyle(
+                            fontSize: 20,
+                            color: Colors.black87,
+                          ),
+                        ),
+                        const SizedBox(height: 20),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              'Caixa: ${product.box}',
+                              style: const TextStyle(fontSize: 20),
+                            ),
+                            Text(
+                              'Qtd: ${product.quantity} ',
+                              style: const TextStyle(fontSize: 20),
+                            )
+                          ],
+                        )
+                      ],
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ),

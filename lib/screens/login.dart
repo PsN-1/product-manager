@@ -73,6 +73,8 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
+    final double windowWidth = MediaQuery.of(context).size.width;
+
     return Scaffold(
       backgroundColor: kBackgroundColor,
       body: CustomModalHUD(
@@ -107,20 +109,23 @@ class _LoginPageState extends State<LoginPage> {
                 obscure: true,
               ),
               const SizedBox(height: 30),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  BoxButton(
-                    text: "Cadastrar",
-                    isPrimary: false,
-                    onTap: _handleSignup,
-                  ),
-                  BoxButton(
-                    text: 'Login',
-                    isPrimary: true,
-                    onTap: _handleLogin,
-                  ),
-                ],
+              SizedBox(
+                width: windowWidth > 500 ? 500 : windowWidth,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    BoxButton(
+                      text: "Cadastrar",
+                      isPrimary: false,
+                      onTap: _handleSignup,
+                    ),
+                    BoxButton(
+                      text: 'Login',
+                      isPrimary: true,
+                      onTap: _handleLogin,
+                    ),
+                  ],
+                ),
               ),
             ],
           ),

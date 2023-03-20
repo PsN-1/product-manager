@@ -24,6 +24,8 @@ class _SignupPageState extends State<SignupPage> {
 
   @override
   Widget build(BuildContext context) {
+    final double windowWidth = MediaQuery.of(context).size.width;
+
     void dismiss() {
       Navigator.pop(context);
     }
@@ -104,13 +106,16 @@ class _SignupPageState extends State<SignupPage> {
                 hintText: 'Confirmar Senha',
               ),
               const SizedBox(height: 20),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  BoxButton(text: 'Voltar', isPrimary: false, onTap: dismiss),
-                  BoxButton(
-                      text: "Cadastrar", isPrimary: true, onTap: handleSignup)
-                ],
+              SizedBox(
+                width: windowWidth > 500 ? 500 : windowWidth,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    BoxButton(text: 'Voltar', isPrimary: false, onTap: dismiss),
+                    BoxButton(
+                        text: "Cadastrar", isPrimary: true, onTap: handleSignup)
+                  ],
+                ),
               ),
             ],
           ),
