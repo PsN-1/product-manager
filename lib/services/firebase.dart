@@ -79,7 +79,8 @@ class FirebaseService {
     File imageFile = File(imagePath);
 
     if (kIsWeb) {
-      await imageRef.putData(newImageForWeb);
+      await imageRef.putData(newImageForWeb!);
+      newImageForWeb = null;
     } else {
       await imageRef.putFile(imageFile);
     }

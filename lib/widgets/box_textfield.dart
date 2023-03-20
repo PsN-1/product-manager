@@ -52,6 +52,7 @@ class _BoxTextFieldState extends State<BoxTextField> {
         obscureText: widget.obscure,
         style: const TextStyle(backgroundColor: Colors.white),
         decoration: InputDecoration(
+          hoverColor: Colors.transparent,
           fillColor: Colors.transparent,
           filled: true,
           border: InputBorder.none,

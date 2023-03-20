@@ -3,7 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
-late Uint8List newImageForWeb;
+late Uint8List? newImageForWeb;
 
 class PickableAsyncImage extends StatefulWidget {
   final String image;

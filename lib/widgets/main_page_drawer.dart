@@ -1,3 +1,5 @@
+import 'dart:io';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 class MainPageDrawer extends StatelessWidget {
@@ -31,6 +33,10 @@ class MainPageDrawer extends StatelessWidget {
               children: [
                 const SizedBox(height: 20),
                 Text('Usuario: $user'),
+                const SizedBox(height: 20),
+                Text('Platform ${(kIsWeb) ? "Web" : Platform.operatingSystem}'),
+                const SizedBox(height: 20),
+                const Text("Version: 1.0"),
                 const SizedBox(height: 20),
                 TextButton(
                     onPressed: onLogoutPressed, child: const Text('Sair')),
