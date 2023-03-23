@@ -48,17 +48,19 @@ class _PickableAsyncImageState extends State<PickableAsyncImage> {
       );
     }
 
-    return GestureDetector(
-      onTap: () async {
-        if (widget.onChangeImage != null) {
-          final ImagePicker picker = ImagePicker();
-          imageFile = await picker.pickImage(source: ImageSource.gallery);
-          if (imageFile != null) {
-            widget.onChangeImage!(imageFile!.path);
-          }
-          setState(() {});
+    void onTap() async {
+      if (widget.onChangeImage != null) {
+        final ImagePicker picker = ImagePicker();
+        imageFile = await picker.pickImage(source: ImageSource.gallery);
+        if (imageFile != null) {
+          widget.onChangeImage!(imageFile!.path);
         }
-      },
+        setState(() {});
+      }
+    }
+
+    return GestureDetector(
+      onTap: onTap,
       child: imageWidget,
     );
   }

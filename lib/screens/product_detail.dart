@@ -106,107 +106,113 @@ class _ProductDetailState extends State<ProductDetail> {
 
   @override
   Widget build(BuildContext context) {
+    final double windowWidth = MediaQuery.of(context).size.width;
+
     return Scaffold(
       appBar: AppBar(title: Text(widget.product.product ?? "")),
       body: CustomModalHUD(
         isLoading: _isLoading,
-        child: Container(
-          padding: const EdgeInsets.all(20),
-          color: Colors.white,
-          child: ListView(
-            // padding: EdgeInsets.only(top: 40, bottom: 40),
-            children: [
-              PickableAsyncImage(
-                image: widget.product.image ?? "",
-                onChangeImage: didChangeImage,
-              ),
-              const SizedBox(height: 20),
-              const SizedBox(height: 20),
-              const Text("Produto", style: kLabelStyle),
-              Text(widget.product.product ?? "", style: kTextStyle),
-              const SizedBox(height: 20),
+        child: Align(
+          alignment: Alignment.center,
+          child: Container(
+            width: windowWidth > 600 ? 600 : windowWidth,
+            padding: const EdgeInsets.all(20),
+            color: Colors.white,
+            child: ListView(
+              // padding: EdgeInsets.only(top: 40, bottom: 40),
+              children: [
+                PickableAsyncImage(
+                  image: widget.product.image ?? "",
+                  onChangeImage: didChangeImage,
+                ),
+                const SizedBox(height: 20),
+                const SizedBox(height: 20),
+                const Text("Produto", style: kLabelStyle),
+                Text(widget.product.product ?? "", style: kTextStyle),
+                const SizedBox(height: 20),
 
-              const Text("Descrição", style: kLabelStyle),
-              // Text(widget.product.description ?? "", style: textStyle),
-              TextField(
-                controller: descriptionTextController,
-                style: kTextStyle,
-              ),
+                const Text("Descrição", style: kLabelStyle),
+                // Text(widget.product.description ?? "", style: textStyle),
+                TextField(
+                  controller: descriptionTextController,
+                  style: kTextStyle,
+                ),
 
-              const SizedBox(height: 20),
-              const Text("Caixa ", style: kLabelStyle),
-              Text(widget.product.box ?? "", style: kTextStyle),
-              const SizedBox(height: 20),
-              const Text(
-                "Preço",
-                style: kLabelStyle,
-              ),
-              TextField(
-                controller: priceController,
-                style: kTextStyle,
-              ),
-              const SizedBox(height: 20),
-              Row(
-                children: [
-                  const Text("Quantidade: ", style: kLabelStyle),
-                  const Spacer(),
-                  Visibility(
-                    visible: isNewQuantity,
-                    child: const Text("Valor anterior: ", style: kLabelStyle),
-                  ),
-                ],
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  IconButton(
-                      alignment: Alignment.centerLeft,
-                      padding: const EdgeInsets.all(0),
-                      onPressed: _decreaseQuantity,
-                      icon: const Icon(Icons.remove)),
-                  Text(widget.product.quantity ?? "", style: kTextStyle),
-                  IconButton(
-                      alignment: Alignment.centerRight,
-                      padding: const EdgeInsets.all(0),
-                      onPressed: _addQuantity,
-                      icon: const Icon(Icons.add)),
-                  const Spacer(),
-                  Visibility(
-                    visible: isNewQuantity,
-                    child: Text(
-                      oldQuantity,
-                      style: kTextStyle.copyWith(color: Colors.red),
+                const SizedBox(height: 20),
+                const Text("Caixa ", style: kLabelStyle),
+                Text(widget.product.box ?? "", style: kTextStyle),
+                const SizedBox(height: 20),
+                const Text(
+                  "Preço",
+                  style: kLabelStyle,
+                ),
+                TextField(
+                  controller: priceController,
+                  style: kTextStyle,
+                ),
+                const SizedBox(height: 20),
+                Row(
+                  children: [
+                    const Text("Quantidade: ", style: kLabelStyle),
+                    const Spacer(),
+                    Visibility(
+                      visible: isNewQuantity,
+                      child: const Text("Valor anterior: ", style: kLabelStyle),
                     ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 20),
-              const Text('Últimas atualizações: ', style: kLabelStyle),
-              for (var str in widget.product.history ?? [])
-                Text(str, style: kHistoryStyle),
+                  ],
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    IconButton(
+                        alignment: Alignment.centerLeft,
+                        padding: const EdgeInsets.all(0),
+                        onPressed: _decreaseQuantity,
+                        icon: const Icon(Icons.remove)),
+                    Text(widget.product.quantity ?? "", style: kTextStyle),
+                    IconButton(
+                        alignment: Alignment.centerRight,
+                        padding: const EdgeInsets.all(0),
+                        onPressed: _addQuantity,
+                        icon: const Icon(Icons.add)),
+                    const Spacer(),
+                    Visibility(
+                      visible: isNewQuantity,
+                      child: Text(
+                        oldQuantity,
+                        style: kTextStyle.copyWith(color: Colors.red),
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 20),
+                const Text('Últimas atualizações: ', style: kLabelStyle),
+                for (var str in widget.product.history ?? [])
+                  Text(str, style: kHistoryStyle),
 
-              const SizedBox(height: 40),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  OutlinedButton(
-                      onPressed: _dismiss, child: const Text("Cancel")),
-                  if (widget.product.quantity == "0")
+                const SizedBox(height: 40),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
                     OutlinedButton(
-                      onPressed: () {
-                        CustomAlert.showOkCancelAlert(context,
-                            title: "Atenção!!!",
-                            message: "Deseja mesmo apagar o produto?",
-                            okPressed: _deleteProduct);
-                      },
-                      style: kDeleteButtonStyle,
-                      child: const Text("Apagar"),
-                    ),
-                  OutlinedButton(
-                      onPressed: _updateProduct, child: const Text("Salvar")),
-                ],
-              ),
-            ],
+                        onPressed: _dismiss, child: const Text("Cancel")),
+                    if (widget.product.quantity == "0")
+                      OutlinedButton(
+                        onPressed: () {
+                          CustomAlert.showOkCancelAlert(context,
+                              title: "Atenção!!!",
+                              message: "Deseja mesmo apagar o produto?",
+                              okPressed: _deleteProduct);
+                        },
+                        style: kDeleteButtonStyle,
+                        child: const Text("Apagar"),
+                      ),
+                    OutlinedButton(
+                        onPressed: _updateProduct, child: const Text("Salvar")),
+                  ],
+                ),
+              ],
+            ),
           ),
         ),
       ),
