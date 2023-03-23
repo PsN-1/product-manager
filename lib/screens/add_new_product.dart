@@ -36,6 +36,8 @@ class _AddNewProductState extends State<AddNewProduct> {
 
   @override
   Widget build(BuildContext context) {
+    final double windowWidth = MediaQuery.of(context).size.width;
+
     void dismiss() {
       Navigator.pop(context);
     }
@@ -85,75 +87,80 @@ class _AddNewProductState extends State<AddNewProduct> {
       appBar: AppBar(title: const Text("Adicionar Novo Produto")),
       body: CustomModalHUD(
         isLoading: _isLoading,
-        child: Container(
-          padding: const EdgeInsets.all(20),
-          child: ListView(
-            children: [
-              PickableAsyncImage(
-                image: "",
-                onChangeImage: _didSelectedImage,
-              ),
-              const SizedBox(height: 20),
-              const Text(
-                'Produto',
-                style: kLabelStyle,
-              ),
-              TextField(
-                controller: _productController,
-                style: kTextStyle,
-                readOnly: true,
-                onTap: goToProductSelectionScreen,
-              ),
-              const SizedBox(height: 20),
-              const Text(
-                'Descrição',
-                style: kLabelStyle,
-              ),
-              TextField(
-                controller: _descriptionController,
-                style: kTextStyle,
-              ),
-              const SizedBox(height: 20),
-              const Text(
-                "Caixa",
-                style: kLabelStyle,
-              ),
-              TextField(
-                  controller: _boxController,
+        child: Align(
+          alignment: Alignment.center,
+          child: Container(
+            width: windowWidth > 600 ? 600 : windowWidth,
+            padding: const EdgeInsets.all(20),
+            child: ListView(
+              children: [
+                PickableAsyncImage(
+                  image: "",
+                  onChangeImage: _didSelectedImage,
+                ),
+                const SizedBox(height: 20),
+                const Text(
+                  'Produto',
+                  style: kLabelStyle,
+                ),
+                TextField(
+                  controller: _productController,
+                  style: kTextStyle,
+                  readOnly: true,
+                  onTap: goToProductSelectionScreen,
+                ),
+                const SizedBox(height: 20),
+                const Text(
+                  'Descrição',
+                  style: kLabelStyle,
+                ),
+                TextField(
+                  controller: _descriptionController,
+                  style: kTextStyle,
+                ),
+                const SizedBox(height: 20),
+                const Text(
+                  "Caixa",
+                  style: kLabelStyle,
+                ),
+                TextField(
+                    controller: _boxController,
+                    style: kTextStyle,
+                    keyboardType: TextInputType.number,
+                    inputFormatters: [FilteringTextInputFormatter.digitsOnly]),
+                const SizedBox(height: 20),
+                const Text(
+                  "Quantidade",
+                  style: kLabelStyle,
+                ),
+                TextField(
+                  controller: _quantityController,
                   style: kTextStyle,
                   keyboardType: TextInputType.number,
-                  inputFormatters: [FilteringTextInputFormatter.digitsOnly]),
-              const SizedBox(height: 20),
-              const Text(
-                "Quantidade",
-                style: kLabelStyle,
-              ),
-              TextField(
-                controller: _quantityController,
-                style: kTextStyle,
-                keyboardType: TextInputType.number,
-                inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-              ),
-              const SizedBox(height: 20),
-              Text(
-                'Preço',
-                style: kLabelStyle,
-              ),
-              TextField(
-                controller: _priceController,
-                style: kTextStyle,
-              ),
-              const SizedBox(height: 40),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  OutlinedButton(
-                      onPressed: dismiss, child: const Text("Cancel")),
-                  OutlinedButton(
-                      onPressed: createNewProduct, child: const Text("Salvar")),
-                ],
-              )
-            ],
+                  inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                ),
+                const SizedBox(height: 20),
+                Text(
+                  'Preço',
+                  style: kLabelStyle,
+                ),
+                TextField(
+                  controller: _priceController,
+                  style: kTextStyle,
+                ),
+                const SizedBox(height: 40),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    OutlinedButton(
+                        onPressed: dismiss, child: const Text("Cancel")),
+                    OutlinedButton(
+                        onPressed: createNewProduct,
+                        child: const Text("Salvar")),
+                  ],
+                )
+              ],
+            ),
           ),
         ),
       ),

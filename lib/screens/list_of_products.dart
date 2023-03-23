@@ -106,7 +106,7 @@ class _ListOfProductsState extends State<ListOfProducts> {
         child: const Icon(Icons.add),
       ),
       appBar: AppBar(
-        title: const Text('Products'),
+        title: const Text('Produtos'),
       ),
       body: StreamBuilder<QuerySnapshotRawProduct>(
         stream: FirebaseService.getStreamSnapshotProductsList(),
