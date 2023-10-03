@@ -27,6 +27,20 @@ class RawProduct {
     };
   }
 
+  factory RawProduct.fromMap(Map<String, dynamic>? data) {
+    return RawProduct(
+      name: data?['Nome'],
+      ownerId: data?['ownerId'],
+    );
+  }
+
+  Map<String, dynamic> toMap() {
+    return {
+      if (name != null) "Nome": name,
+      if (ownerId != null) "ownerId": ownerId,
+    };
+  }
+
   static Future createNewInstance(RawProduct product) async {
     await FirebaseService.createRawProduct(product);
   }

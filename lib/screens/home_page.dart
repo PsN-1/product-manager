@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:product_manager/constants.dart';
 import 'package:product_manager/screens/add_new_product.dart';
 import 'package:product_manager/screens/login.dart';
-import 'package:product_manager/services/firebase.dart';
+import 'package:product_manager/services/supabase.dart';
 import 'package:product_manager/widgets/main_page_drawer.dart';
 import 'package:product_manager/widgets/products_stream.dart';
 
@@ -15,7 +15,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  var user = FirebaseService.getCurrentUser();
+  var user = SupabaseService.getCurrentUser();
 
   @override
   void initState() {
@@ -27,7 +27,7 @@ class _HomePageState extends State<HomePage> {
   }
 
   void logout() async {
-    await FirebaseService.signOut();
+    await SupabaseService.signOut();
     setState(() {
       Navigator.pop(context);
       Navigator.popAndPushNamed(context, LoginPage.id);

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:product_manager/constants.dart';
-import 'package:product_manager/services/firebase.dart';
+import 'package:product_manager/services/supabase.dart';
 import 'package:product_manager/utils/alert_dialog.dart';
 import 'package:product_manager/widgets/box_button.dart';
 import 'package:product_manager/widgets/box_textfield.dart';
@@ -60,7 +60,7 @@ class _SignupPageState extends State<SignupPage> {
       }
 
       setLoading(true);
-      final accountCreated = await FirebaseService.signUp(
+      final accountCreated = await SupabaseService.signUp(
           _emailController.text, _passwordController.text);
       setLoading(false);
 

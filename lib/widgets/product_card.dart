@@ -40,7 +40,7 @@ class ProductCard extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
                         Text(
-                          product.product!,
+                          product.product ?? "",
                           overflow: TextOverflow.ellipsis,
                           style: const TextStyle(
                             fontSize: 22,

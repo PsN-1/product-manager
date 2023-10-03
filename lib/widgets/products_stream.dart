@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:product_manager/models/product.dart';
 import 'package:product_manager/screens/product_detail.dart';
-import 'package:product_manager/services/firebase.dart';
+import 'package:product_manager/services/supabase.dart';
 import 'package:product_manager/widgets/product_card.dart';
 import 'package:product_manager/widgets/product_search_card.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 class ProductsStream extends StatefulWidget {
   const ProductsStream({super.key});
@@ -39,50 +40,52 @@ class _ProductsStreamState extends State<ProductsStream> {
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<QuerySnapshotProduct>(
-      stream: FirebaseService.getStreamSnapshotProducts(),
-      builder: (context, snapshot) {
-        if (!snapshot.hasData) {
-          return const Center(
-            child: CircularProgressIndicator(
-              backgroundColor: Colors.lightGreenAccent,
-            ),
-          );
-        }
-        final products = snapshot.data?.docs;
-        List<Widget> productsCards = [];
-        productsCards.add(ProductSearchCard(
-          onSearchTapped: _updateSearch,
-        ));
-        for (var productData in products!) {
-          if (_isFilteredProduct(productData.data())) {
-            productsCards.add(
-              ProductCard(
-                product: productData.data(),
-                onTap: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) {
-                    return ProductDetail(
-                      product: productData.data(),
-                      onDelete: () async {
-                        await FirebaseService.deleteProduct(productData.id);
-                      },
-                      onSave: (newProduct) async {
-                        await FirebaseService.updateProduct(
-                            productData.id, newProduct);
-                      },
-                    );
-                  }));
-                },
-              ),
-            );
+    return Scaffold(
+      body: FutureBuilder<List<Map<String, dynamic>>>(
+        future: Supabase.instance.client
+            .from("Products")
+            .select('id, product:product(name), description'),
+        builder: (context, snapshot) {
+          if (!snapshot.hasData) {
+            return const Center(child: CircularProgressIndicator());
           }
-        }
-        productsCards.add(const SizedBox(height: 20));
+          final products = snapshot.data!;
+          List<Widget> productsCards = [];
+          productsCards.add(ProductSearchCard(
+            onSearchTapped: _updateSearch,
+          ));
+          for (var productData in products) {
+            final product = Product.fromMap(productData);
+            if (_isFilteredProduct(product)) {
+              productsCards.add(
+                ProductCard(
+                  product: product,
+                  onTap: () {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) {
+                      return ProductDetail(
+                        product: product,
+                        onDelete: () async {
+                          await SupabaseService.deleteProduct(product.id);
+                        },
+                        onSave: (newProduct) async {
+                          await SupabaseService.updateProduct(
+                              product.id, newProduct);
+                        },
+                      );
+                    }));
+                  },
+                ),
+              );
+            }
+          }
+          productsCards.add(const SizedBox(height: 20));
 
-        return ListView(
-          children: productsCards,
-        );
-      },
+          return ListView(
+            children: productsCards,
+          );
+        },
+      ),
     );
   }
 }

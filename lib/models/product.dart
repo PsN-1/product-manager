@@ -1,6 +1,7 @@
 import 'package:product_manager/services/firebase.dart';
 
 class Product {
+  final int? id;
   final String? product;
   String? description;
   final String? box;
@@ -12,6 +13,7 @@ class Product {
   List<String?>? history;
 
   Product({
+    this.id,
     this.product,
     this.description,
     this.box,
@@ -29,14 +31,14 @@ class Product {
   ) {
     final data = snapshot.data();
     return Product(
-      product: data?['Produto'],
-      description: data?['Descricao'],
-      box: data?['Caixa'],
-      code: data?['Codigo'],
-      ownerId: data?['ownerId'],
-      image: data?['Foto'],
-      price: data?['Preco'],
-      quantity: data?['Quantidade'],
+      product: data?['product'],
+      description: data?['description'],
+      box: data?['box'],
+      code: data?['code'],
+      ownerId: data?['owner_id'],
+      image: data?['photo'],
+      price: data?['price'],
+      quantity: data?['quantity'],
       history:
           data?['Historico'] is Iterable ? List.from(data?['Historico']) : null,
     );
@@ -44,6 +46,37 @@ class Product {
 
   Map<String, dynamic> toFirestore() {
     return {
+      if (product != null) "Produto": product,
+      if (description != null) "Descricao": description,
+      if (box != null) "Caixa": box,
+      if (code != null) "Codigo": code,
+      if (ownerId != null) "ownerId": ownerId,
+      if (image != null) "Foto": image,
+      if (price != null) "Preco": price,
+      if (quantity != null) "Quantidade": quantity,
+      if (history != null) "Historico": history,
+    };
+  }
+
+  factory Product.fromMap(Map<String, dynamic>? data) {
+    return Product(
+      product: data?['product']['name'],
+      id: data?['id'],
+      description: data?['description'],
+      box: data?['box'],
+      code: data?['code'],
+      ownerId: data?['owner_id'],
+      image: data?['photo'],
+      price: data?['price'],
+      quantity: data?['quantity'],
+      // history:
+      // data?['Historico'] is Iterable ? List.from(data?['Historico']) : null,
+    );
+  }
+
+  Map<String, dynamic> toMap() {
+    return {
+      if (id != null) "d": id,
       if (product != null) "Produto": product,
       if (description != null) "Descricao": description,
       if (box != null) "Caixa": box,

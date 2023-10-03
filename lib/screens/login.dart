@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:product_manager/constants.dart';
 import 'package:product_manager/screens/home_page.dart';
 import 'package:product_manager/screens/signup.dart';
-import 'package:product_manager/services/firebase.dart';
+import 'package:product_manager/services/supabase.dart';
 import 'package:product_manager/utils/alert_dialog.dart';
 import 'package:product_manager/widgets/box_button.dart';
 import 'package:product_manager/widgets/box_textfield.dart';
@@ -41,7 +41,7 @@ class _LoginPageState extends State<LoginPage> {
 
   void _handleLogin() async {
     _setLoading(true);
-    isLoggedIn = await FirebaseService.signIn(
+    isLoggedIn = await SupabaseService.signIn(
       _emailTextController.text.trim(),
       _passwordTextController.text.trim(),
     );
