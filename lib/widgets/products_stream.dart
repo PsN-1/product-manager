@@ -41,10 +41,9 @@ class _ProductsStreamState extends State<ProductsStream> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: FutureBuilder<List<Map<String, dynamic>>>(
-        future: Supabase.instance.client
-            .from("Products")
-            .select('id, product:product(name), description'),
+      body: FutureBuilder(
+        future: Supabase.instance.client.from("Products").select(
+            'id, product:product(name), description, code, box, quantity, price, history'),
         builder: (context, snapshot) {
           if (!snapshot.hasData) {
             return const Center(child: CircularProgressIndicator());

@@ -69,23 +69,22 @@ class Product {
       image: data?['photo'],
       price: data?['price'],
       quantity: data?['quantity'],
-      // history:
-      // data?['Historico'] is Iterable ? List.from(data?['Historico']) : null,
+      history:
+          data?['history'] is Iterable ? List.from(data?['history']) : null,
     );
   }
 
   Map<String, dynamic> toMap() {
     return {
-      if (id != null) "d": id,
-      if (product != null) "Produto": product,
-      if (description != null) "Descricao": description,
-      if (box != null) "Caixa": box,
-      if (code != null) "Codigo": code,
-      if (ownerId != null) "ownerId": ownerId,
-      if (image != null) "Foto": image,
-      if (price != null) "Preco": price,
-      if (quantity != null) "Quantidade": quantity,
-      if (history != null) "Historico": history,
+      if (id != null) "id": id,
+      if (description != null) "description": description,
+      if (box != null) "box": box,
+      if (code != null) "code": code,
+      if (ownerId != null) "owner_id": ownerId,
+      if (image != null) "photo": image,
+      if (price != null) "price": price,
+      if (quantity != null) "quantity": quantity,
+      if (history != null) "history": history,
     };
   }
 
@@ -125,10 +124,6 @@ class Product {
     final newImageUrl =
         await FirebaseService.uploadImage(imagePath, _createImageName());
     image = newImageUrl;
-  }
-
-  static Future delete(String id) async {
-    await FirebaseService.deleteProduct(id);
   }
 
   static Future createNewInstance(Product product) async {

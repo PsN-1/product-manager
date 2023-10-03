@@ -17,9 +17,17 @@ class SupabaseService {
   static var getStreamSnapshotProducts =
       _supabase.from(_productsCollection).select<List<Product>>();
 
-  static Future deleteProduct(int? id) async {}
+  static Future deleteProduct(int? id) async {
+    if (id != null) {
+      await productsRef.delete().match({'id': id});
+    }
+  }
 
-  static Future updateProduct(int? id, Product product) async {}
+  static Future updateProduct(int? id, Product product) async {
+    if (id != null) {
+      await productsRef.update(product.toMap()).match({'id': id});
+    }
+  }
 
   // Login
 
