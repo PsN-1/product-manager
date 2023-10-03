@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:product_manager/constants.dart';
 import 'package:product_manager/models/raw_product.dart';
 import 'package:product_manager/services/firebase.dart';
+import 'package:product_manager/services/supabase.dart';
 import 'package:product_manager/utils/snack_bar.dart';
 import 'package:product_manager/widgets/product_search_card.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 class ListOfProducts extends StatefulWidget {
   final void Function(String) onSelected;
@@ -108,8 +110,8 @@ class _ListOfProductsState extends State<ListOfProducts> {
       appBar: AppBar(
         title: const Text('Produtos'),
       ),
-      body: StreamBuilder<QuerySnapshotRawProduct>(
-        stream: FirebaseService.getStreamSnapshotProductsList(),
+      body: FutureBuilder(
+        future: SupabaseService.getFutureProductsList,
         builder: (context, snapshot) {
           if (!snapshot.hasData) {
             return const Center(
@@ -118,18 +120,20 @@ class _ListOfProductsState extends State<ListOfProducts> {
               ),
             );
           }
-          final products = snapshot.data?.docs;
+          final products = snapshot.data!;
           List<Widget> productsCards = [];
           productsCards.add(ProductSearchCard(onSearchTapped: _handleSearch));
 
           for (var rawProduct in products!) {
-            if (_isFilteredProduct(rawProduct.data().name ?? "")) {
+            rawProduct = RawProduct.fromMap(rawProduct);
+
+            if (_isFilteredProduct(rawProduct.name ?? "")) {
               productsCards.add(TextButton(
                   onPressed: () {
-                    widget.onSelected(rawProduct.data().name ?? "");
+                    widget.onSelected(rawProduct.name ?? "");
                     Navigator.pop(context);
                   },
-                  child: Text(rawProduct.data().name ?? "")));
+                  child: Text(rawProduct.name ?? "")));
             }
           }
           return ListView(

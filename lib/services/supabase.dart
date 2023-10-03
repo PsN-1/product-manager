@@ -14,8 +14,10 @@ class SupabaseService {
   static var listOfProductsRef = _supabase.from(_productsListCollection);
   // .withConverter<RawProduct>((data) => RawProduct.fromMap(data));
 
-  static var getStreamSnapshotProducts =
-      _supabase.from(_productsCollection).select<List<Product>>();
+  static var getFutureProducts = productsRef.select(
+      'id, product:product(name), description, code, box, quantity, price, history');
+
+  static var getFutureProductsList = listOfProductsRef.select();
 
   static Future deleteProduct(int? id) async {
     if (id != null) {

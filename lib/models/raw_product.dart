@@ -1,10 +1,12 @@
 import 'package:product_manager/services/firebase.dart';
 
 class RawProduct {
+  final int? id;
   final String? name;
   final String? ownerId;
 
   RawProduct({
+    this.id,
     this.name,
     this.ownerId,
   });
@@ -29,15 +31,17 @@ class RawProduct {
 
   factory RawProduct.fromMap(Map<String, dynamic>? data) {
     return RawProduct(
-      name: data?['Nome'],
-      ownerId: data?['ownerId'],
+      id: data?['id'],
+      name: data?['name'],
+      ownerId: data?['owner_id'],
     );
   }
 
   Map<String, dynamic> toMap() {
     return {
-      if (name != null) "Nome": name,
-      if (ownerId != null) "ownerId": ownerId,
+      if (id != null) "id": id,
+      if (name != null) "name": name,
+      if (ownerId != null) "owner_id": ownerId,
     };
   }
 

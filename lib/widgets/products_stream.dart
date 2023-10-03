@@ -4,7 +4,6 @@ import 'package:product_manager/screens/product_detail.dart';
 import 'package:product_manager/services/supabase.dart';
 import 'package:product_manager/widgets/product_card.dart';
 import 'package:product_manager/widgets/product_search_card.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
 
 class ProductsStream extends StatefulWidget {
   const ProductsStream({super.key});
@@ -42,8 +41,7 @@ class _ProductsStreamState extends State<ProductsStream> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: FutureBuilder(
-        future: Supabase.instance.client.from("Products").select(
-            'id, product:product(name), description, code, box, quantity, price, history'),
+        future: SupabaseService.getFutureProducts,
         builder: (context, snapshot) {
           if (!snapshot.hasData) {
             return const Center(child: CircularProgressIndicator());
