@@ -84,6 +84,7 @@ class _LoginPageState extends State<LoginPage> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              Spacer(),
               const Text(
                 'Controle de Estoque',
                 style: TextStyle(
@@ -127,6 +128,8 @@ class _LoginPageState extends State<LoginPage> {
                   ],
                 ),
               ),
+              Spacer(),
+              const Text("version: 1.22")
             ],
           ),
         ),
