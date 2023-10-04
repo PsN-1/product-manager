@@ -4,6 +4,7 @@ import 'package:product_manager/constants.dart';
 import 'package:product_manager/models/product.dart';
 import 'package:product_manager/screens/list_of_products.dart';
 import 'package:product_manager/services/firebase.dart';
+import 'package:product_manager/services/supabase.dart';
 import 'package:product_manager/utils/snack_bar.dart';
 import 'package:product_manager/widgets/custom_loading.dart';
 import 'package:product_manager/widgets/pickable_async_image.dart';
@@ -71,7 +72,7 @@ class _AddNewProductState extends State<AddNewProduct> {
           box: _boxController.text,
           quantity: _quantityController.text,
           price: _priceController.text,
-          ownerId: FirebaseService.getUserUID());
+          ownerId: SupabaseService.getUserUID());
 
       if (imagePath != null) {
         await product.saveNewImage(imagePath!);

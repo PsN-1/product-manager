@@ -1,4 +1,5 @@
 import 'package:product_manager/services/firebase.dart';
+import 'package:product_manager/services/supabase.dart';
 
 class Product {
   final int? id;
@@ -60,7 +61,7 @@ class Product {
 
   factory Product.fromMap(Map<String, dynamic>? data) {
     return Product(
-      product: data?['product']['name'],
+      product: data?['product'],
       id: data?['id'],
       description: data?['description'],
       box: data?['box'],
@@ -77,6 +78,7 @@ class Product {
   Map<String, dynamic> toMap() {
     return {
       if (id != null) "id": id,
+      if (product != null) "product": product,
       if (description != null) "description": description,
       if (box != null) "box": box,
       if (code != null) "code": code,
@@ -118,16 +120,22 @@ class Product {
 
   Future saveNewImage(String imagePath) async {
     if (image != null) {
-      await FirebaseService.removeImage(image!);
+      await SupabaseService.removeImage(image!);
     }
 
     final newImageUrl =
-        await FirebaseService.uploadImage(imagePath, _createImageName());
+        await SupabaseService.uploadImage(imagePath, _createImageName());
     image = newImageUrl;
   }
 
+  Future getImageUrl() async {
+    if (image != null) {
+      return await SupabaseService.getImageUrl(image!);
+    }
+  }
+
   static Future createNewInstance(Product product) async {
-    await FirebaseService.createProduct(product);
+    await SupabaseService.createProduct(product);
   }
 
   String _createImageName() {

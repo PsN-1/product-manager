@@ -40,8 +40,8 @@ class _ProductsStreamState extends State<ProductsStream> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: FutureBuilder(
-        future: SupabaseService.getFutureProducts,
+      body: StreamBuilder(
+        stream: SupabaseService.getFutureProducts,
         builder: (context, snapshot) {
           if (!snapshot.hasData) {
             return const Center(child: CircularProgressIndicator());

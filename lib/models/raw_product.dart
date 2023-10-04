@@ -1,4 +1,5 @@
 import 'package:product_manager/services/firebase.dart';
+import 'package:product_manager/services/supabase.dart';
 
 class RawProduct {
   final int? id;
@@ -30,6 +31,7 @@ class RawProduct {
   }
 
   factory RawProduct.fromMap(Map<String, dynamic>? data) {
+    print(data);
     return RawProduct(
       id: data?['id'],
       name: data?['name'],
@@ -46,6 +48,6 @@ class RawProduct {
   }
 
   static Future createNewInstance(RawProduct product) async {
-    await FirebaseService.createRawProduct(product);
+    await SupabaseService.createRawProduct(product);
   }
 }

@@ -39,7 +39,7 @@ class _ListOfProductsState extends State<ListOfProducts> {
   void _saveNewProduct() async {
     final newRawProduct = RawProduct(
       name: _addNewProductController.text,
-      ownerId: FirebaseService.getUserUID(),
+      ownerId: SupabaseService.getUserUID(),
     );
     await RawProduct.createNewInstance(newRawProduct);
     showSuccessMessage();
@@ -110,8 +110,8 @@ class _ListOfProductsState extends State<ListOfProducts> {
       appBar: AppBar(
         title: const Text('Produtos'),
       ),
-      body: FutureBuilder(
-        future: SupabaseService.getFutureProductsList,
+      body: StreamBuilder(
+        stream: SupabaseService.getFutureProductsList,
         builder: (context, snapshot) {
           if (!snapshot.hasData) {
             return const Center(
@@ -123,10 +123,8 @@ class _ListOfProductsState extends State<ListOfProducts> {
           final products = snapshot.data!;
           List<Widget> productsCards = [];
           productsCards.add(ProductSearchCard(onSearchTapped: _handleSearch));
-
-          for (var rawProduct in products!) {
-            rawProduct = RawProduct.fromMap(rawProduct);
-
+          for (var rawData in products) {
+            final rawProduct = RawProduct.fromMap(rawData);
             if (_isFilteredProduct(rawProduct.name ?? "")) {
               productsCards.add(TextButton(
                   onPressed: () {
@@ -136,6 +134,7 @@ class _ListOfProductsState extends State<ListOfProducts> {
                   child: Text(rawProduct.name ?? "")));
             }
           }
+          productsCards.add(const SizedBox(height: 30));
           return ListView(
             children: productsCards,
           );
