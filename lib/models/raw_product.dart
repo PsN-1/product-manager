@@ -1,4 +1,3 @@
-import 'package:product_manager/services/firebase.dart';
 import 'package:product_manager/services/supabase.dart';
 
 class RawProduct {
@@ -12,26 +11,7 @@ class RawProduct {
     this.ownerId,
   });
 
-  factory RawProduct.fromFirestore(
-    DocumentSnapshotMapStringDynamic snapshot,
-    ObjectSnapshotOptions? options,
-  ) {
-    final data = snapshot.data();
-    return RawProduct(
-      name: data?['Nome'],
-      ownerId: data?['ownerId'],
-    );
-  }
-
-  Map<String, dynamic> toFirestore() {
-    return {
-      if (name != null) "Nome": name,
-      if (ownerId != null) "ownerId": ownerId,
-    };
-  }
-
   factory RawProduct.fromMap(Map<String, dynamic>? data) {
-    print(data);
     return RawProduct(
       id: data?['id'],
       name: data?['name'],

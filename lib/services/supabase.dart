@@ -14,10 +14,8 @@ const _productsListCollection = 'ProductsList';
 
 class SupabaseService {
   static var productsRef = _supabase.from(_productsCollection);
-  // .withConverter<Product>((data) => Product.fromMap(data));
 
   static var listOfProductsRef = _supabase.from(_productsListCollection);
-  // .withConverter<RawProduct>((data) => RawProduct.fromMap(data));
 
   static var getFutureProducts = productsRef.stream(primaryKey: ['id']);
 
@@ -45,24 +43,12 @@ class SupabaseService {
   }
 
   // Image
-  //
+
   static Future<String> getImageUrl(String image) async {
     final pathReference = await _storageRef.createSignedUrl(image, 3600);
-    return pathReference;
 
-    // try {
-    //   final imageUrl = await pathReference.getDownloadURL();
-    //   return imageUrl;
-    // } catch (e) {
-    //   return "";
-    // }
+    return pathReference;
   }
-  //
-  // Future<String> getImage(String image) async {
-  //   final pathReference = _storageRef.child('$image.jpg');
-  //   final imageUrl = await pathReference.getDownloadURL();
-  //   return imageUrl;
-  // }
 
   static Future<String> uploadImage(String imagePath, String imageName) async {
     File imageFile = File(imagePath);
@@ -108,6 +94,7 @@ class SupabaseService {
       await _auth.signInWithPassword(email: email, password: password);
       return _auth.currentUser != null;
     } catch (e) {
+      print(e);
       return false;
     }
   }

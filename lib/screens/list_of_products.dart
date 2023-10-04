@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:product_manager/constants.dart';
 import 'package:product_manager/models/raw_product.dart';
-import 'package:product_manager/services/firebase.dart';
 import 'package:product_manager/services/supabase.dart';
 import 'package:product_manager/utils/snack_bar.dart';
 import 'package:product_manager/widgets/product_search_card.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
 
 class ListOfProducts extends StatefulWidget {
   final void Function(String) onSelected;

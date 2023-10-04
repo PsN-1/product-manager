@@ -3,7 +3,6 @@ import 'package:flutter/services.dart';
 import 'package:product_manager/constants.dart';
 import 'package:product_manager/models/product.dart';
 import 'package:product_manager/screens/list_of_products.dart';
-import 'package:product_manager/services/firebase.dart';
 import 'package:product_manager/services/supabase.dart';
 import 'package:product_manager/utils/snack_bar.dart';
 import 'package:product_manager/widgets/custom_loading.dart';
@@ -141,7 +140,7 @@ class _AddNewProductState extends State<AddNewProduct> {
                   inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                 ),
                 const SizedBox(height: 20),
-                Text(
+                const Text(
                   'Preço',
                   style: kLabelStyle,
                 ),

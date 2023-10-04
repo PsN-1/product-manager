@@ -1,4 +1,3 @@
-import 'package:product_manager/services/firebase.dart';
 import 'package:product_manager/services/supabase.dart';
 
 class Product {
@@ -25,39 +24,6 @@ class Product {
     this.quantity,
     this.history,
   });
-
-  factory Product.fromFirestore(
-    DocumentSnapshotMapStringDynamic snapshot,
-    ObjectSnapshotOptions? options,
-  ) {
-    final data = snapshot.data();
-    return Product(
-      product: data?['product'],
-      description: data?['description'],
-      box: data?['box'],
-      code: data?['code'],
-      ownerId: data?['owner_id'],
-      image: data?['photo'],
-      price: data?['price'],
-      quantity: data?['quantity'],
-      history:
-          data?['Historico'] is Iterable ? List.from(data?['Historico']) : null,
-    );
-  }
-
-  Map<String, dynamic> toFirestore() {
-    return {
-      if (product != null) "Produto": product,
-      if (description != null) "Descricao": description,
-      if (box != null) "Caixa": box,
-      if (code != null) "Codigo": code,
-      if (ownerId != null) "ownerId": ownerId,
-      if (image != null) "Foto": image,
-      if (price != null) "Preco": price,
-      if (quantity != null) "Quantidade": quantity,
-      if (history != null) "Historico": history,
-    };
-  }
 
   factory Product.fromMap(Map<String, dynamic>? data) {
     return Product(
