@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:product_manager/constants.dart';
 
 class MainPageDrawer extends StatelessWidget {
   final String user;
@@ -36,7 +37,7 @@ class MainPageDrawer extends StatelessWidget {
                 const SizedBox(height: 20),
                 Text('Platform ${(kIsWeb) ? "Web" : Platform.operatingSystem}'),
                 const SizedBox(height: 20),
-                const Text("Version: 0.23"),
+                const Text("Version: ${K.appVersion}"),
                 const SizedBox(height: 20),
                 TextButton(
                     onPressed: onLogoutPressed, child: const Text('Sair')),

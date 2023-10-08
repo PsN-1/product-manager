@@ -129,7 +129,8 @@ class _LoginPageState extends State<LoginPage> {
                 ),
               ),
               const Spacer(),
-              const Text("version: 1.22")
+              const Text("Version: ${K.appVersion}"),
+              const SizedBox(height: 10),
             ],
           ),
         ),
