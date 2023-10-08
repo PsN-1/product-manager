@@ -84,7 +84,10 @@ class _ProductDetailState extends State<ProductDetail> {
 
   void showSuccessMessage() {
     CustomSnackBar.showSuccessMessage(
-        context, "Produto atualizado com sucesso", () {});
+      context,
+      "Produto atualizado com sucesso",
+      () {},
+    );
   }
 
   void _deleteProduct() async {
@@ -127,38 +130,39 @@ class _ProductDetailState extends State<ProductDetail> {
                 ),
                 const SizedBox(height: 20),
                 const SizedBox(height: 20),
-                const Text("Produto", style: kLabelStyle),
-                Text(widget.product.product ?? "", style: kTextStyle),
+                const Text("Produto", style: K.labelStyle),
+                Text(widget.product.product ?? "", style: K.textStyle),
                 const SizedBox(height: 20),
 
-                const Text("Descrição", style: kLabelStyle),
+                const Text("Descrição", style: K.labelStyle),
                 // Text(widget.product.description ?? "", style: textStyle),
                 TextField(
                   controller: descriptionTextController,
-                  style: kTextStyle,
+                  style: K.textStyle,
                 ),
 
                 const SizedBox(height: 20),
-                const Text("Caixa ", style: kLabelStyle),
-                Text(widget.product.box ?? "", style: kTextStyle),
+                const Text("Caixa ", style: K.labelStyle),
+                Text(widget.product.box ?? "", style: K.textStyle),
                 const SizedBox(height: 20),
                 const Text(
                   "Preço",
-                  style: kLabelStyle,
+                  style: K.labelStyle,
                 ),
                 TextField(
                   controller: priceController,
-                  style: kTextStyle,
+                  style: K.textStyle,
                 ),
                 const SizedBox(height: 20),
                 Row(
                   children: [
-                    const Text("Quantidade: ", style: kLabelStyle),
+                    const Text("Quantidade: ", style: K.labelStyle),
                     const Spacer(),
                     Visibility(
                       visible: isNewQuantity,
-                      child: const Text("Valor anterior: ", style: kLabelStyle),
-                    ),
+                      child:
+                          const Text("Valor anterior: ", style: K.labelStyle),
+                    )
                   ],
                 ),
                 Row(
@@ -169,7 +173,7 @@ class _ProductDetailState extends State<ProductDetail> {
                         padding: const EdgeInsets.all(0),
                         onPressed: _decreaseQuantity,
                         icon: const Icon(Icons.remove)),
-                    Text(widget.product.quantity ?? "", style: kTextStyle),
+                    Text(widget.product.quantity ?? "", style: K.textStyle),
                     IconButton(
                         alignment: Alignment.centerRight,
                         padding: const EdgeInsets.all(0),
@@ -180,15 +184,15 @@ class _ProductDetailState extends State<ProductDetail> {
                       visible: isNewQuantity,
                       child: Text(
                         oldQuantity,
-                        style: kTextStyle.copyWith(color: Colors.red),
+                        style: K.textStyle.copyWith(color: Colors.red),
                       ),
                     ),
                   ],
                 ),
                 const SizedBox(height: 20),
-                const Text('Últimas atualizações: ', style: kLabelStyle),
+                const Text('Últimas atualizações: ', style: K.labelStyle),
                 for (var str in widget.product.history ?? [])
-                  Text(str, style: kHistoryStyle),
+                  Text(str, style: K.historyStyle),
 
                 const SizedBox(height: 40),
                 Row(
@@ -204,7 +208,7 @@ class _ProductDetailState extends State<ProductDetail> {
                               message: "Deseja mesmo apagar o produto?",
                               okPressed: _deleteProduct);
                         },
-                        style: kDeleteButtonStyle,
+                        style: K.deleteButtonStyle,
                         child: const Text("Apagar"),
                       ),
                     OutlinedButton(

@@ -44,7 +44,7 @@ class _HomePageState extends State<HomePage> {
 
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: kPrimaryColor,
+        backgroundColor: K.primaryColor,
         title: const Text("Controle de Estoque"),
       ),
       body: const SafeArea(
@@ -53,7 +53,7 @@ class _HomePageState extends State<HomePage> {
       floatingActionButton: FloatingActionButton(
         onPressed: goToAddNewProduct,
         tooltip: 'Increment',
-        backgroundColor: kPrimaryColor,
+        backgroundColor: K.primaryColor,
         child: const Icon(Icons.add),
       ),
       drawer: MainPageDrawer(

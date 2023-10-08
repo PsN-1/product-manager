@@ -75,7 +75,7 @@ class _ListOfProductsState extends State<ListOfProducts> {
                   children: [
                     const Text(
                       "Adicionar novo Produto: ",
-                      style: kLabelStyle,
+                      style: K.labelStyle,
                     ),
                     TextField(
                       controller: _addNewProductController,

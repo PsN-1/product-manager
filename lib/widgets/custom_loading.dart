@@ -13,7 +13,7 @@ class CustomModalHUD extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlurryModalProgressHUD(
       inAsyncCall: isLoading,
-      progressIndicator: const CircularProgressIndicator(color: kPrimaryColor),
+      progressIndicator: const CircularProgressIndicator(color: K.primaryColor),
       child: child,
     );
   }

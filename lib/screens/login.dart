@@ -76,7 +76,7 @@ class _LoginPageState extends State<LoginPage> {
     final double windowWidth = MediaQuery.of(context).size.width;
 
     return Scaffold(
-      backgroundColor: kBackgroundColor,
+      backgroundColor: K.backgroundColor,
       body: CustomModalHUD(
         isLoading: _isLoading,
         child: Padding(
@@ -84,7 +84,7 @@ class _LoginPageState extends State<LoginPage> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Spacer(),
+              const Spacer(),
               const Text(
                 'Controle de Estoque',
                 style: TextStyle(
@@ -96,7 +96,7 @@ class _LoginPageState extends State<LoginPage> {
               Text(
                 "Login",
                 textAlign: TextAlign.left,
-                style: kLabelStyle.copyWith(fontSize: 22),
+                style: K.labelStyle.copyWith(fontSize: 22),
               ),
               const SizedBox(height: 50),
               BoxTextField(
@@ -128,7 +128,7 @@ class _LoginPageState extends State<LoginPage> {
                   ],
                 ),
               ),
-              Spacer(),
+              const Spacer(),
               const Text("version: 1.22")
             ],
           ),

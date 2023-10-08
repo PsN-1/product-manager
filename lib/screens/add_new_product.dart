@@ -101,52 +101,52 @@ class _AddNewProductState extends State<AddNewProduct> {
                 const SizedBox(height: 20),
                 const Text(
                   'Produto',
-                  style: kLabelStyle,
+                  style: K.labelStyle,
                 ),
                 TextField(
                   controller: _productController,
-                  style: kTextStyle,
+                  style: K.textStyle,
                   readOnly: true,
                   onTap: goToProductSelectionScreen,
                 ),
                 const SizedBox(height: 20),
                 const Text(
                   'Descrição',
-                  style: kLabelStyle,
+                  style: K.labelStyle,
                 ),
                 TextField(
                   controller: _descriptionController,
-                  style: kTextStyle,
+                  style: K.textStyle,
                 ),
                 const SizedBox(height: 20),
                 const Text(
                   "Caixa",
-                  style: kLabelStyle,
+                  style: K.labelStyle,
                 ),
                 TextField(
                     controller: _boxController,
-                    style: kTextStyle,
+                    style: K.textStyle,
                     keyboardType: TextInputType.number,
                     inputFormatters: [FilteringTextInputFormatter.digitsOnly]),
                 const SizedBox(height: 20),
                 const Text(
                   "Quantidade",
-                  style: kLabelStyle,
+                  style: K.labelStyle,
                 ),
                 TextField(
                   controller: _quantityController,
-                  style: kTextStyle,
+                  style: K.textStyle,
                   keyboardType: TextInputType.number,
                   inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                 ),
                 const SizedBox(height: 20),
                 const Text(
                   'Preço',
-                  style: kLabelStyle,
+                  style: K.labelStyle,
                 ),
                 TextField(
                   controller: _priceController,
-                  style: kTextStyle,
+                  style: K.textStyle,
                 ),
                 const SizedBox(height: 40),
                 Row(

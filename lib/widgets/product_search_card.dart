@@ -28,11 +28,11 @@ class ProductSearchCard extends StatelessWidget {
               children: [
                 const Text(
                   'Busca',
-                  style: kLabelStyle,
+                  style: K.labelStyle,
                 ),
                 TextField(
                   controller: _searchController,
-                  decoration: kTextFieldInputDecoration,
+                  decoration: K.textFieldInputDecoration,
                 ),
                 const SizedBox(height: 10),
                 OutlinedButton.icon(

@@ -21,7 +21,7 @@ class BoxButton extends StatelessWidget {
             const EdgeInsets.only(top: 15, bottom: 15, right: 25, left: 25),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(20),
-          color: isPrimary ? kPrimaryColor : Colors.white,
+          color: isPrimary ? K.primaryColor : Colors.white,
           boxShadow: [
             BoxShadow(
               offset: const Offset(0, 3),
@@ -34,7 +34,7 @@ class BoxButton extends StatelessWidget {
           child: Text(
             text,
             style: TextStyle(
-              color: isPrimary ? Colors.white : kPrimaryColor,
+              color: isPrimary ? Colors.white : K.primaryColor,
               fontSize: 16,
             ),
           ),

@@ -68,7 +68,7 @@ class _SignupPageState extends State<SignupPage> {
     }
 
     return Scaffold(
-      backgroundColor: kBackgroundColor,
+      backgroundColor: K.backgroundColor,
       body: CustomModalHUD(
         isLoading: _isLoading,
         child: Container(
@@ -86,7 +86,7 @@ class _SignupPageState extends State<SignupPage> {
               const SizedBox(height: 30),
               Text(
                 "Cadastro",
-                style: kLabelStyle.copyWith(fontSize: 22),
+                style: K.labelStyle.copyWith(fontSize: 22),
               ),
               const SizedBox(height: 50),
               BoxTextField(
