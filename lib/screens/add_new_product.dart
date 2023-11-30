@@ -156,6 +156,7 @@ class _AddNewProductState extends State<AddNewProduct> {
                         onPressed: dismiss, child: const Text("Cancel")),
                     OutlinedButton(
                         onPressed: createNewProduct,
+                        style: K.saveButtonStyle,
                         child: const Text("Salvar")),
                   ],
                 )

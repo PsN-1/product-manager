@@ -22,27 +22,28 @@ class ProductSearchCard extends StatelessWidget {
         padding: const EdgeInsets.all(3),
         margin: const EdgeInsets.all(15),
         child: Container(
-            padding:
-                const EdgeInsets.only(left: 20, right: 20, bottom: 5, top: 5),
-            child: Column(
-              children: [
-                const Text(
-                  'Busca',
-                  style: K.labelStyle,
-                ),
-                TextField(
-                  controller: _searchController,
-                  decoration: K.textFieldInputDecoration,
-                ),
-                const SizedBox(height: 10),
-                OutlinedButton.icon(
-                    onPressed: () {
-                      onSearchTapped(_searchController.text);
-                    },
-                    icon: const Icon(Icons.search),
-                    label: const Text("Procurar"))
-              ],
-            )),
+          padding:
+              const EdgeInsets.only(left: 20, right: 20, bottom: 5, top: 5),
+          child: Column(
+            children: [
+              const Text(
+                'Busca',
+                style: K.labelStyle,
+              ),
+              TextField(
+                controller: _searchController,
+                decoration: K.textFieldInputDecoration,
+              ),
+              const SizedBox(height: 10),
+              OutlinedButton.icon(
+                  onPressed: () {
+                    onSearchTapped(_searchController.text);
+                  },
+                  icon: const Icon(Icons.search),
+                  label: const Text("Procurar"))
+            ],
+          ),
+        ),
       ),
     );
   }

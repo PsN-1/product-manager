@@ -30,9 +30,10 @@ class ProductCard extends StatelessWidget {
                 children: [
                   if (product.image != null && product.image!.isNotEmpty)
                     SizedBox(
-                        height: 100,
-                        width: 100,
-                        child: AsyncImage(image: product.image!)),
+                      height: 100,
+                      width: 100,
+                      child: AsyncImage(image: product.image!),
+                    ),
                   const SizedBox(width: 10),
                   Expanded(
                     child: Column(

@@ -88,6 +88,7 @@ class _ListOfProductsState extends State<ListOfProducts> {
                             onPressed: dismiss, child: const Text("Cancelar")),
                         OutlinedButton(
                             onPressed: _saveNewProduct,
+                            style: K.saveButtonStyle,
                             child: const Text("Adicionar")),
                       ],
                     )

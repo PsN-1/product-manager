@@ -212,7 +212,10 @@ class _ProductDetailState extends State<ProductDetail> {
                         child: const Text("Apagar"),
                       ),
                     OutlinedButton(
-                        onPressed: _updateProduct, child: const Text("Salvar")),
+                      onPressed: _updateProduct,
+                      style: K.saveButtonStyle,
+                      child: const Text("Salvar"),
+                    )
                   ],
                 ),
               ],

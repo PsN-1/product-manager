@@ -22,15 +22,26 @@ class SupabaseService {
   static var getFutureProductsList =
       listOfProductsRef.stream(primaryKey: ['id']);
 
-  static Future deleteProduct(int? id) async {
-    if (id != null) {
-      await productsRef.delete().match({'id': id});
+  static Future<bool> deleteProduct(int? id) async {
+    try {
+      if (id != null) {
+        await productsRef.delete().match({'id': id});
+      }
+
+      return true;
+    } catch (e) {
+      return false;
     }
   }
 
-  static Future updateProduct(int? id, Product product) async {
-    if (id != null) {
-      await productsRef.update(product.toMap()).match({'id': id});
+  static Future<bool> updateProduct(int? id, Product product) async {
+    try {
+      if (id != null) {
+        await productsRef.update(product.toMap()).match({'id': id});
+      }
+      return true;
+    } catch (e) {
+      return false;
     }
   }
 

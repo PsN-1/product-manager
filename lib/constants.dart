@@ -18,6 +18,10 @@ class K {
     foregroundColor: MaterialStatePropertyAll(Colors.white),
   );
 
+  static const saveButtonStyle = ButtonStyle(
+    backgroundColor: MaterialStatePropertyAll(primaryColor),
+    foregroundColor: MaterialStatePropertyAll(Colors.white),
+  );
   static const textFieldInputDecoration = InputDecoration(
     fillColor: Colors.white,
     hintText: 'Palavra-Chave...',
