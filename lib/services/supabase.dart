@@ -115,6 +115,7 @@ class SupabaseService {
       await _auth.signUp(email: email, password: password);
       return _auth.currentUser != null;
     } catch (e) {
+      print(e);
       return false;
     }
   }

@@ -36,11 +36,12 @@ class ProductSearchCard extends StatelessWidget {
               ),
               const SizedBox(height: 10),
               OutlinedButton.icon(
-                  onPressed: () {
-                    onSearchTapped(_searchController.text);
-                  },
-                  icon: const Icon(Icons.search),
-                  label: const Text("Procurar"))
+                onPressed: () {
+                  onSearchTapped(_searchController.text);
+                },
+                icon: const Icon(Icons.search),
+                label: const Text("Procurar"),
+              )
             ],
           ),
         ),
