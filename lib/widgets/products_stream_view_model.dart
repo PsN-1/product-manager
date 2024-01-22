@@ -24,32 +24,6 @@ class ProductsStreamViewModel {
         hasHistoryDate;
   }
 
-  bool test(Product product) {
-    if (searchText.isEmpty) {
-      return true;
-    }
-
-    if (product.product?.toLowerCase().contains(searchText.toLowerCase()) ??
-        false) {
-      return true;
-    }
-
-    if (product.description?.toLowerCase().contains(searchText.toLowerCase()) ??
-        false) {
-      return true;
-    }
-
-    if (product.box == searchText) {
-      return true;
-    }
-
-    if (checkHasHistoryDate(searchText, product.history)) {
-      return true;
-    }
-
-    return false;
-  }
-
   bool checkHasHistoryDate(String searchText, List<String?>? history) {
     if (history == null) {
       return false;
