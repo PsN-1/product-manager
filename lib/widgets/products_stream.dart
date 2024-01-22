@@ -4,6 +4,7 @@ import 'package:product_manager/screens/product_detail.dart';
 import 'package:product_manager/services/supabase.dart';
 import 'package:product_manager/widgets/product_card.dart';
 import 'package:product_manager/widgets/product_search_card.dart';
+import 'package:product_manager/widgets/products_stream_view_model.dart';
 
 class ProductsStream extends StatefulWidget {
   const ProductsStream({super.key});
@@ -13,48 +14,12 @@ class ProductsStream extends StatefulWidget {
 }
 
 class _ProductsStreamState extends State<ProductsStream> {
-  String searchText = "";
+  var viewModel = ProductsStreamViewModel();
 
   void _updateSearch(String newSearchText) {
     setState(() {
-      searchText = newSearchText;
+      viewModel.searchText = newSearchText;
     });
-  }
-
-  bool _isFilteredProduct(Product product) {
-    if (searchText.isEmpty) {
-      return true;
-    }
-
-    bool hasProductText =
-        product.product?.toLowerCase().contains(searchText.toLowerCase()) ??
-            false;
-    bool hasDescriptionText =
-        product.description?.toLowerCase().contains(searchText.toLowerCase()) ??
-            false;
-    bool hasBoxNumber = product.box == searchText;
-
-    bool hasHistoryDate = checkHasHistoryDate(searchText, product.history);
-
-    return hasProductText ||
-        hasDescriptionText ||
-        hasBoxNumber ||
-        hasHistoryDate;
-  }
-
-  bool checkHasHistoryDate(String searchText, List<String?>? history) {
-    if (history == null) {
-      return false;
-    }
-    for (final element in history) {
-      if (element == null) {
-        continue;
-      }
-      if (element.startsWith(searchText)) {
-        return true;
-      }
-    }
-    return false;
   }
 
   List<Widget> createProductsCard(List<Map<String, dynamic>> products) {
@@ -67,7 +32,7 @@ class _ProductsStreamState extends State<ProductsStream> {
 
     for (var productData in products) {
       final product = Product.fromMap(productData);
-      if (_isFilteredProduct(product)) {
+      if (viewModel.isFilteredProduct(product)) {
         productsCards.add(
           ProductCard(
             product: product,
