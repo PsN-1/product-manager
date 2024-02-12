@@ -4,7 +4,7 @@ class Product {
   final int? id;
   final String? product;
   String? description;
-  final String? box;
+  String? box;
   final String? code;
   final String? ownerId;
   String? price;

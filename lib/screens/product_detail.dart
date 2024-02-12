@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:product_manager/constants.dart';
 import 'package:product_manager/models/product.dart';
 import 'package:product_manager/utils/alert_dialog.dart';
@@ -82,6 +83,51 @@ class _ProductDetailState extends State<ProductDetail> {
     _dismiss();
   }
 
+  void updateNewBox() async {
+    _dismiss();
+    setLoading(true);
+    setState(() async {
+      widget.product.box = newBoxController.text;
+      await widget.onSave(widget.product);
+      setLoading(false);
+      showSuccessMessage();
+      _dismiss();
+    });
+  }
+
+  var newBoxController = TextEditingController();
+  void _changeProductBox() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) => AlertDialog(
+        title: Column(
+          children: [
+            const Text("Qual sera a nova caixa"),
+            TextField(
+              controller: newBoxController,
+              keyboardType: TextInputType.number,
+              inputFormatters: [
+                FilteringTextInputFormatter.digitsOnly,
+              ],
+            ),
+          ],
+        ),
+        actionsAlignment: MainAxisAlignment.spaceBetween,
+        actions: [
+          OutlinedButton(
+            onPressed: _dismiss,
+            child: const Text("Cancelar"),
+          ),
+          OutlinedButton(
+            onPressed: updateNewBox,
+            style: K.deleteButtonStyle,
+            child: const Text("Confirmar"),
+          ),
+        ],
+      ),
+    );
+  }
+
   void showSuccessMessage() {
     CustomSnackBar.showSuccessMessage(
       context,
@@ -142,8 +188,22 @@ class _ProductDetailState extends State<ProductDetail> {
                 ),
 
                 const SizedBox(height: 20),
-                const Text("Caixa ", style: K.labelStyle),
-                Text(widget.product.box ?? "", style: K.textStyle),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text("Caixa ", style: K.labelStyle),
+                    Row(
+                      children: [
+                        Text(widget.product.box ?? "", style: K.textStyle),
+                        const Spacer(),
+                        OutlinedButton(
+                          onPressed: _changeProductBox,
+                          child: const Text("Mover"),
+                        )
+                      ],
+                    ),
+                  ],
+                ),
                 const SizedBox(height: 20),
                 const Text(
                   "Preço",
