@@ -71,17 +71,17 @@ class Product {
     }
   }
 
-  void saveToHistory(String oldValue, String newValue) {
+  void saveToHistory(
+      {required String oldValue,
+      required String newValue,
+      bool isBox = false}) {
     final date = _getDate();
 
     history ??= [];
-    final newEntry = "$date - Qtd: $oldValue  ->  $newValue";
+    String item = isBox ? "Box" : "Qtd";
+    final newEntry = "$date - $item: $oldValue  ->  $newValue";
 
     history?.insert(0, newEntry);
-
-    if (history!.length > 3) {
-      history?.removeLast();
-    }
   }
 
   Future saveNewImage(String imagePath) async {

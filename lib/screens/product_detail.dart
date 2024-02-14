@@ -64,8 +64,10 @@ class _ProductDetailState extends State<ProductDetail> {
 
     setState(() {
       if (isNewQuantity) {
-        widget.product
-            .saveToHistory(oldQuantity, widget.product.quantity ?? "");
+        widget.product.saveToHistory(
+          oldValue: oldQuantity,
+          newValue: widget.product.quantity ?? "",
+        );
         oldQuantity = widget.product.quantity ?? "";
       }
     });
@@ -87,7 +89,14 @@ class _ProductDetailState extends State<ProductDetail> {
     _dismiss();
     setLoading(true);
     setState(() async {
+      String oldBox = widget.product.box ?? "";
       widget.product.box = newBoxController.text;
+      widget.product.saveToHistory(
+        oldValue: oldBox,
+        newValue: newBoxController.text,
+        isBox: true,
+      );
+
       await widget.onSave(widget.product);
       setLoading(false);
       showSuccessMessage();
@@ -251,8 +260,10 @@ class _ProductDetailState extends State<ProductDetail> {
                 ),
                 const SizedBox(height: 20),
                 const Text('Últimas atualizações: ', style: K.labelStyle),
-                for (var str in widget.product.history ?? [])
-                  Text(str, style: K.historyStyle),
+                for (var str in (widget.product.history ?? []).take(3))
+                  (str != null)
+                      ? Text(str, style: K.historyStyle)
+                      : const Text(""),
 
                 const SizedBox(height: 40),
                 Row(

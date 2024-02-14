@@ -37,17 +37,23 @@ class _ProductsStreamState extends State<ProductsStream> {
           ProductCard(
             product: product,
             onTap: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context) {
-                return ProductDetail(
-                  product: product,
-                  onDelete: () async {
-                    await SupabaseService.deleteProduct(product.id);
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) {
+                    return ProductDetail(
+                      product: product,
+                      onDelete: () async {
+                        await SupabaseService.deleteProduct(product.id);
+                      },
+                      onSave: (newProduct) async {
+                        await SupabaseService.updateProduct(
+                            product.id, newProduct);
+                      },
+                    );
                   },
-                  onSave: (newProduct) async {
-                    await SupabaseService.updateProduct(product.id, newProduct);
-                  },
-                );
-              }));
+                ),
+              );
             },
           ),
         );
