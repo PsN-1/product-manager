@@ -137,6 +137,26 @@ class _ProductDetailState extends State<ProductDetail> {
     );
   }
 
+  void showFullProductHistory() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) => AlertDialog(
+        title: SizedBox(
+          width: 300,
+          height: 300,
+          child: ListView(
+            children: [
+              const Text('Últimas atualizações: ', style: K.labelStyle),
+              const Text(""),
+              for (var str in widget.product.history ?? [])
+                Text(str, style: K.historyStyle)
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
   void showSuccessMessage() {
     CustomSnackBar.showSuccessMessage(
       context,
@@ -260,10 +280,18 @@ class _ProductDetailState extends State<ProductDetail> {
                 ),
                 const SizedBox(height: 20),
                 const Text('Últimas atualizações: ', style: K.labelStyle),
-                for (var str in (widget.product.history ?? []).take(3))
-                  (str != null)
-                      ? Text(str, style: K.historyStyle)
-                      : const Text(""),
+                GestureDetector(
+                  onTap: showFullProductHistory,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      for (var str in (widget.product.history ?? []).take(3))
+                        (str != null)
+                            ? Text(str, style: K.historyStyle)
+                            : const Text(""),
+                    ],
+                  ),
+                ),
 
                 const SizedBox(height: 40),
                 Row(
