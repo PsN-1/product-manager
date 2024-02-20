@@ -12,11 +12,12 @@ class ProductDetail extends StatefulWidget {
   final Future Function(Product) onSave;
   final Future Function() onDelete;
 
-  const ProductDetail(
-      {super.key,
-      required this.product,
-      required this.onSave,
-      required this.onDelete});
+  const ProductDetail({
+    super.key,
+    required this.product,
+    required this.onSave,
+    required this.onDelete,
+  });
 
   @override
   State<ProductDetail> createState() => _ProductDetailState();
@@ -27,6 +28,7 @@ class _ProductDetailState extends State<ProductDetail> {
   var priceController = TextEditingController();
 
   late String oldQuantity;
+
   bool _isLoading = false;
   String? newImagePath;
 
@@ -55,6 +57,14 @@ class _ProductDetailState extends State<ProductDetail> {
     return oldQuantity != widget.product.quantity;
   }
 
+  bool get isNewDescription {
+    return descriptionTextController.text != widget.product.description;
+  }
+
+  bool get isNewPrice {
+    return priceController.text != widget.product.price;
+  }
+
   void _dismiss() {
     Navigator.pop(context);
   }
@@ -67,12 +77,29 @@ class _ProductDetailState extends State<ProductDetail> {
         widget.product.saveToHistory(
           oldValue: oldQuantity,
           newValue: widget.product.quantity ?? "",
+          unity: HistoryUnity.quantity,
         );
         oldQuantity = widget.product.quantity ?? "";
       }
+
+      if (isNewDescription) {
+        widget.product.saveToHistory(
+          oldValue: widget.product.description ?? "",
+          newValue: descriptionTextController.text,
+          unity: HistoryUnity.description,
+        );
+        widget.product.description = descriptionTextController.text;
+      }
+
+      if (isNewPrice) {
+        widget.product.saveToHistory(
+          oldValue: widget.product.price ?? "",
+          newValue: priceController.text,
+          unity: HistoryUnity.price,
+        );
+        widget.product.price = priceController.text;
+      }
     });
-    widget.product.description = descriptionTextController.text;
-    widget.product.price = priceController.text;
 
     if (newImagePath != null) {
       await widget.product.saveNewImage(newImagePath!);
@@ -94,7 +121,7 @@ class _ProductDetailState extends State<ProductDetail> {
       widget.product.saveToHistory(
         oldValue: oldBox,
         newValue: newBoxController.text,
-        isBox: true,
+        unity: HistoryUnity.box,
       );
 
       await widget.onSave(widget.product);

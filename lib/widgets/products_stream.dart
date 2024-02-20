@@ -48,7 +48,9 @@ class _ProductsStreamState extends State<ProductsStream> {
                       },
                       onSave: (newProduct) async {
                         await SupabaseService.updateProduct(
-                            product.id, newProduct);
+                          product.id,
+                          newProduct,
+                        );
                       },
                     );
                   },

@@ -28,6 +28,7 @@ class ProductsStreamViewModel {
     if (history == null) {
       return false;
     }
+
     for (final element in history) {
       if (element == null) {
         continue;
@@ -36,6 +37,7 @@ class ProductsStreamViewModel {
         return true;
       }
     }
+
     return false;
   }
 }

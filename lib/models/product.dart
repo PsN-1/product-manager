@@ -1,5 +1,27 @@
 import 'package:product_manager/services/supabase.dart';
 
+enum HistoryUnity {
+  quantity,
+  box,
+  description,
+  price,
+}
+
+extension HistoryUnityExtension on HistoryUnity {
+  String get rawValue {
+    switch (this) {
+      case HistoryUnity.quantity:
+        return "Qtd";
+      case HistoryUnity.box:
+        return "Caixa";
+      case HistoryUnity.description:
+        return "Desc";
+      case HistoryUnity.price:
+        return "\$";
+    }
+  }
+}
+
 class Product {
   final int? id;
   final String? product;
@@ -71,15 +93,17 @@ class Product {
     }
   }
 
-  void saveToHistory(
-      {required String oldValue,
-      required String newValue,
-      bool isBox = false}) {
+  void saveToHistory({
+    required String oldValue,
+    required String newValue,
+    HistoryUnity unity = HistoryUnity.quantity,
+  }) {
     final date = _getDate();
 
     history ??= [];
-    String item = isBox ? "Box" : "Qtd";
-    final newEntry = "$date - $item: $oldValue  ->  $newValue";
+
+    String item = unity.rawValue;
+    final newEntry = "$date - $item: $oldValue  ⇨  $newValue";
 
     history?.insert(0, newEntry);
   }

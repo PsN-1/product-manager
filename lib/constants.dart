@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class K {
   const K();
 
-  static const appVersion = "0.40";
+  static const appVersion = "0.41";
 
   static const backgroundColor = Color.fromRGBO(242, 242, 247, 1);
   static const cardColor = Color.fromRGBO(226, 232, 240, 1);
