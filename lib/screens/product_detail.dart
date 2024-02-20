@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:product_manager/constants.dart';
@@ -138,7 +140,7 @@ class _ProductDetailState extends State<ProductDetail> {
       builder: (BuildContext context) => AlertDialog(
         title: Column(
           children: [
-            const Text("Qual sera a nova caixa"),
+            const Text("Qual será a nova caixa?"),
             TextField(
               controller: newBoxController,
               keyboardType: TextInputType.number,
@@ -165,12 +167,14 @@ class _ProductDetailState extends State<ProductDetail> {
   }
 
   void showFullProductHistory() {
+    final Size windowSize = MediaQuery.of(context).size;
+
     showDialog(
       context: context,
       builder: (BuildContext context) => AlertDialog(
         title: SizedBox(
-          width: 300,
-          height: 300,
+          width: windowSize.width > 400 ? 400 : windowSize.width * 0.9,
+          height: windowSize.height * 0.5,
           child: ListView(
             children: [
               const Text('Últimas atualizações: ', style: K.labelStyle),
