@@ -1,4 +1,5 @@
 import 'package:product_manager/models/product.dart';
+import 'package:product_manager/services/supabase.dart';
 
 class ProductsStreamViewModel {
   String searchText = "";
@@ -16,12 +17,15 @@ class ProductsStreamViewModel {
             false;
     bool hasBoxNumber = product.box == searchText;
 
-    bool hasHistoryDate = checkHasHistoryDate(searchText, product.history);
+    // bool hasHistoryDate = await searchDate(searchText, product.id ?? 0);
 
-    return hasProductText ||
-        hasDescriptionText ||
-        hasBoxNumber ||
-        hasHistoryDate;
+    return hasProductText || hasDescriptionText || hasBoxNumber;
+    // || hasHistoryDate;
+  }
+
+  Future<bool> searchDate(String searchText, int productId) async {
+    final logs = await SupabaseService.getLogsIdByDate(searchText);
+    return logs.contains(productId.toString());
   }
 
   bool checkHasHistoryDate(String searchText, List<String?>? history) {

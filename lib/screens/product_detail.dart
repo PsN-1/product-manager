@@ -1,12 +1,14 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:product_manager/constants.dart';
+import 'package:product_manager/models/history_unity.dart';
+import 'package:product_manager/models/log.dart';
 import 'package:product_manager/models/product.dart';
+import 'package:product_manager/services/supabase.dart';
 import 'package:product_manager/utils/alert_dialog.dart';
 import 'package:product_manager/utils/snack_bar.dart';
 import 'package:product_manager/widgets/custom_loading.dart';
+import 'package:product_manager/widgets/log_item_widget.dart';
 import 'package:product_manager/widgets/pickable_async_image.dart';
 
 class ProductDetail extends StatefulWidget {
@@ -28,6 +30,7 @@ class ProductDetail extends StatefulWidget {
 class _ProductDetailState extends State<ProductDetail> {
   var descriptionTextController = TextEditingController();
   var priceController = TextEditingController();
+  var logs = <LogItem>[];
 
   late String oldQuantity;
 
@@ -38,9 +41,17 @@ class _ProductDetailState extends State<ProductDetail> {
   void initState() {
     super.initState();
 
+    _loadLogs();
     descriptionTextController.text = widget.product.description ?? "";
     priceController.text = widget.product.price ?? "";
     oldQuantity = widget.product.quantity ?? "";
+  }
+
+  void _loadLogs() async {
+    final result = await SupabaseService.getLogs(widget.product.id.toString());
+    setState(() {
+      logs = result;
+    });
   }
 
   void _addQuantity() {
@@ -179,8 +190,10 @@ class _ProductDetailState extends State<ProductDetail> {
             children: [
               const Text('Últimas atualizações: ', style: K.labelStyle),
               const Text(""),
-              for (var str in widget.product.history ?? [])
-                Text(str, style: K.historyStyle)
+              for (var log in logs)
+                LogItemWidget(
+                  logItem: log,
+                )
             ],
           ),
         ),
@@ -316,10 +329,10 @@ class _ProductDetailState extends State<ProductDetail> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      for (var str in (widget.product.history ?? []).take(3))
-                        (str != null)
-                            ? Text(str, style: K.historyStyle)
-                            : const Text(""),
+                      for (var log in (logs).take(3))
+                        LogItemWidget(
+                          logItem: log,
+                        ),
                     ],
                   ),
                 ),

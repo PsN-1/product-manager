@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/foundation.dart';
+import 'package:product_manager/models/log.dart';
 import 'package:product_manager/models/product.dart';
 import 'package:product_manager/models/raw_product.dart';
 import 'package:product_manager/widgets/pickable_async_image.dart';
@@ -11,16 +12,40 @@ final _auth = _supabase.auth;
 final _storageRef = _supabase.storage.from("product-manager");
 const _productsCollection = 'Products';
 const _productsListCollection = 'ProductsList';
+const _logs = 'Logs';
 
 class SupabaseService {
   static var productsRef = _supabase.from(_productsCollection);
 
   static var listOfProductsRef = _supabase.from(_productsListCollection);
 
+  static var logsRef = _supabase.from(_logs);
+
   static var getFutureProducts = productsRef.stream(primaryKey: ['id']);
 
   static var getFutureProductsList =
       listOfProductsRef.stream(primaryKey: ['id']);
+
+  static Future<List<LogItem>> getLogs(String productId) async {
+    final response = await logsRef.select().eq('product_id', productId);
+
+    return response.map((e) => LogItem.fromMap(e)).toList().reversed.toList();
+  }
+
+  // find logs that the date text starts with the given date and return theirs product_id
+  static Future<List<String>> getLogsIdByDate(String date) async {
+    final response = await logsRef.select().like('date', date);
+
+    return response.map((e) => e['product_id'].toString()).toList();
+  }
+
+  static Future saveLog(LogItem log) async {
+    try {
+      await logsRef.insert(log.toMap());
+    } catch (e) {
+      print(e);
+    }
+  }
 
   static Future<bool> deleteProduct(int? id) async {
     try {
