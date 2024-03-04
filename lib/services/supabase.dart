@@ -29,7 +29,10 @@ class SupabaseService {
   static Future<List<LogItem>> getLogs(String productId) async {
     final response = await logsRef.select().eq('product_id', productId);
 
-    return response.map((e) => LogItem.fromMap(e)).toList().reversed.toList();
+    final logs =
+        response.map((e) => LogItem.fromMap(e)).toList().reversed.toList();
+    print(logs);
+    return logs;
   }
 
   // find logs that the date text starts with the given date and return theirs product_id
@@ -38,6 +41,29 @@ class SupabaseService {
 
     return response.map((e) => e['product_id'].toString()).toList();
   }
+
+  // void test() async {
+  //   // get all logs from this user
+  //   final logs = await logsRef.select().eq('owner_id', getUserUID());
+  //
+  //   final logsByProduct = logs.groupBy((element) => element['product_id']);
+  //
+  //   return logsByProduct;
+  // }
+  //
+  // // refactor the methos test to follow best practices
+  // Future<Map<String, List<LogItem>>> getLogsByProduct() async {
+  //   // get all logs from this user
+  //   final logs = await logsRef.select().eq('owner_id', getUserUID());
+  //
+  //   // separate logs_id by product_id
+  //   final logsByProduct = logs.groupBy((element) => element['product_id']);
+  //
+  //   return logsByProduct.map((key, value) {
+  //     return MapEntry(
+  //         key.toString(), value.map((e) => LogItem.fromMap(e)).toList());
+  //   });
+  // }
 
   static Future saveLog(LogItem log) async {
     try {
