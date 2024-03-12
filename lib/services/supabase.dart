@@ -21,7 +21,8 @@ class SupabaseService {
 
   static var logsRef = _supabase.from(_logs);
 
-  static var getFutureProducts = productsRef.stream(primaryKey: ['id']);
+  static var getFutureProducts =
+      productsRef.stream(primaryKey: ['id']).limit(2000);
 
   static var getFutureProductsList =
       listOfProductsRef.stream(primaryKey: ['id']);
