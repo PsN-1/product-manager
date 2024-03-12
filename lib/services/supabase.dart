@@ -137,7 +137,8 @@ class SupabaseService {
       print(e);
     }
 
-    return _storageRef.getPublicUrl(path);
+    const tenYears = 60 * 60 * 24 * 365 * 10;
+    return _storageRef.createSignedUrl(path, tenYears);
   }
 
   static Future removeImage(String imageUrl) async {

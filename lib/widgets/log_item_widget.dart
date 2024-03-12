@@ -14,8 +14,6 @@ class LogItemWidget extends StatelessWidget {
     final newValue = logItem.newValue ?? "";
     final date = logItem.date ?? "";
 
-    return ListTile(
-      title: Text("$date - $abbreviation: $oldValue -> $newValue"),
-    );
+    return Text("$date - $abbreviation: $oldValue -> $newValue");
   }
 }

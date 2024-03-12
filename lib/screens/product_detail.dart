@@ -48,8 +48,10 @@ class _ProductDetailState extends State<ProductDetail> {
   }
 
   void _loadLogs() async {
+    setLoading(true);
     final result = await SupabaseService.getLogs(widget.product.id.toString());
     setState(() {
+      setLoading(false);
       logs = result;
     });
   }
@@ -190,10 +192,7 @@ class _ProductDetailState extends State<ProductDetail> {
             children: [
               const Text('Últimas atualizações: ', style: K.labelStyle),
               const Text(""),
-              for (var log in logs)
-                LogItemWidget(
-                  logItem: log,
-                )
+              for (var log in logs) LogItemWidget(logItem: log)
             ],
           ),
         ),
