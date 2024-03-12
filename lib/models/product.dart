@@ -12,6 +12,7 @@ class Product {
   String? price;
   String? image;
   String? quantity;
+  String? imageLastPath;
 
   Product({
     this.id,
@@ -23,6 +24,7 @@ class Product {
     this.price,
     this.image,
     this.quantity,
+    this.imageLastPath,
   });
 
   factory Product.fromMap(Map<String, dynamic>? data) {
@@ -36,6 +38,7 @@ class Product {
       image: data?['photo'],
       price: data?['price'],
       quantity: data?['quantity'],
+      imageLastPath: data?['imageLastPath'],
     );
   }
 
@@ -50,6 +53,7 @@ class Product {
       if (image != null) "photo": image,
       if (price != null) "price": price,
       if (quantity != null) "quantity": quantity,
+      if (imageLastPath != null) "imageLastPath": imageLastPath,
     };
   }
 
