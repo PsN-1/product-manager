@@ -20,7 +20,7 @@ class _ListOfProductsState extends State<ListOfProducts> {
 
   final _addNewProductController = TextEditingController();
 
-  void _handleSearch(String text) {
+  void _handleSearch(String text, ColumnName column) {
     setState(() {
       _searchText = text;
     });

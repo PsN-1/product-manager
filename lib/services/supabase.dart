@@ -21,8 +21,18 @@ class SupabaseService {
 
   static var logsRef = _supabase.from(_logs);
 
-  static var getFutureProducts =
-      productsRef.stream(primaryKey: ['id']).limit(2000);
+  static Stream<dynamic> getProductsFiltered(
+      {required String searchText, required String column}) {
+    if (searchText.isEmpty) {
+      return productsRef.select().asStream();
+    }
+
+    if (column == "box") {
+      return productsRef.select().eq(column, searchText).asStream();
+    }
+
+    return productsRef.select().ilike(column, '%$searchText%').asStream();
+  }
 
   static var getFutureProductsList =
       listOfProductsRef.stream(primaryKey: ['id']);

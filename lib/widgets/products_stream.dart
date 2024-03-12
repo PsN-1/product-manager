@@ -16,9 +16,11 @@ class ProductsStream extends StatefulWidget {
 class _ProductsStreamState extends State<ProductsStream> {
   var viewModel = ProductsStreamViewModel();
 
-  void _updateSearch(String newSearchText) {
+  void _updateSearch(String newSearchText, ColumnName column) {
+    print('newSearchText: $newSearchText, column: ${column.name}');
     setState(() {
       viewModel.searchText = newSearchText;
+      viewModel.column = column;
     });
   }
 
@@ -28,38 +30,39 @@ class _ProductsStreamState extends State<ProductsStream> {
     // Create the Search Card
     productsCards.add(ProductSearchCard(
       onSearchTapped: _updateSearch,
+      showSelection: true,
     ));
 
     for (var productData in products) {
       final product = Product.fromMap(productData);
-      if (viewModel.isFilteredProduct(product)) {
-        productsCards.add(
-          ProductCard(
-            product: product,
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) {
-                    return ProductDetail(
-                      product: product,
-                      onDelete: () async {
-                        await SupabaseService.deleteProduct(product.id);
-                      },
-                      onSave: (newProduct) async {
-                        await SupabaseService.updateProduct(
-                          product.id,
-                          newProduct,
-                        );
-                      },
-                    );
-                  },
-                ),
-              );
-            },
-          ),
-        );
-      }
+      // if (viewModel.isFilteredProduct(product)) {
+      productsCards.add(
+        ProductCard(
+          product: product,
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) {
+                  return ProductDetail(
+                    product: product,
+                    onDelete: () async {
+                      await SupabaseService.deleteProduct(product.id);
+                    },
+                    onSave: (newProduct) async {
+                      await SupabaseService.updateProduct(
+                        product.id,
+                        newProduct,
+                      );
+                    },
+                  );
+                },
+              ),
+            );
+          },
+        ),
+      );
+      // }
     }
     productsCards.add(const SizedBox(height: 20));
     return productsCards;
@@ -69,10 +72,19 @@ class _ProductsStreamState extends State<ProductsStream> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: StreamBuilder(
-        stream: SupabaseService.getFutureProducts,
+        stream: SupabaseService.getProductsFiltered(
+          searchText: viewModel.searchText,
+          column: viewModel.column.name,
+        ),
         builder: (context, snapshot) {
-          if (!snapshot.hasData) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());
+          }
+          if (!snapshot.hasData) {
+            return ProductSearchCard(
+              onSearchTapped: _updateSearch,
+              showSelection: true,
+            );
           }
           final products = snapshot.data!;
           List<Widget> productsCards = createProductsCard(products);

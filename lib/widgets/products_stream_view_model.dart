@@ -1,8 +1,10 @@
 import 'package:product_manager/models/product.dart';
 import 'package:product_manager/services/supabase.dart';
+import 'package:product_manager/widgets/product_search_card.dart';
 
 class ProductsStreamViewModel {
   String searchText = "";
+  ColumnName column = ColumnName.product;
 
   bool isFilteredProduct(Product product) {
     if (searchText.isEmpty) {

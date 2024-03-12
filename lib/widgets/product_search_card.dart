@@ -2,16 +2,34 @@ import 'package:flutter/material.dart';
 import 'package:product_manager/constants.dart';
 
 class ProductSearchCard extends StatefulWidget {
-  final void Function(String) onSearchTapped;
+  final void Function(String, ColumnName) onSearchTapped;
+  final bool showSelection;
 
-  const ProductSearchCard({super.key, required this.onSearchTapped});
+  const ProductSearchCard(
+      {super.key, required this.onSearchTapped, this.showSelection = false});
 
   @override
   State<ProductSearchCard> createState() => _ProductSearchCardState();
 }
 
+enum ColumnName { product, description, box }
+
+extension ColumnNameExtension on ColumnName {
+  String get name {
+    switch (this) {
+      case ColumnName.product:
+        return "product";
+      case ColumnName.description:
+        return "description";
+      case ColumnName.box:
+        return "box";
+    }
+  }
+}
+
 class _ProductSearchCardState extends State<ProductSearchCard> {
   final _searchController = TextEditingController();
+  var columnName = ColumnName.product;
 
   @override
   Widget build(BuildContext context) {
@@ -43,22 +61,48 @@ class _ProductSearchCardState extends State<ProductSearchCard> {
                       controller: _searchController,
                       decoration: K.textFieldInputDecoration,
                       onSubmitted: (text) {
-                        widget.onSearchTapped(_searchController.text);
+                        widget.onSearchTapped(
+                            _searchController.text, columnName);
                       },
                     ),
                   ),
                   IconButton(
                       onPressed: () {
                         _searchController.text = "";
-                        widget.onSearchTapped("");
+                        widget.onSearchTapped("", columnName);
                       },
                       icon: const Icon(Icons.clear))
                 ],
               ),
               const SizedBox(height: 10),
+              if (widget.showSelection)
+                SegmentedButton(
+                  showSelectedIcon: false,
+                  segments: const [
+                    ButtonSegment(
+                      value: ColumnName.product,
+                      label: Text("Produto"),
+                    ),
+                    ButtonSegment(
+                      value: ColumnName.description,
+                      label: Text("Descrição"),
+                    ),
+                    ButtonSegment(
+                      value: ColumnName.box,
+                      label: Text("Caixa"),
+                    ),
+                  ],
+                  selected: <ColumnName>{columnName},
+                  onSelectionChanged: (Set<ColumnName> newSelection) {
+                    setState(() {
+                      columnName = newSelection.first;
+                    });
+                  },
+                ),
+              if (widget.showSelection) const SizedBox(height: 10),
               OutlinedButton.icon(
                 onPressed: () {
-                  widget.onSearchTapped(_searchController.text);
+                  widget.onSearchTapped(_searchController.text, columnName);
                 },
                 icon: const Icon(Icons.search),
                 label: const Text("Procurar"),
