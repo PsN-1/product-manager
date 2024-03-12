@@ -51,11 +51,7 @@ class SupabaseService {
 
   static Future<List<LogItem>> getLogs(String productId) async {
     final response = await logsRef.select().eq('product_id', productId);
-
-    final logs =
-        response.map((e) => LogItem.fromMap(e)).toList().reversed.toList();
-    print(logs);
-    return logs;
+    return response.map((e) => LogItem.fromMap(e)).toList().reversed.toList();
   }
 
   // find logs that the date text starts with the given date and return theirs product_id

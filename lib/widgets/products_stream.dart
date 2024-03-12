@@ -17,7 +17,6 @@ class _ProductsStreamState extends State<ProductsStream> {
   var viewModel = ProductsStreamViewModel();
 
   void _updateSearch(String newSearchText, ColumnName column) {
-    print('newSearchText: $newSearchText, column: ${column.name}');
     setState(() {
       viewModel.searchText = newSearchText;
       viewModel.column = column;
