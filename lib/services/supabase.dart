@@ -31,6 +31,18 @@ class SupabaseService {
       return productsRef.select().eq(column, searchText).asStream();
     }
 
+    if (column == "log") {
+      var test = logsRef
+          .select('product_id')
+          .like("date", '%$searchText%')
+          .then((response) {
+        var productIds =
+            response.map((e) => e['product_id'].toString()).toSet().toList();
+        return productsRef.select().inFilter('id', productIds);
+      }).asStream();
+      return test;
+    }
+
     return productsRef.select().ilike(column, '%$searchText%').asStream();
   }
 

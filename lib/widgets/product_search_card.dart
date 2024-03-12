@@ -12,7 +12,7 @@ class ProductSearchCard extends StatefulWidget {
   State<ProductSearchCard> createState() => _ProductSearchCardState();
 }
 
-enum ColumnName { product, description, box }
+enum ColumnName { product, description, box, log }
 
 extension ColumnNameExtension on ColumnName {
   String get name {
@@ -23,6 +23,8 @@ extension ColumnNameExtension on ColumnName {
         return "description";
       case ColumnName.box:
         return "box";
+      case ColumnName.log:
+        return "log";
     }
   }
 }
@@ -81,15 +83,31 @@ class _ProductSearchCardState extends State<ProductSearchCard> {
                   segments: const [
                     ButtonSegment(
                       value: ColumnName.product,
-                      label: Text("Produto"),
+                      label: Text(
+                        "Produto",
+                        overflow: TextOverflow.ellipsis,
+                      ),
                     ),
                     ButtonSegment(
                       value: ColumnName.description,
-                      label: Text("Descrição"),
+                      label: Text(
+                        "Descrição",
+                        overflow: TextOverflow.ellipsis,
+                      ),
                     ),
                     ButtonSegment(
                       value: ColumnName.box,
-                      label: Text("Caixa"),
+                      label: Text(
+                        "Caixa",
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                    ButtonSegment(
+                      value: ColumnName.log,
+                      label: Text(
+                        "Histórico",
+                        overflow: TextOverflow.ellipsis,
+                      ),
                     ),
                   ],
                   selected: <ColumnName>{columnName},
