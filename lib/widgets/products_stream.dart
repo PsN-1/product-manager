@@ -4,7 +4,6 @@ import 'package:product_manager/screens/product_detail.dart';
 import 'package:product_manager/services/supabase.dart';
 import 'package:product_manager/widgets/product_card.dart';
 import 'package:product_manager/widgets/product_search_card.dart';
-import 'package:product_manager/widgets/products_stream_view_model.dart';
 
 class ProductsStream extends StatefulWidget {
   const ProductsStream({super.key});
@@ -14,12 +13,13 @@ class ProductsStream extends StatefulWidget {
 }
 
 class _ProductsStreamState extends State<ProductsStream> {
-  var viewModel = ProductsStreamViewModel();
+  String searchText = '';
+  ColumnName column = ColumnName.product;
 
-  void _updateSearch(String newSearchText, ColumnName column) {
+  void _updateSearch(String newSearchText, ColumnName newColumn) {
     setState(() {
-      viewModel.searchText = newSearchText;
-      viewModel.column = column;
+      searchText = newSearchText;
+      column = newColumn;
     });
   }
 
@@ -34,7 +34,6 @@ class _ProductsStreamState extends State<ProductsStream> {
 
     for (var productData in products) {
       final product = Product.fromMap(productData);
-      // if (viewModel.isFilteredProduct(product)) {
       productsCards.add(
         ProductCard(
           product: product,
@@ -61,7 +60,6 @@ class _ProductsStreamState extends State<ProductsStream> {
           },
         ),
       );
-      // }
     }
     productsCards.add(const SizedBox(height: 20));
     return productsCards;
@@ -72,8 +70,8 @@ class _ProductsStreamState extends State<ProductsStream> {
     return Scaffold(
       body: StreamBuilder(
         stream: SupabaseService.getProductsFiltered(
-          searchText: viewModel.searchText,
-          column: viewModel.column.name,
+          searchText: searchText,
+          column: column.name,
         ),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
