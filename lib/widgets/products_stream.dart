@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:product_manager/models/column_name.dart';
 import 'package:product_manager/models/product.dart';
 import 'package:product_manager/screens/product_detail.dart';
 import 'package:product_manager/services/supabase.dart';

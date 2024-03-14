@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:product_manager/constants.dart';
+import 'package:product_manager/models/column_name.dart';
 import 'package:product_manager/models/raw_product.dart';
 import 'package:product_manager/services/supabase.dart';
 import 'package:product_manager/utils/snack_bar.dart';
