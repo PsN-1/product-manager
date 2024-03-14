@@ -24,6 +24,13 @@ class _ProductsStreamState extends State<ProductsStream> {
     });
   }
 
+  Future _pullRefresh() async {
+    setState(() {
+      searchText = '';
+      column = ColumnName.product;
+    });
+  }
+
   List<Widget> createProductsCard(List<Map<String, dynamic>> products) {
     List<Widget> productsCards = [];
 
@@ -68,29 +75,32 @@ class _ProductsStreamState extends State<ProductsStream> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: StreamBuilder(
-        stream: SupabaseService.getProductsFiltered(
-          searchText: searchText,
-          column: column.name,
-        ),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator());
-          }
-          if (!snapshot.hasData) {
-            return ProductSearchCard(
-              onSearchTapped: _updateSearch,
-              showSelection: true,
-            );
-          }
-          final products = snapshot.data!;
-          List<Widget> productsCards = createProductsCard(products);
+    return RefreshIndicator(
+      onRefresh: _pullRefresh,
+      child: Scaffold(
+        body: StreamBuilder(
+          stream: SupabaseService.getProductsFiltered(
+            searchText: searchText,
+            column: column.name,
+          ),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Center(child: CircularProgressIndicator());
+            }
+            if (!snapshot.hasData) {
+              return ProductSearchCard(
+                onSearchTapped: _updateSearch,
+                showSelection: true,
+              );
+            }
+            final products = snapshot.data!;
+            List<Widget> productsCards = createProductsCard(products);
 
-          return ListView(
-            children: productsCards,
-          );
-        },
+            return ListView(
+              children: productsCards,
+            );
+          },
+        ),
       ),
     );
   }
