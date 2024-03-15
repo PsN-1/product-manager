@@ -55,12 +55,6 @@ class SupabaseService {
     return response.map((e) => LogItem.fromMap(e)).toList().reversed.toList();
   }
 
-  static Future<List<String>> getLogsIdByDate(String date) async {
-    final response = await logsRef.select().like('date', date);
-
-    return response.map((e) => e['product_id'].toString()).toList();
-  }
-
   static Future saveLog(LogItem log) async {
     try {
       await logsRef.insert(log.toMap());
