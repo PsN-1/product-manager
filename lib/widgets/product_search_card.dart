@@ -5,9 +5,15 @@ import 'package:product_manager/models/column_name.dart';
 class ProductSearchCard extends StatefulWidget {
   final void Function(String, ColumnName) onSearchTapped;
   final bool showSelection;
+  final String searchText;
+  final ColumnName column;
 
   const ProductSearchCard(
-      {super.key, required this.onSearchTapped, this.showSelection = false});
+      {super.key,
+      required this.onSearchTapped,
+      this.showSelection = false,
+      this.searchText = '',
+      this.column = ColumnName.product});
 
   @override
   State<ProductSearchCard> createState() => _ProductSearchCardState();
@@ -16,6 +22,14 @@ class ProductSearchCard extends StatefulWidget {
 class _ProductSearchCardState extends State<ProductSearchCard> {
   final _searchController = TextEditingController();
   var columnName = ColumnName.product;
+
+  @override
+  void initState() {
+    super.initState();
+
+    _searchController.text = widget.searchText;
+    columnName = widget.column;
+  }
 
   @override
   Widget build(BuildContext context) {

@@ -38,6 +38,8 @@ class _ProductsStreamState extends State<ProductsStream> {
     productsCards.add(ProductSearchCard(
       onSearchTapped: _updateSearch,
       showSelection: true,
+      searchText: searchText,
+      column: column,
     ));
 
     for (var productData in products) {
