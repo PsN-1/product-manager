@@ -51,8 +51,8 @@ class _ProductDetailState extends State<ProductDetail> {
     setLoading(true);
     final result = await SupabaseService.getLogs(widget.product.id.toString());
     setState(() {
-      setLoading(false);
       logs = result;
+      setLoading(false);
     });
   }
 

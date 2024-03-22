@@ -6,11 +6,12 @@ class BoxButton extends StatelessWidget {
   final String text;
   final bool isPrimary;
 
-  const BoxButton(
-      {super.key,
-      required this.text,
-      required this.isPrimary,
-      required this.onTap});
+  const BoxButton({
+    super.key,
+    required this.text,
+    required this.isPrimary,
+    required this.onTap,
+  });
 
   @override
   Widget build(BuildContext context) {

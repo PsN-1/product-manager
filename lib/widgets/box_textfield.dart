@@ -17,20 +17,21 @@ class _WhiteBoxState extends State<WhiteBox> {
     return Align(
       alignment: Alignment.center,
       child: Container(
-          width: windowWidth > 400 ? 400 : windowWidth,
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(12),
-            boxShadow: [
-              BoxShadow(
-                offset: const Offset(0, 3),
-                blurRadius: 6,
-                color: const Color(0xff000000).withOpacity(0.16),
-              )
-            ],
-          ),
-          height: 50,
-          child: widget.child),
+        width: windowWidth > 400 ? 400 : windowWidth,
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(12),
+          boxShadow: [
+            BoxShadow(
+              offset: const Offset(0, 3),
+              blurRadius: 6,
+              color: const Color(0xff000000).withOpacity(0.16),
+            )
+          ],
+        ),
+        height: 50,
+        child: widget.child,
+      ),
     );
   }
 }
