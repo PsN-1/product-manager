@@ -59,7 +59,7 @@ class SupabaseService {
     try {
       await logsRef.insert(log.toMap());
     } catch (e) {
-      print(e);
+      if (kDebugMode) print(e);
     }
   }
 
@@ -123,8 +123,10 @@ class SupabaseService {
         );
       }
     } catch (e) {
-      print("Error while uploading the image");
-      print(e);
+      if (kDebugMode) {
+        print("Error while uploading the image");
+        print(e);
+      }
     }
 
     const tenYears = 60 * 60 * 24 * 365 * 10;
@@ -135,8 +137,10 @@ class SupabaseService {
     try {
       await _storageRef.remove([imageUrl]);
     } catch (e) {
-      print("Error while removing the image");
-      print(e);
+      if (kDebugMode) {
+        print("Error while removing the image");
+        print(e);
+      }
     }
   }
 
@@ -147,7 +151,7 @@ class SupabaseService {
       await _auth.signInWithPassword(email: email, password: password);
       return _auth.currentUser != null;
     } catch (e) {
-      print(e);
+      if (kDebugMode) print(e);
       return false;
     }
   }
@@ -157,7 +161,7 @@ class SupabaseService {
       await _auth.signUp(email: email, password: password);
       return _auth.currentUser != null;
     } catch (e) {
-      print(e);
+      if (kDebugMode) print(e);
       return false;
     }
   }
