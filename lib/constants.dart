@@ -3,8 +3,6 @@ import 'package:flutter/material.dart';
 class K {
   const K();
 
-  static const appVersion = "0.73";
-
   static const backgroundColor = Color.fromRGBO(242, 242, 247, 1);
   static const cardColor = Color.fromRGBO(226, 232, 240, 1);
   static const primaryColor = Colors.blue;
@@ -35,4 +33,14 @@ class K {
     //   borderSide: BorderSide.none,
     // ),
   );
+}
+
+class AppK {
+  const AppK();
+
+  static const url = 'https://iqghfjlsyvdpvnnondyp.supabase.co';
+  static const anonKey =
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImlxZ2hmamxzeXZkcHZubm9uZHlwIiwicm9sZSI6ImFub24iLCJpYXQiOjE2OTYyNjMwODUsImV4cCI6MjAxMTgzOTA4NX0.PLRjPi5rwZujoPKQyopwr52RFiqpxhKt5Vvz8vGdhts';
+
+  static const appVersion = "0.73";
 }

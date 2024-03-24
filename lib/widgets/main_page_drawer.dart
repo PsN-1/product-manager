@@ -37,7 +37,7 @@ class MainPageDrawer extends StatelessWidget {
                 const SizedBox(height: 20),
                 Text('Platform ${(kIsWeb) ? "Web" : Platform.operatingSystem}'),
                 const SizedBox(height: 20),
-                const Text("Version: ${K.appVersion}"),
+                const Text("Version: ${AppK.appVersion}"),
                 const SizedBox(height: 20),
                 TextButton(
                     onPressed: onLogoutPressed, child: const Text('Sair')),
