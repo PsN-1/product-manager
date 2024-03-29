@@ -1,3 +1,4 @@
+import 'package:flutter/services.dart';
 import 'package:product_manager/models/history_unity.dart';
 import 'package:product_manager/models/log.dart';
 import 'package:product_manager/services/supabase.dart';
@@ -85,7 +86,7 @@ class Product {
     );
   }
 
-  Future saveNewImage(String imagePath) async {
+  Future saveNewImage(Uint8List imagePath) async {
     if (image != null) {
       await SupabaseService.removeImage(image!);
     }

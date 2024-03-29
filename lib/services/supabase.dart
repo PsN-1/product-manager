@@ -1,10 +1,7 @@
-import 'dart:io';
-
 import 'package:flutter/foundation.dart';
 import 'package:product_manager/models/log.dart';
 import 'package:product_manager/models/product.dart';
 import 'package:product_manager/models/raw_product.dart';
-import 'package:product_manager/widgets/pickable_async_image.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 final _supabase = Supabase.instance.client;
@@ -102,26 +99,17 @@ class SupabaseService {
     return pathReference;
   }
 
-  static Future<String> uploadImage(String imagePath, String imageName) async {
-    File imageFile = File(imagePath);
+  static Future<String> uploadImage(
+      Uint8List imagePath, String imageName) async {
     final userId = getUserUID();
     final path = 'photos/$userId/$imageName';
 
     try {
-      if (kIsWeb) {
-        await _storageRef.uploadBinary(
-          path,
-          newImageForWeb!,
-          fileOptions: const FileOptions(cacheControl: '3600', upsert: false),
-        );
-        newImageForWeb = null;
-      } else {
-        await _storageRef.upload(
-          path,
-          imageFile,
-          fileOptions: const FileOptions(cacheControl: '3600', upsert: false),
-        );
-      }
+      await _storageRef.uploadBinary(
+        path,
+        imagePath,
+        fileOptions: const FileOptions(cacheControl: '3600', upsert: false),
+      );
     } catch (e) {
       if (kDebugMode) {
         print("Error while uploading the image");

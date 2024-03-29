@@ -28,9 +28,9 @@ class _AddNewProductState extends State<AddNewProduct> {
 
   final _priceController = TextEditingController();
 
-  String? imagePath;
+  Uint8List? imagePath;
 
-  void _didSelectedImage(String path) {
+  void _didSelectedImage(Uint8List path) {
     imagePath = path;
   }
 

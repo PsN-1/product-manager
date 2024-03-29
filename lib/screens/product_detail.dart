@@ -35,7 +35,7 @@ class _ProductDetailState extends State<ProductDetail> {
   late String oldQuantity;
 
   bool _isLoading = false;
-  String? newImagePath;
+  Uint8List? newImagePath;
 
   @override
   void initState() {
@@ -215,7 +215,7 @@ class _ProductDetailState extends State<ProductDetail> {
     _dismiss();
   }
 
-  void didChangeImage(String imagePath) {
+  void didChangeImage(Uint8List imagePath) {
     newImagePath = imagePath;
   }
 
