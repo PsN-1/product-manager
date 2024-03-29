@@ -103,7 +103,12 @@ class Product {
   }
 
   static Future createNewInstance(Product product) async {
-    await SupabaseService.createProduct(product);
+    final createdProduct = await SupabaseService.createProduct(product);
+    createdProduct.saveToHistory(
+      oldValue: '',
+      newValue: "Produto Criado.",
+      unity: HistoryUnity.observation,
+    );
   }
 
   String _createImageName() {

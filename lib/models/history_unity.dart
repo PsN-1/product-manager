@@ -3,6 +3,7 @@ enum HistoryUnity {
   box,
   description,
   price,
+  observation,
 }
 
 extension HistoryUnityExtension on HistoryUnity {
@@ -16,6 +17,8 @@ extension HistoryUnityExtension on HistoryUnity {
         return "Desc";
       case HistoryUnity.price:
         return "\$";
+      case HistoryUnity.observation:
+        return "Obs";
     }
   }
 
@@ -30,6 +33,8 @@ extension HistoryUnityExtension on HistoryUnity {
         return HistoryUnity.description;
       case "\$":
         return HistoryUnity.price;
+      case "Obs":
+        return HistoryUnity.observation;
       default:
         return HistoryUnity.quantity;
     }

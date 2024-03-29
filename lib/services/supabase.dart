@@ -83,8 +83,11 @@ class SupabaseService {
     }
   }
 
-  static Future createProduct(Product product) async {
-    await productsRef.insert(product.toMap());
+  static Future<Product> createProduct(Product product) async {
+    final response = await productsRef.insert(product.toMap()).select();
+    final createdProduct = Product.fromMap(response.first);
+
+    return createdProduct;
   }
 
   static Future createRawProduct(RawProduct product) async {
