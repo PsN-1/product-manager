@@ -77,6 +77,10 @@ class _ProductSearchCardState extends State<ProductSearchCard> {
               const SizedBox(height: 10),
               if (widget.showSelection)
                 SegmentedButton(
+                  style: SegmentedButton.styleFrom(
+                    selectedBackgroundColor: K.primaryColor,
+                    selectedForegroundColor: Colors.white,
+                  ),
                   showSelectedIcon: false,
                   segments: const [
                     ButtonSegment(
@@ -120,8 +124,14 @@ class _ProductSearchCardState extends State<ProductSearchCard> {
                 onPressed: () {
                   widget.onSearchTapped(_searchController.text, columnName);
                 },
-                icon: const Icon(Icons.search),
-                label: const Text("Procurar"),
+                icon: const Icon(
+                  Icons.search,
+                  color: Colors.blue,
+                ),
+                label: const Text(
+                  "Procurar",
+                  style: TextStyle(color: Colors.blue),
+                ),
               )
             ],
           ),
