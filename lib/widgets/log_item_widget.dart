@@ -14,6 +14,12 @@ class LogItemWidget extends StatelessWidget {
     final newValue = logItem.newValue ?? "";
     final date = logItem.date ?? "";
 
-    return Text("$date - $abbreviation: $oldValue -> $newValue");
+    return Text(
+      "$date - $abbreviation: $oldValue -> $newValue",
+      style: const TextStyle(
+        fontSize: 18,
+        color: Colors.black,
+      ),
+    );
   }
 }

@@ -9,7 +9,10 @@ class K {
   static const textStyle = TextStyle(fontSize: 22, color: Colors.black);
   static const historyStyle = TextStyle(fontSize: 18, color: Colors.black);
   static const labelStyle = TextStyle(
-      fontWeight: FontWeight.w600, fontSize: 16, color: Colors.black54);
+    fontWeight: FontWeight.w600,
+    fontSize: 16,
+    color: Colors.black54,
+  );
 
   static const deleteButtonStyle = ButtonStyle(
     backgroundColor: MaterialStatePropertyAll(Colors.red),

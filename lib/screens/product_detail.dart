@@ -180,23 +180,29 @@ class _ProductDetailState extends State<ProductDetail> {
   }
 
   void showFullProductHistory() {
-    final Size windowSize = MediaQuery.of(context).size;
-
-    showDialog(
+    showModalBottomSheet(
       context: context,
-      builder: (BuildContext context) => AlertDialog(
-        title: SizedBox(
-          width: windowSize.width > 400 ? 400 : windowSize.width * 0.9,
-          height: windowSize.height * 0.5,
-          child: ListView(
-            children: [
-              const Text('Últimas atualizações: ', style: K.labelStyle),
-              const Text(""),
-              for (var log in logs) LogItemWidget(logItem: log)
-            ],
-          ),
-        ),
-      ),
+      builder: (BuildContext context) {
+        return ListView(
+          padding: const EdgeInsets.all(15),
+          children: [
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Align(
+                  alignment: Alignment.center,
+                  child: Text(
+                    'Últimas atualizações: ',
+                    style: K.labelStyle,
+                  ),
+                ),
+                const Text(""),
+                for (var log in logs) LogItemWidget(logItem: log)
+              ],
+            ),
+          ],
+        );
+      },
     );
   }
 
@@ -328,10 +334,10 @@ class _ProductDetailState extends State<ProductDetail> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      for (var log in (logs).take(3))
+                      for (var log in logs.take(3))
                         LogItemWidget(
                           logItem: log,
-                        ),
+                        )
                     ],
                   ),
                 ),
