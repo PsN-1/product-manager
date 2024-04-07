@@ -23,6 +23,11 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      theme: ThemeData(
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: Colors.blue,
+        ),
+      ),
       initialRoute: (SupabaseService.getCurrentUser() != null)
           ? HomePage.id
           : LoginPage.id,
