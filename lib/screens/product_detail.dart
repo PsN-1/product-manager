@@ -307,13 +307,13 @@ class _ProductDetailState extends State<ProductDetail> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     IconButton(
-                        alignment: Alignment.centerLeft,
                         padding: const EdgeInsets.all(0),
                         onPressed: _decreaseQuantity,
                         icon: const Icon(Icons.remove)),
+                    const SizedBox(width: 15),
                     Text(widget.product.quantity ?? "", style: K.textStyle),
+                    const SizedBox(width: 15),
                     IconButton(
-                        alignment: Alignment.centerRight,
                         padding: const EdgeInsets.all(0),
                         onPressed: _addQuantity,
                         icon: const Icon(Icons.add)),
