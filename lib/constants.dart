@@ -45,5 +45,5 @@ class AppK {
   static const anonKey =
       'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImlxZ2hmamxzeXZkcHZubm9uZHlwIiwicm9sZSI6ImFub24iLCJpYXQiOjE2OTYyNjMwODUsImV4cCI6MjAxMTgzOTA4NX0.PLRjPi5rwZujoPKQyopwr52RFiqpxhKt5Vvz8vGdhts';
 
-  static const appVersion = "0.83";
+  static const appVersion = "0.84";
 }
