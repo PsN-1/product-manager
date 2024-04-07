@@ -29,7 +29,8 @@ class LogItemWidget extends StatelessWidget {
             style: logTextStyle,
           ),
         ),
-        Text(" - $abbreviation: $oldValue", style: logTextStyle),
+        if (abbreviation != "Obs")
+          Text(" - $abbreviation: $oldValue", style: logTextStyle),
         const Icon(Icons.arrow_right),
         Text(newValue, style: logTextStyle),
       ],
