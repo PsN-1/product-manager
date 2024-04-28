@@ -29,7 +29,8 @@ class LogItemWidget extends StatelessWidget {
             style: logTextStyle,
           ),
         ),
-        if (abbreviation != "Obs")
+        // if (abbreviation != "Obs")
+        if (logItem.abbreviation != HistoryUnity.observation)
           Text(" - $abbreviation: $oldValue", style: logTextStyle),
         const Icon(Icons.arrow_right),
         Text(newValue, style: logTextStyle),
