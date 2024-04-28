@@ -16,7 +16,7 @@ extension HistoryUnityExtension on HistoryUnity {
       case HistoryUnity.description:
         return "Desc";
       case HistoryUnity.price:
-        return "\$";
+        return "Preço";
       case HistoryUnity.observation:
         return "Obs";
     }
@@ -31,7 +31,7 @@ extension HistoryUnityExtension on HistoryUnity {
         return HistoryUnity.box;
       case "Desc":
         return HistoryUnity.description;
-      case "\$":
+      case "Preço":
         return HistoryUnity.price;
       case "Obs":
         return HistoryUnity.observation;
