@@ -65,22 +65,28 @@ class _AddNewProductState extends State<AddNewProduct> {
 
     void createNewProduct() async {
       setLoading(true);
-      Product product = Product(
-          product: _productController.text,
-          description: _descriptionController.text,
-          box: _boxController.text,
-          quantity: _quantityController.text,
-          price: _priceController.text,
-          ownerId: SupabaseService.getUserUID());
+      try {
+        Product product = Product(
+            product: _productController.text,
+            description: _descriptionController.text,
+            box: _boxController.text,
+            quantity: _quantityController.text,
+            price: _priceController.text,
+            ownerId: SupabaseService.getUserUID());
 
-      if (imagePath != null) {
-        await product.saveNewImage(imagePath!);
+        if (imagePath != null) {
+          await product.saveNewImage(imagePath!);
+        }
+
+        await Product.createNewInstance(product);
+        setLoading(false);
+        showSuccessMessage();
+        dismiss();
+      } catch (e) {
+        CustomSnackBar.showErrorMessage(context, e.toString(), () {});
+        dismiss();
+        return;
       }
-
-      await Product.createNewInstance(product);
-      setLoading(false);
-      showSuccessMessage();
-      dismiss();
     }
 
     return Scaffold(

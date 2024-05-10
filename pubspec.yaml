@@ -39,6 +39,7 @@ dependencies:
   image_picker: ^1.0.7
   msix: ^3.7.0
   supabase_flutter: ^2.3.0
+  uuid: ^4.4.0
 
 dev_dependencies:
   flutter_test:

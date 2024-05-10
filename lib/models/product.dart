@@ -2,6 +2,7 @@ import 'package:flutter/services.dart';
 import 'package:product_manager/models/history_unity.dart';
 import 'package:product_manager/models/log.dart';
 import 'package:product_manager/services/supabase.dart';
+import 'package:uuid/uuid.dart';
 
 class Product {
   final int? id;
@@ -87,13 +88,17 @@ class Product {
   }
 
   Future saveNewImage(Uint8List imagePath) async {
-    if (image != null) {
-      await SupabaseService.removeImage(image!);
-    }
+    try {
+      if (image != null) {
+        await SupabaseService.removeImage(image!);
+      }
 
-    final newImageUrl =
-        await SupabaseService.uploadImage(imagePath, _createImageName());
-    image = newImageUrl;
+      final newImageUrl =
+          await SupabaseService.uploadImage(imagePath, _createImageName());
+      image = newImageUrl;
+    } catch (e) {
+      rethrow;
+    }
   }
 
   Future getImageUrl() async {
@@ -112,6 +117,8 @@ class Product {
   }
 
   String _createImageName() {
-    return "$product-$description-${DateTime.now()}";
+    const uuid = Uuid();
+
+    return "$uuid-${DateTime.now()}";
   }
 }

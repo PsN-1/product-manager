@@ -118,6 +118,8 @@ class SupabaseService {
         print("Error while uploading the image");
         print(e);
       }
+
+      rethrow;
     }
 
     const tenYears = 60 * 60 * 24 * 365 * 10;
