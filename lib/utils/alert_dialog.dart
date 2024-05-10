@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 
 class CustomAlert {
-  static void showOkCancelAlert(BuildContext context,
-      {required String title,
-      String? message,
-      required void Function() okPressed}) {
+  static void showOkCancelAlert(
+    BuildContext context, {
+    required String title,
+    String? message,
+    required void Function() okPressed,
+  }) {
     Widget okButton = TextButton(
         onPressed: () {
           Navigator.pop(context);
@@ -25,14 +27,19 @@ class CustomAlert {
     );
 
     showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return alert;
-        });
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
   }
 
-  static void showOkAlert(BuildContext context,
-      {required String title, String? message, required Function onOkPressed}) {
+  static void showOkAlert(
+    BuildContext context, {
+    required String title,
+    String? message,
+    required Function onOkPressed,
+  }) {
     Widget okButton = TextButton(
         onPressed: () {
           Navigator.pop(context);
@@ -47,9 +54,10 @@ class CustomAlert {
     );
 
     showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return alert;
-        });
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
   }
 }

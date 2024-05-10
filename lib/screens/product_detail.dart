@@ -127,7 +127,19 @@ class _ProductDetailState extends State<ProductDetail> {
     _dismiss();
   }
 
+  bool isValidNumber = true;
+  bool _isNewBowValidNumber() {
+    return int.tryParse(newBoxController.text) != null;
+  }
+
   void updateNewBox() async {
+    if (!_isNewBowValidNumber()) {
+      setState(() {
+        isValidNumber = _isNewBowValidNumber();
+      });
+      return;
+    }
+
     _dismiss();
     setLoading(true);
     setState(() async {
@@ -148,6 +160,7 @@ class _ProductDetailState extends State<ProductDetail> {
 
   var newBoxController = TextEditingController();
   void _changeProductBox() {
+    newBoxController.text = widget.product.box ?? "";
     showDialog(
       context: context,
       builder: (BuildContext context) => AlertDialog(
@@ -160,6 +173,11 @@ class _ProductDetailState extends State<ProductDetail> {
               inputFormatters: [
                 FilteringTextInputFormatter.digitsOnly,
               ],
+              decoration: InputDecoration(
+                errorText: !isValidNumber
+                    ? 'O valor tem que ser um númro valido'
+                    : null,
+              ),
             ),
           ],
         ),
